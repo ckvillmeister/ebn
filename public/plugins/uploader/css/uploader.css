@@ -1,0 +1,46 @@
+.image-preview {
+    max-width: 250px;
+    max-height: 250px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+    /* General styles for the container */
+.custom-file-upload {
+    display: inline-block;
+    position: relative;
+    /* font-family: Arial, sans-serif; */
+}
+
+.custom-file-upload input[type="file"] {
+    display: none; /* Hide the native file input */
+}
+
+.custom-file-upload label {
+    display: inline-block;
+    background-color: #3f6ad8; /* Bootstrap primary color */
+    color: #fff;
+    padding: 7.3px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.custom-file-upload label:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+.custom-file-upload label:active {
+    background-color: #004080; /* Even darker shade on active click */
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+    .custom-file-upload label {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
