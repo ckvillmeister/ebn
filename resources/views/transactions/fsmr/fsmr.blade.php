@@ -11,7 +11,7 @@
             font-style: italic;
             font-weight: 100;
             font-display: swap;
-            src: url("asset('fonts/banerton-demo.ttf')") format('woff2');
+            src: url("{{ asset('fonts/banerton-demo.ttf') }}") format('woff2');
         }
 
         @media print {

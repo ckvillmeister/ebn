@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions');
     Route::get('/roles', [RolesController::class, 'index'])->name('roles');
     Route::get('/user', [UserController::class, 'index'])->name('user');
+    Route::get('/user/registration', [UserController::class, 'registration'])->name('registration');
     Route::get('/user/changepass', [UserController::class, 'changePassword']);
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
     Route::get('/settings/defaults', [SettingsController::class, 'defaults'])->name('settings-defaults');

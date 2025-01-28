@@ -140,4 +140,8 @@ class UserController extends Controller
         }
         
     }
+
+    public function registration(Request $request){
+        return view('user.registration');
+    }
 }

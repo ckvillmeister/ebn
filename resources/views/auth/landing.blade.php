@@ -48,7 +48,7 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted" href="#">Register</a>
+      <a class="btn-getstarted" href="{{ route('registration') }}">Register</a>
 
     </div>
   </header>
@@ -65,7 +65,7 @@
             <p>FSMR/FSCCR/AFSS/FDAS/KHS Contractor<br>
             Fire Extinguisher Supplier</p>
             <div class="d-flex">
-              <a href="#about" class="btn-get-started">Register</a>
+              <a href="{{ route('registration') }}" class="btn-get-started">Register</a>
               <a href="#" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
             </div>
           </div>
