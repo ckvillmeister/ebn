@@ -8,8 +8,16 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Mailer;
 use App\Models\User;
+use App\Models\Province;
+use App\Models\Town;
+use App\Models\Barangay;
+use App\Models\Settings;
+use App\Models\Client;
 
 class UserController extends Controller
 {
@@ -111,37 +119,78 @@ class UserController extends Controller
 
     public function changePassword(Request $request)
     {
-        $id = Auth::id();
-        $opassword = ($request->input('opassword')) ? $request->input('opassword') : null;
-        $password = ($request->input('password')) ? $request->input('password') : null;
-        $password_confirmation = ($request->input('password_confirmation')) ? $request->input('password_confirmation') : null;
+        $user = Auth::user();
+        $validator = Validator::make($request->all(), [
+            'opassword' => ['required', function ($attribute, $value, $fail) use ($user) {
+                if (!Hash::check($value, $user->password)) {
+                    $fail('The old password is incorrect!');
+                }
+            }],
+            'password' => ['required', 'min:8', 'different:opassword', 'confirmed'],
+            'password_confirmation' => ['required'],
+        ]);
+    
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
 
-        
-        if ($password){
-            if (!Hash::check($opassword, Auth::user()->password)){
-                return ['icon'=>'error',
-                        'title'=>'Error',
-                        'message'=>"Old password entered is incorrect!"];
-            }
-            elseif ($password != $password_confirmation){
-                return ['icon'=>'error',
-                        'title'=>'Error',
-                        'message'=>"Password does not match!"];
-            }
-            else{
-                User::where('id', $id)->update(['password' => Hash::make($password)]);
-                return ['icon'=>'success',
-                        'title'=>'Success',
-                        'message'=>"Password successfully changed!"];
-            }
-        }
-        else{
-            return view('user.changepass');
-        }
-        
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->back()->with('success', 'Your password has been changed successfully!');
     }
 
     public function registration(Request $request){
-        return view('user.registration');
+        $provinces = Province::all()->sortBy("description");
+        $towns = Town::where('province_code', '0712')->orderBy('description', 'ASC')->get();
+        $brgys = Barangay::where('town_code', '071244')->orderBy('description', 'ASC')->get();
+
+        return view('user.registration', ['provinces' => $provinces, 'towns' => $towns, 'brgys' => $brgys]);
+    }
+
+    public function register(Request $request){
+        $settings = Settings::all();
+        $business_name = $settings->where('code', 'business_name')->first()->description;
+        $data = $request->all();
+        $pass = Str::random(6);
+
+        $validator = Validator::make($data, [
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'username' => 'required|unique:users,username',
+        ]);
+
+        if ($validator->fails()){
+            return ['icon'=>'error',
+                'title'=>'Error',
+                'message'=> $validator->errors()->first()];
+        }
+
+        $emailData = [
+            'name' => $data['firstname'],
+            'email' => $data['username'],
+            'business_name' => $business_name,
+            'password' => $pass
+        ];
+
+        $data['password'] = Hash::make($pass);
+
+        $user = User::create($data);
+        $role = Role::where('id', 2)->first();
+        $user->assignRole($role);
+
+        Mail::to($data['username'])->send(new Mailer($emailData));
+
+
+        return ['icon'=>'success',
+                'title'=>'Registration Successful!',
+                'message'=>"Kindly check your email or spam folder for your credentials."
+            ];
+    }
+
+    public function profile(Request $request){
+        $user = User::with(['addr_barangay', 'addr_town', 'addr_province'])->where('id', Auth::id())->first();
+        return view('user.profile', ['user' => $user]);
     }
 }

@@ -70,7 +70,7 @@
                                     <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                 </a>
                                 <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-                                    <button type="button" tabindex="0" class="dropdown-item">User Profile</button>
+                                    <a href="{{ route('profile') }}" type="button" tabindex="0" class="dropdown-item">User Profile</a>
                                     <div tabindex="-1" class="dropdown-divider"></div>
                                     <a href="{{ route('logout') }}" tabindex="0" class="dropdown-item">Logout</a>
                                 </div>

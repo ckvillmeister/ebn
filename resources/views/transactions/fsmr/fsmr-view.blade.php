@@ -1,7 +1,7 @@
 @extends('index')
 @section('content')
 <style>
-    .eer-tbl input[type="radio"], #table-fss-list input[type="radio"] { 
+    .eer-tbl input[type="radio"], #table-fss-list input[type="radio"], #table-assessment-list input[type="radio"] { 
         width: 20px; height: 20px;
     }
 </style>
@@ -52,11 +52,11 @@
                         <h6 class="text-primary"><i class="fas fa-map-marker mr-2"></i>{{ ($fsmr) ? $fsmr->establishment_address : '' }}</h6>
                         <div class="divider"></div>
                         <p class="text-secondary">OTHER INFORMATION</p>
-                        <h6 class="text-secondart"><i class="fas fa-building mr-2"></i><em>Occupancy:</em> <b>{{ ($fsmr) ? $fsmr->occupancy : '' }}</b></h6>
-                        <h6 class="text-secondart"><i class="fas fa-list-ol mr-2"></i><em>Number of Floors:</em> <b>{{ ($fsmr) ? $fsmr->no_of_floors : '' }}</b></h6>
-                        <h6 class="text-secondart"><i class="fas fa-asterisk mr-2"></i><em>Reference No:</em> <b>{{ ($fsmr) ? $fsmr->reference_no : '' }}</b></h6>
-                        <h6 class="text-secondart"><i class="fas fa-building mr-2"></i><em>Building Use:</em> <b>{{ ($fsmr) ? $fsmr->building_use : '' }}</b></h6>
-                        <h6 class="text-secondart"><i class="fas fa-server mr-2"></i><em>Service Availed:</em> <b>{{ ($fsmr) ? $fsmr->service_availed : '' }}</b></h6>
+                        <h6 class="text-secondary"><i class="fas fa-building mr-2"></i><em>Occupancy:</em> <b>{{ ($fsmr) ? $fsmr->occupancy : '' }}</b></h6>
+                        <h6 class="text-secondary"><i class="fas fa-list-ol mr-2"></i><em>Number of Floors:</em> <b>{{ ($fsmr) ? $fsmr->no_of_floors : '' }}</b></h6>
+                        <h6 class="text-secondary"><i class="fas fa-asterisk mr-2"></i><em>Reference No:</em> <b>{{ ($fsmr) ? $fsmr->reference_no : '' }}</b></h6>
+                        <h6 class="text-secondary"><i class="fas fa-building mr-2"></i><em>Building Use:</em> <b>{{ ($fsmr) ? $fsmr->building_use : '' }}</b></h6>
+                        <h6 class="text-secondary"><i class="fas fa-server mr-2"></i><em>Service Availed:</em> <b>{{ ($fsmr) ? $fsmr->service_availed : '' }}</b></h6>
                     </div>
                 </div>
                 <div class="row mt-5 mb-2">

@@ -6,7 +6,7 @@
     <style>
 
         html {
-        background-color: #56baed;
+        background-color: #ffffff;
         }
 
         body {

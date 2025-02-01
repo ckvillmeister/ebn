@@ -2,11 +2,12 @@
 <title>{{ config('app.name') }}</title>
 <link rel="icon" href="{{ asset('images/ebn.png') }}" type="image/x-icon">
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link rel="stylesheet" href="{{ asset('plugins/sweetalert2/dist/sweetalert2.min.css') }}">
 <head>
     <style>
 
         html {
-        background-color: #56baed;
+        background-color: #ffffff;
         }
 
         body {
@@ -51,7 +52,7 @@
         background: #fff;
         padding: 30px;
         width: 90%;
-        max-width: 450px;
+        max-width: 600px;
         position: relative;
         padding: 0px;
         -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
@@ -119,7 +120,7 @@
         transform: scale(0.95);
         }
 
-        input[type=text], input[type=password] {
+        input[type=text], input[type=password], select, input[type=email] {
         background-color: #f6f6f6;
         border: none;
         color: #0d0d0d;
@@ -264,6 +265,19 @@
         #icon {
         width:60%;
         }
+        
+        #loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
 
     </style>
 </head>
@@ -273,26 +287,77 @@
 
     <!-- Icon -->
     <div class="fadeIn first">
-      <img src="{{ asset('images/ebn.png') }}" id="icon" alt="User Icon" />
-      <h4>{{ config('app.name') }}</h4>
+      <img src="{{ asset('images/ebn.png') }}" style="width: 100px; margin-top: 30px" id="icon" alt="User Icon" /><br>
+      <h4>Client Registration Form</h4>
     </div>
 
     <!-- Login Form -->
-    <form method="POST" action="{{ route('login') }}">
-       @csrf
-      <input type="text" id="login" value="{{ old('username') }}" class="fadeIn second" name="username" placeholder="E-mail" required>
-      <input type="password" id="password" value="{{ old('password') }}" class="fadeIn third" name="password" placeholder="Password" required>
-      <input type="submit" class="fadeIn fourth" value="Log In">
+    <form id="frm">
+      @csrf
+      <input type="text" value="{{ old('firstname') }}" class="fadeIn second" name="firstname" placeholder="First Name" required>
+      <input type="text" value="{{ old('middlename') }}" class="fadeIn second" name="middlename" placeholder="Middle Name">
+      <input type="text" value="{{ old('lastname') }}" class="fadeIn second" name="lastname" placeholder="Last Name" required>
+
+      <select class="fadeIn second" name="province" id="province" required>
+          <option value="">Select Province</option>
+          @foreach ($provinces as $province)
+          <option value="{{ $province->code }}" {{ (($province->code == '0712') ? 'selected' : '') }}>{{ $province->description }}</option>
+          @endforeach
+      </select>
+
+      <select class="fadeIn second" name="municipality" id="municipality" required>
+          <option value="">Select Municipality</option>
+          @foreach ($towns as $town)
+          <option value="{{ $town->code }}" {{ (($town->code == '071244') ? 'selected' : '') }}>{{ $town->description }}</option>
+          @endforeach
+      </select>
+
+      <select class="fadeIn second" name="barangay" id="barangay" required>
+          <option value="">Select Barangay</option>
+          @foreach ($brgys as $brgy)
+          <option value="{{ $brgy->code }}">{{ strtoupper($brgy->description) }}</option>
+          @endforeach
+      </select>
+
+      <input type="email" id="login" value="{{ old('username') }}" class="fadeIn second" name="username" placeholder="E-mail" required>
+      <br><br>
+      <p style="text-align: justify; padding: 7%; font-size: 10pt; background-color: #dbdbd9">
+        By registering, you agree to provide your personal information, which will be collected, 
+        processed, and stored in accordance with our Data Privacy Policy. We are committed to 
+        protecting your privacy and ensuring that your data is used only for legitimate purposes, 
+        such as account creation, communication, and service improvements. <br><br>Your information will not be 
+        shared with third parties without your consent, except as required by law. You have the right 
+        to access, correct, or request the deletion of your data by contacting our support team. 
+        By checking the box below, you confirm that you have read and understood this disclaimer and 
+        agree to our Data Privacy Policy.<br><br>
+      </p>
+      <div style="display: flex; align-items: center; padding-left: 7%; padding-right: 7%; font-size: 10pt;">
+        <input type="checkbox" id="agree" style="width: 20px; height: 20px; margin-right: 10px; margin-bottom: 20px">
+        <label for="agree">
+            <b>I agree to the collection and processing of my personal 
+            data as stated in the Data Privacy Policy.</b>
+        </label>
+      </div>
+      
+      <div id="loading-overlay" style="display: none;">
+          <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden"></span>
+          </div>
+      </div>
+      
+      <input type="submit" class="fadeIn fourth text-dark" id="register-btn" value="Submit Registration">
       <br>
       <div class="text-danger">
-        {{ $errors->first('username') }}
-        {{ $errors->first('password') }}
+        {{ $errors->first('firstname') }}
+        {{ $errors->first('lastname') }}
+        {{ $errors->first('province') }}
+        {{ $errors->first('municipality') }}
+        {{ $errors->first('barangay') }}
       </div>
     </form>
 
     <!-- Remind Passowrd -->
     <div id="formFooter">
-      <a class="underlineHover" href="#">Forgot Password?</a>&nbsp;&nbsp;&nbsp;&nbsp;
       <a class="underlineHover" href="{{ route('landing') }}">Return Home</a>
     </div>
 
@@ -300,4 +365,69 @@
 </div>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="{{ asset('plugins/sweetalert2/dist/sweetalert2.min.js') }}"></script>
+<script>
+  // $(document).ready(function () {
+  //     $('#agree').change(function () {
+  //         if ($(this).is(':checked')) {
+  //             $('#register-btn').prop('disabled', false);
+  //         } else {
+  //             $('#register-btn').prop('disabled', true);
+  //         }
+  //     });
+  // });
+
+  $('#frm').on('submit', function(e){
+    e.preventDefault();
+
+    if (!($('#agree').is(':checked'))){
+      swal.fire({
+          title: "Empty fields!",
+          type: "error",
+          text: "Fill-up the registration form first and check 'I agree'",
+          confirmButtonText: "Got it!",
+      })
+
+      return;
+    }
+
+    $.ajax({
+        headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        },
+        url: "{{ route('register-client') }}",
+        method: 'POST',
+        data: $('#frm').serialize(),
+        dataType: 'JSON',
+        beforeSend: function() {
+            $('#loading-overlay').fadeIn();
+        },
+        complete: function(){
+            $('#loading-overlay').fadeOut();
+        },
+        success: function(result) {
+            swal.fire({
+                title: result['title'],
+                type: result['icon'],
+                text: result['message'],
+                confirmButtonText: "Okay",
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    if (result['icon'] == 'success'){
+                      window.location.href = "{{ route('login') }}";
+                    }
+                }
+            });
+        },
+        error: function(obj, err, ex){
+            Swal.fire({
+                title: 'Server Error',
+                text: err + ": " + obj.toString() + " " + ex,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
+    })
+});
+</script>
 </html>

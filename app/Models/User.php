@@ -63,4 +63,12 @@ class User extends Authenticatable
     public function addr_town(){
         return $this->hasOne(Town::class, 'code', 'municipality');
     }
+
+    public function addr_barangay(){
+        return $this->hasOne(Barangay::class, 'code', 'barangay');
+    }
+
+    public function addr_province(){
+        return $this->hasOne(Province::class, 'code', 'province');
+    }
 }

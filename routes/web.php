@@ -22,7 +22,6 @@ use App\Http\Controllers\QuestionnaireController;
 use App\Http\Controllers\SignatoryController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Events\DocumentStored;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -68,8 +67,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions');
     Route::get('/roles', [RolesController::class, 'index'])->name('roles');
     Route::get('/user', [UserController::class, 'index'])->name('user');
-    Route::get('/user/registration', [UserController::class, 'registration'])->name('registration');
-    Route::get('/user/changepass', [UserController::class, 'changePassword']);
+    Route::get('/user/profile', [UserController::class, 'profile'])->name('profile');
+    Route::post('/user/changepass', [UserController::class, 'changePassword'])->name('change-password');
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
     Route::get('/settings/defaults', [SettingsController::class, 'defaults'])->name('settings-defaults');
     Route::get('/settings/backupdb', [SettingsController::class, 'backupBD'])->name('backup-db');
@@ -83,72 +82,76 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    #Address (For client info creation)
+    Route::post('/address/towns/{code}', [AddressController::class, 'towns']);
+    Route::post('/address/barangays/{code}', [AddressController::class, 'barangays']);
+
+    Route::post('/reports/displayReports', [ReportsController::class, 'displayReports']);
+
+    #Attachment Types
+    Route::post('/type-retrieve', [AttachmentTypeController::class, 'retrieve']);
+    Route::post('/type-create', [AttachmentTypeController::class, 'create']);
+    Route::post('/type-store', [AttachmentTypeController::class, 'store']);
+    Route::post('/type-toggle-status', [AttachmentTypeController::class, 'toggleStatus']);
+
+    #FSMR Content
+    Route::post('/content-retrieve', [FSMRContentController::class, 'retrieve']);
+    Route::post('/content-create', [FSMRContentController::class, 'create']);
+    Route::post('/content-store', [FSMRContentController::class, 'store']);
+    Route::post('/content-toggle-status', [FSMRContentController::class, 'toggleStatus']);
+    Route::post('/sub-content-retrieve', [FSMRContentController::class, 'retrieveSubContents']);
+    Route::post('/sub-content-create', [FSMRContentController::class, 'createSubContent']);
+    Route::post('/sub-content-store', [FSMRContentController::class, 'storeSubContent']);
+    Route::post('/sub-content-remove', [FSMRContentController::class, 'removeSubContent']);
+
+    #FDAS Content
+    Route::post('/fdas-categ-retrieve', [FDASController::class, 'retrieveCategories']);
+    Route::post('/fdas-categ-create', [FDASController::class, 'createCategory']);
+    Route::post('/fdas-categ-store', [FDASController::class, 'storeCategory']);
+    Route::post('/fdas-categ-toggle-status', [FDASController::class, 'toggleCategoryStatus']);
+    Route::post('/fdas-device-create', [FDASController::class, 'createDevice']);
+    Route::post('/fdas-device-store', [FDASController::class, 'storeDevice']);
+    Route::post('/fdas-device-toggle-status', [FDASController::class, 'toggleDeviceStatus']);
+
+    #Questions
+    Route::post('/questions-retrieve', [QuestionnaireController::class, 'retrieveQuestions']);
+    Route::post('/questions-create', [QuestionnaireController::class, 'createQuestion']);
+    Route::post('/questions-store', [QuestionnaireController::class, 'storeQuestion']);
+    Route::post('/questions-toggle-status', [QuestionnaireController::class, 'toggleQuestionStatus']);
+
+    #Signatory
+    Route::post('/signatory-retrieve', [SignatoryController::class, 'retrieve']);
+    Route::post('/signatory-create', [SignatoryController::class, 'create']);
+    Route::post('/signatory-store', [SignatoryController::class, 'store']);
+    Route::post('/signatory-toggle-status', [SignatoryController::class, 'toggleStatus']);
+
+    #Permissions
+    Route::post('/permissionRetrieve', [PermissionController::class, 'retrieve']);
+    Route::post('/permissionCreate', [PermissionController::class, 'create']);
+    Route::post('/permissionStore', [PermissionController::class, 'store']);
+    Route::post('/permissionToggleStatus', [PermissionController::class, 'toggleStatus']);
+
+    #Roles
+    Route::post('/roleRetrieve', [RolesController::class, 'retrieve']);
+    Route::post('/roleCreate', [RolesController::class, 'create']);
+    Route::post('/roleStore', [RolesController::class, 'store']);
+    Route::post('/roleToggleStatus', [RolesController::class, 'toggleStatus']);
+
+    #User Accounts
+    Route::post('/userRetrieve', [UserController::class, 'retrieve']);
+    Route::post('/userCreate', [UserController::class, 'create']);
+    Route::post('/userStore', [UserController::class, 'store']);
+    Route::post('/userToggleStatus', [UserController::class, 'toggleStatus']);
+    Route::post('/userResetPass/{action}', [UserController::class, 'resetPassword']);
+    Route::post('/user/change/password', [UserController::class, 'changePassword']);
+
+    #Settings
+    Route::post('/settings/save', [SettingsController::class, 'saveSettings']);
+
 });
-
-#Address (For client info creation)
-Route::post('/address/towns/{code}', [AddressController::class, 'towns']);
-Route::post('/address/barangays/{code}', [AddressController::class, 'barangays']);
-
-Route::post('/reports/displayReports', [ReportsController::class, 'displayReports']);
-
-#Attachment Types
-Route::post('/type-retrieve', [AttachmentTypeController::class, 'retrieve']);
-Route::post('/type-create', [AttachmentTypeController::class, 'create']);
-Route::post('/type-store', [AttachmentTypeController::class, 'store']);
-Route::post('/type-toggle-status', [AttachmentTypeController::class, 'toggleStatus']);
-
-#FSMR Content
-Route::post('/content-retrieve', [FSMRContentController::class, 'retrieve']);
-Route::post('/content-create', [FSMRContentController::class, 'create']);
-Route::post('/content-store', [FSMRContentController::class, 'store']);
-Route::post('/content-toggle-status', [FSMRContentController::class, 'toggleStatus']);
-Route::post('/sub-content-retrieve', [FSMRContentController::class, 'retrieveSubContents']);
-Route::post('/sub-content-create', [FSMRContentController::class, 'createSubContent']);
-Route::post('/sub-content-store', [FSMRContentController::class, 'storeSubContent']);
-Route::post('/sub-content-remove', [FSMRContentController::class, 'removeSubContent']);
-
-#FDAS Content
-Route::post('/fdas-categ-retrieve', [FDASController::class, 'retrieveCategories']);
-Route::post('/fdas-categ-create', [FDASController::class, 'createCategory']);
-Route::post('/fdas-categ-store', [FDASController::class, 'storeCategory']);
-Route::post('/fdas-categ-toggle-status', [FDASController::class, 'toggleCategoryStatus']);
-Route::post('/fdas-device-create', [FDASController::class, 'createDevice']);
-Route::post('/fdas-device-store', [FDASController::class, 'storeDevice']);
-Route::post('/fdas-device-toggle-status', [FDASController::class, 'toggleDeviceStatus']);
-
-#Questions
-Route::post('/questions-retrieve', [QuestionnaireController::class, 'retrieveQuestions']);
-Route::post('/questions-create', [QuestionnaireController::class, 'createQuestion']);
-Route::post('/questions-store', [QuestionnaireController::class, 'storeQuestion']);
-Route::post('/questions-toggle-status', [QuestionnaireController::class, 'toggleQuestionStatus']);
-
-#Signatory
-Route::post('/signatory-retrieve', [SignatoryController::class, 'retrieve']);
-Route::post('/signatory-create', [SignatoryController::class, 'create']);
-Route::post('/signatory-store', [SignatoryController::class, 'store']);
-Route::post('/signatory-toggle-status', [SignatoryController::class, 'toggleStatus']);
-
-#Permissions
-Route::post('/permissionRetrieve', [PermissionController::class, 'retrieve']);
-Route::post('/permissionCreate', [PermissionController::class, 'create']);
-Route::post('/permissionStore', [PermissionController::class, 'store']);
-Route::post('/permissionToggleStatus', [PermissionController::class, 'toggleStatus']);
-
-#Roles
-Route::post('/roleRetrieve', [RolesController::class, 'retrieve']);
-Route::post('/roleCreate', [RolesController::class, 'create']);
-Route::post('/roleStore', [RolesController::class, 'store']);
-Route::post('/roleToggleStatus', [RolesController::class, 'toggleStatus']);
-
-#User Accounts
-Route::post('/userRetrieve', [UserController::class, 'retrieve']);
-Route::post('/userCreate', [UserController::class, 'create']);
-Route::post('/userStore', [UserController::class, 'store']);
-Route::post('/userToggleStatus', [UserController::class, 'toggleStatus']);
-Route::post('/userResetPass/{action}', [UserController::class, 'resetPassword']);
-Route::post('/user/change/password', [UserController::class, 'changePassword']);
-
-#Settings
-Route::post('/settings/save', [SettingsController::class, 'saveSettings']);
+#Registration
+Route::get('/registration', [UserController::class, 'registration'])->name('registration');
+Route::post('/register/client', [UserController::class, 'register'])->name('register-client');
 
 require __DIR__.'/auth.php';

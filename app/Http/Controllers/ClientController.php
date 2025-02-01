@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Client;
+use App\Models\User;
 use App\Models\Province;
 use App\Models\Town;
 use App\Models\Barangay;
@@ -62,8 +63,11 @@ class ClientController extends Controller
             $data = $request->all();
             $data['username'] = strtolower(preg_replace('/\s+/', '', $request->input('firstname'))).'.'.strtolower(preg_replace('/\s+/', '', $request->input('lastname')));
             $data['password'] = Hash::make('password');
-
-            Client::create($data);
+            
+            $user = User::create($data);
+            $role = Role::where('id', 2)->first();
+            $user->assignRole($role);
+            
             return ['icon'=>'success',
                     'title'=>'Success',
                     'message'=>"Client record successfully saved!"

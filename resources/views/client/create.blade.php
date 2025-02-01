@@ -1,6 +1,13 @@
 @extends('index')
 @section('content')
 
+<style>
+    input[type=radio]{
+        height: 20px;
+        width: 20px
+    }
+</style>
+
 <div class="app-page-title">
     <div class="page-title-wrapper">
         <div class="page-title-heading">
@@ -50,15 +57,15 @@
                         <div class="col-sm-2">
                             <span>Sex:</span>
                         </div>
-                        <div class="col-sm-1">
-                            <input name="sex" type="radio" id="male" value="M" {{ ($client) ? (($client->sex=='M') ? 'checked' : '') : '' }}> <label for="male">Male</label>
-                            <label class="error" for="lastname">{{ $errors->first('sex') }}</label>
+                        <div class="col-sm-2">
+                            <input name="sex" type="radio" id="male" value="M" {{ ($client) ? (($client->sex=='M') ? 'checked' : '') : '' }}> <label for="male" class="ml-2" style="margin-top: -2px; vertical-align: middle;">Male</label>
+                            <label class="error" for="male">{{ $errors->first('sex') }}</label>
                         </div>
-                        <div class="col-sm-1">
-                            <input name="sex" type="radio" id="female" value="F" {{ ($client) ? (($client->sex=='F') ? 'checked' : '') : '' }}> <label for="female">Female</label>
-                            <label class="error" for="lastname">{{ $errors->first('sex') }}</label>
+                        <div class="col-sm-2">
+                            <input name="sex" type="radio" id="female" value="F" {{ ($client) ? (($client->sex=='F') ? 'checked' : '') : '' }}> <label for="female" class="ml-2" style="margin-top: -4px; vertical-align: middle;">Female</label>
+                            <label class="error" for="female">{{ $errors->first('sex') }}</label>
                         </div>
-                    </div>
+                    </div><br>
                     <div class="row clearfix">
                         <div class="col-sm-2">
                             <span>Contact:</span>
