@@ -94,22 +94,22 @@
                                         <div class="position-relative row form-group mt-4">
                                             <label for="manufacturer" class="col-sm-3 col-form-label">Control Unit Manufacturer:</label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control form-control-sm input-border-bottom" id="manufacturer" name="manufacturer" value="{{ ($fsmr) ? $fsmr->mt_manufacturer : '' }}">
+                                                <input type="text" class="form-control form-control-sm input-border-bottom" id="manufacturer" name="manufacturer" value="{{ ($fsmr) ? $fsmr->fps_manufacturer : '' }}">
                                             </div>
                                         </div>
                                         <div class="position-relative row form-group mt-3">
                                             <label for="model" class="col-sm-3 col-form-label">Model:</label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control form-control-sm input-border-bottom" id="model" name="model" value="{{ ($fsmr) ? $fsmr->mt_model : '' }}">
+                                                <input type="text" class="form-control form-control-sm input-border-bottom" id="model" name="model" value="{{ ($fsmr) ? $fsmr->fps_model : '' }}">
                                             </div>
                                         </div>
                                         <div class="position-relative row form-group mt-3">
                                             <label for="model" class="col-sm-3 col-form-label">Circuit Style:</label>
                                             <div class="col-sm-4">
                                                 <select class="form-control form-control-sm col-md-12" name="circuit-style">
-                                                    <option value="" {{ ($fsmr) ? (($fsmr->mt_circuit == '' || $fsmr->mt_circuit == NULL) ? 'selected="selected"' : '') : '' }}>N/A</option>
+                                                    <option value="" {{ ($fsmr) ? (($fsmr->fps_circuit == '' || $fsmr->fps_circuit == NULL) ? 'selected="selected"' : '') : '' }}>N/A</option>
                                                     @foreach(\App\Enums\CircuitStyle::$circuits as $key => $circuit)
-                                                    <option value="{{ $key }}" {{ ($fsmr) ? ($fsmr->mt_circuit == 1 ? 'selected="selected"' : '') : (($circuit == 'Conventional' ? 'selected="selected"' : '')) }}>{{ $circuit }}</option>
+                                                    <option value="{{ $key }}" {{ ($fsmr) ? ($fsmr->fps_circuit == 1 ? 'selected="selected"' : '') : (($circuit == 'Conventional' ? 'selected="selected"' : '')) }}>{{ $circuit }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

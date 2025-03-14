@@ -42,6 +42,27 @@
                         </div>
                     </div>
                     <div class="position-relative row form-group">
+                        <label for="address" class="col-sm-3 col-form-label">Address of the Establishment (for BFP):</label>
+                        <div class="col-sm-3">
+                            <select class="form-control form-control-sm show-tick" name="addr_province" id="addr_province">
+                                <option value="">Select Province</option>
+                                @foreach ($provinces as $province)
+                                <option value="{{ $province->code }}" {{ (!blank($fsmr)) ? (($province->code == $fsmr->addr_province) ? 'selected="selected"' : '') : (($province->code == '0712') ? 'selected="selected"' : '') }}>{{ $province->description }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <select class="form-control form-control-sm show-tick" name="addr_town" id="addr_town">
+                                <option value="">Select Municipality</option>
+                                @if (!blank($towns))
+                                    @foreach ($towns as $town)
+                                    <option value="{{ $town->code }}" {{ (!blank($fsmr)) ? (($town->code == $fsmr->addr_town) ? 'selected="selected"' : '') : '' }}>{{ $town->description }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>  
+                    </div>
+                    <div class="position-relative row form-group">
                         <label for="occupancy" class="col-sm-3 col-form-label">Occupancy:</label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control form-control-sm input-border-bottom" id="occupancy" name="occupancy" value="{{ $fsmr->occupancy ?? '' }}" required>
@@ -56,7 +77,7 @@
                     <div class="position-relative row form-group mt-4">
                         <label for="reference-no" class="col-sm-3 col-form-label">Reference No:</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control form-control-sm input-border-bottom" id="reference-no" name="reference-no" value="{{ ($fsmr) ? $fsmr->reference_no : '' }}">
+                            <input type="text" class="form-control form-control-sm input-border-bottom" id="reference-no" name="reference-no" value="{{ $fsmr->reference_no ?? (($reference_no) ?? '') }}" readonly>
                         </div>
                     </div>
                     <div class="position-relative row form-group mt-4">
@@ -187,6 +208,26 @@
                 $(this).remove();
             }
         });
+    });
+    
+    $('select[name="addr_province"]').on('change', function() {
+        var code = $(this).val();
+
+        $.ajax({
+            headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: '/address/towns/'+code,
+            method: 'POST',
+            dataType: 'JSON',
+            success: function(result) {
+                $('#addr_town').html('');
+                $('#addr_town').append('<option value="">Select Municipality</option>');
+                $.each(result, function (key, value) {
+                    $('#addr_town').append('<option value="'+value['code']+'">'+value['description']+'</option>');
+                });
+            }
+        })
     });
 
     $('#frm').on('submit', async function(e){

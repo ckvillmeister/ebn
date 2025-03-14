@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 use App\Models\AttachmentTypes;
 use App\Models\FSMRInfo;
 use App\Models\FSMRAttachments;
@@ -25,6 +27,15 @@ use App\Models\Assessment;
 use App\Models\FSMRAssessment;
 use App\Models\FireSuppressionEquipments;
 use App\Models\Recommendation;
+use App\Models\Products;
+use App\Models\ProductInventory;
+use App\Models\Province;
+use App\Models\Town;
+use App\Models\InventoryLogs;
+use App\Models\DeliveryTransaction;
+use App\Models\DeliveredItems;
+use App\Models\SalesTransaction;
+use App\Models\SoldProducts;
 
 class TransactionController extends Controller
 {
@@ -39,11 +50,13 @@ class TransactionController extends Controller
             $address = ($request->input('address')) ? $request->input('address') : null;
             $occupancy = ($request->input('occupancy')) ? $request->input('occupancy') : null;
             $floors = ($request->input('floors')) ? $request->input('floors') : null;
-            $referenceno = ($request->input('reference-no')) ? $request->input('reference-no') : null;
+            $referenceno = $this->generateReferenceNo();
             $buildinguse = ($request->input('building-used')) ? $request->input('building-used') : null;
             $service = ($request->input('service-availed')) ? $request->input('service-availed') : null;
+            $province = $request->input('addr_province', null);
+            $town = $request->input('addr_town', null);
             $requestedby = ($request->input('requested-by')) ? $request->input('requested-by') : Auth::id();
-
+            
             if ($fsmrid){
                 FSMRInfo::where('id', $fsmrid)->update([
                     'establishment_name' => $name,
@@ -53,7 +66,9 @@ class TransactionController extends Controller
                     'reference_no' => $referenceno,
                     'building_use' => $buildinguse,
                     'service_availed' => $service,
-                    'client_id' => $requestedby
+                    'client_id' => $requestedby,
+                    'addr_province' => $province,
+                    'addr_town' => $town,
                 ]);
 
                 //Delete Attachments
@@ -100,7 +115,9 @@ class TransactionController extends Controller
                             'service_availed' => $service,
                             'client_id' => $requestedby,
                             'processed_by' => Auth::id(),
-                            'date_processed' => date('Y-m-d H:i:s')
+                            'date_processed' => date('Y-m-d H:i:s'),
+                            'addr_province' => $province,
+                            'addr_town' => $town,
                         ])->id;
 
                 if ($request->hasFile('images')) {
@@ -139,11 +156,18 @@ class TransactionController extends Controller
             $attachment_types = AttachmentTypes::all();
             $clients = User::where('role', 2)->orderBy('lastname', 'asc')->orderBy('firstname', 'asc')->get();
 
+            $provinces = Province::all()->sortBy("description");
+            $province = ($fsmr) ? $fsmr->addr_province : null;
+            $towns = ($province) ? Town::where('province_code', $province)->orderBy('description', 'ASC')->get() : null;
+
             return view('transactions.fsmr.application', [
                     'attachment_types' => $attachment_types,
                     'app_no' => $this->generateAppNo(),
+                    'reference_no' => $this->generateReferenceNo(),
                     'clients' => $clients,
-                    'fsmr' => $fsmr
+                    'fsmr' => $fsmr,
+                    'provinces' => $provinces,
+                    'towns' => $towns
                 ]);
         }
     }
@@ -361,7 +385,7 @@ class TransactionController extends Controller
     function printFSMR(Request $request){
         $id = ($request->input('fsmrid')) ?? null;
         $contents = FSMRContent::with(['subcontents.attachment_type'])->where('status', 1)->get();
-        $fsmr = FSMRInfo::with(['attachments.attachmenttype', 'fps', 'eer', 'fss', 'assessments.question.category', 'fee', 'client.addr_town'])->where('id', $id)->first();
+        $fsmr = FSMRInfo::with(['attachments.attachmenttype', 'fps', 'eer', 'fss', 'assessments.question.category', 'fee', 'client.addr_town', 'town'])->where('id', $id)->first();
         $fdas = FireSystemDeviceCategories::with(['devices' => function ($query) {
                 $query->where('status', 1);
             }])->where('status', 1)->get();
@@ -381,7 +405,7 @@ class TransactionController extends Controller
         $business_dti = $settings->where('code', 'dti')->first()->description;
         $business_bir = $settings->where('code', 'bir')->first()->description;
         $business_permit = $settings->where('code', 'mo_permit')->first()->description;
-        $town = $fsmr->client->addr_town->description ?? '';
+        $town = $fsmr->town->description ?? '';
 
         $labels = [];
         $available = [];
@@ -463,4 +487,632 @@ class TransactionController extends Controller
 
         return $newAppNo;
     }
+
+    public function generateReferenceNo()
+    {
+        $prefix = "TACF";
+        $suffix = "SP";
+
+        // Retrieve the last reference number from the FSMRInfo model
+        $lastRefNo = FSMRInfo::query()
+            ->orderBy('reference_no', 'desc')
+            ->value('reference_no');
+
+        if ($lastRefNo) {
+            // Extract the middle number (6-digit counter)
+            $lastCounter = (int) substr($lastRefNo, 5, 6);
+            $nextCounter = $lastCounter + 1;
+        } else {
+            $nextCounter = 1;
+        }
+
+        // Format the counter to ensure it has 6 digits (leading zeros)
+        $formattedCounter = str_pad($nextCounter, 6, '0', STR_PAD_LEFT);
+
+        // Generate the new reference number
+        $newRefNo = "{$prefix}-{$formattedCounter}-{$suffix}";
+
+        return $newRefNo;
+    }
+
+    function inventory(Request $request){
+        $towns = Town::where('province_code', '0712')->orderBy('description', 'ASC')->get();
+        return view('transactions.sales.inventory', compact('towns'));
+    }
+
+    function productForm(Request $request){
+        $id = $request->input('id', null);
+        $product = Products::where('id', $id)->first();
+        $code = $this->generateProductCode();
+
+        return view('transactions.sales.product-form', compact('product', 'code'));
+    }
+
+    function productList(Request $request){
+        $status = ($request->has('status')) ? ($request->input('status') ? 1 : 0) : 1;
+        $viewAll = $request->input('viewall', 0);
+        $location = $request->input('location', 0);
+
+        if ($viewAll) {
+            $products = ProductInventory::with(['location', 'productInfo' => function ($query) use ($status) {
+                                        $query->where('status', 1);
+                                    }]);
+
+            if ($location){
+                $products = $products->where('location_id', $location);
+            }
+
+            $products = $products->orderBy('location_id', 'ASC');
+            
+            return DataTables::eloquent($products)
+                ->addColumn('code', function ($inventory) {
+                    return optional($inventory->productInfo)->code ?? '-';
+                })
+                ->addColumn('name', function ($inventory) {
+                    return optional($inventory->productInfo)->name ?? '-';
+                })
+                ->addColumn('description', function ($inventory) {
+                    return optional($inventory->productInfo)->description ?? '-';
+                })
+                ->addColumn('uom', function ($inventory) {
+                    return optional($inventory->productInfo)->uom ?? '-';
+                })
+                ->addColumn('brand', function ($inventory) {
+                    return optional($inventory->productInfo)->brand ?? '-';
+                })
+                ->addColumn('price', function ($inventory) {
+                    return number_format(optional($inventory->productInfo)->price, 2) ?? '0.00';
+                })
+                ->addColumn('stocks', function ($inventory) {
+                    return $inventory->stocks ?? 0;
+                })
+                ->addColumn('location', function ($inventory) {
+                    return optional($inventory->location)->description ?? '-';
+                })
+                ->addColumn('action', function ($inventory) {
+                    $buttons = '<a href="'.route("transaction-view-product")."?id=".$inventory->id.'" class="btn btn-sm btn-success waves-effect mr-2 mb-1" title="View Product Record" style="width: 80px">
+                                    <i class="fas fa-eye mr-2"></i>View
+                                </a>';
+                    return $buttons;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }        
+        else{
+            $products = Products::with(['inventory'])
+                                ->where('status', $status)
+                                ->orderBy('id', 'DESC');
+
+            return DataTables::eloquent($products)
+                ->addColumn('price', function ($product) {
+                return number_format($product->price, 2) ?? '0.0';
+            })
+            ->addColumn('stocks', function ($product) {
+                $qty = 0;
+
+                foreach ($product->inventory as $inv){
+                    $qty += $inv->stocks;
+                }
+
+                return $qty;
+            })
+            ->filter(function ($query) use ($request) {
+                if ($request->has('search') && $request->search['value']) {
+                    $search = $request->search['value'];
+
+                    $query->where(function ($q) use ($search) {
+                        $q->where(function ($q) use ($search) {
+                            $q->where('code', 'like', "%{$search}%")
+                            ->orWhere('name', 'like', "%{$search}%")
+                            ->orWhere('description', 'like', "%{$search}%");
+                        });
+                    });
+                }
+            })
+            ->addColumn('action', function ($product) {
+                $buttons = '<a href="'.route("transaction-view-product")."?id=".$product->id.'" class="btn btn-sm btn-success waves-effect mr-2 mb-1" title="View Product Record" style="width: 80px">
+                                <i class="fas fa-eye mr-2"></i>View
+                            </a>';
+
+                $buttons .= '<a href="'.route("transaction-product-update")."?id=".$product->id.'" class="btn btn-sm btn-warning waves-effect mr-2 mb-1" title="Edit Product Record" style="width: 80px">
+                                <i class="fas fa-edit mr-2"></i>Edit
+                            </a><br>';
+
+                if ($product->status) {
+                    $buttons .= '<button type="button" class="btn btn-sm btn-primary waves-effect mr-2 mb-1" title="Deactivate Product Record" value="' . $product->id . '" onclick="manageProductStocks(event, this)" style="width: 80px">
+                                    <i class="fas fa-boxes mr-2"></i>Stocks
+                                </button>';
+                    $buttons .= '<button type="button" class="btn btn-sm btn-danger waves-effect mr-2 mb-1" title="Deactivate Product Record" value="' . $product->id . '" onclick="deleteProduct(event, this)" style="width: 80px">
+                                    <i class="fas fa-trash-alt mr-2"></i>Delete
+                                </button>';
+                } else {
+                    $buttons .= '<button type="button" class="btn btn-sm btn-success waves-effect mr-2 mb-1" title="Re-activate Product Record" value="' . $product->id . '" onclick="restoreProduct(event, this)" style="width: 80px">
+                                    <i class="fas fa-undo-alt mr-2"></i>Re-activate
+                                </button>';
+                }
+                return $buttons;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+        }
+    }
+
+    function storeProduct(Request $request){
+        $productid = $request->input('id') ?? '';
+        
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'price' => 'required',
+        ]);
+        
+        if ($validator->fails()){
+            return ['icon'=>'error',
+                    'title'=>'Error',
+                    'message'=> $validator->errors()->first()
+                ];
+        }
+
+        try {
+
+            if ($productid){
+                Products::where('id', $productid)->update([
+                    'name' => $request->input('name'),
+                    'description' => $request->input('description'),
+                    'brand' => $request->input('brand'),
+                    'uom' => $request->input('uom'),
+                    'price' => $request->input('price')
+                ]);
+
+                return ['icon'=>'success',
+                        'title'=>'Success',
+                        'message'=>"Product info successfully updated!"];
+            }
+            else{
+                Products::create([
+                    'code' => $this->generateProductCode(),
+                    'name' => $request->input('name'),
+                    'description' => $request->input('description'),
+                    'brand' => $request->input('brand'),
+                    'uom' => $request->input('uom'),
+                    'price' => $request->input('price')
+                ]);
+
+                return ['icon'=>'success',
+                        'title'=>'Success',
+                        'message'=>"New product info successfully stored!"];
+            }
+            
+        } catch (\Exception $e) {
+            return ['icon'=>'error',
+                    'title'=>'Error',
+                    'message'=> $e->getMessage()];
+        }
+    }
+
+    function toggleProductStatus(Request $request){
+        $id = $request->input('id');
+        $status = $request->input('status');
+        Products::where('id', $id)->update(['status' => $status]);
+    }
+
+    function manageStocks(Request $request){
+        $productid = $request->input('product-id', null);
+        $locationid = $request->input('location', null);
+        $action = $request->input('action', null);
+        $quantity = $request->input('quantity', null);
+
+        $validator = Validator::make($request->all(), [
+            'location' => 'required',
+            'action' => 'required',
+            'quantity' => 'required'
+        ]);
+        
+        if ($validator->fails()){
+            return ['icon'=>'error',
+                    'title'=>'Error',
+                    'message'=> $validator->errors()->first()
+                ];
+        }
+
+        try {
+            $product = ProductInventory::where('product_id', $productid)->where('location_id', $locationid)->first();
+
+            if ($product){
+                $newQty = 0;
+
+                if (strtolower($action) == 'add'){
+                    $newQty = $product->stocks + $quantity;
+                }
+                elseif (strtolower($action) == 'deduct'){
+                    $newQty = $product->stocks - $quantity;
+                    $quantity = $quantity * -1;
+                }
+
+                ProductInventory::where('product_id', $productid)->where('location_id', $locationid)->update([
+                    'stocks' => $newQty
+                ]);
+            }
+            else{
+                ProductInventory::create([
+                    'product_id' => $productid,
+                    'location_id' => $locationid,
+                    'stocks' => $quantity
+                ]);
+            }
+
+            InventoryLogs::create([
+                'product_id' => $productid,
+                'action' => $action,
+                'quantity' => $quantity,
+                'processed_by' => Auth::id(),
+                'date_processed' => date('Y-m-d H:i:s')
+            ]);
+
+            return ['icon'=>'success',
+                        'title'=>'Success',
+                        'message'=>"Product quantity successfully ".strtolower($action)."ed!"];
+            
+        } catch (\Exception $e) {
+            return ['icon'=>'error',
+                    'title'=>'Error',
+                    'message'=> $e->getMessage()];
+        }
+    }
+
+    function viewProduct(Request $request){
+        $productid = $request->input('id', null);
+        $product = Products::with(['inventory', 'inventory_logs.processed_by'])->where('id', $productid)->first();
+
+        foreach ($product->inventory as $inv){
+            $product->stocks += $inv->stocks;
+        }
+
+        return view('transactions.sales.product', compact('product'));
+    }
+
+    function delivery(Request $request){
+        $products = Products::where('status', 1)->get();
+        $towns = Town::where('province_code', '0712')->orderBy('description', 'ASC')->get();
+        $code = $this->generateDeliveryCode();
+        
+        return view('transactions.sales.delivery', compact('products', 'towns', 'code'));
+    }
+
+    function saveDelivery(Request $request){
+        $del_date = $request->input('delivery_date', null);
+        $products = $request->input('products', []);
+        $code = $this->generateDeliveryCode();
+
+        $del_trans_id = DeliveryTransaction::create([
+                                                        'code' => $code,
+                                                        'delivery_date' => $del_date,
+                                                        'processed_by' => Auth::id(),
+                                                        'date_processed' => date('Y-m-d H:i:s'),
+                                                        'status' => 1
+                                                    ])->id;
+
+        foreach ($products as $product){
+            DeliveredItems::create([
+                'delivery_transaction_id' => $del_trans_id,
+                'product_id' => $product[0],
+                'location' => $product[1],
+                'quantity' => $product[2]
+            ]);
+
+            $prod = ProductInventory::where('product_id', $product[0])->where('location_id', $product[1])->first();
+
+            if ($prod){
+                $quantity = $prod->stocks + $product[2];
+
+                ProductInventory::where('product_id', $product[0])->where('location_id', $product[1])->update([
+                    'stocks' => $quantity
+                ]);
+            }
+            else{
+                ProductInventory::create([
+                    'product_id' => $product[0],
+                    'location_id' => $product[1],
+                    'stocks' => $product[2],
+                ]);
+            }
+
+            InventoryLogs::create([
+                'product_id' => $product[0],
+                'action' => 'Delivery',
+                'quantity' => $product[2],
+                'processed_by' => Auth::id(),
+                'date_processed' => date('Y-m-d H:i:s')
+            ]);
+        }
+
+        
+
+        return ['icon'=>'success',
+                        'title'=>'Success',
+                        'message'=>"Delivery transaction successfully saved!"];
+    }
+
+    function deliveryList(Request $request){
+        return view('transactions.sales.delivery-list');
+    }
+
+    function deliveryTransList(Request $request){
+        $status = ($request->has('status')) ? ($request->input('status') ? 1 : 0) : 1;
+        $transactions = DeliveryTransaction::with(['products.productInfo', 'processedBy'])
+            ->where('status', $status)
+            ->orderBy('id', 'DESC');
+
+        return DataTables::eloquent($transactions)
+            ->addColumn('delivery_date', function ($transaction) {
+                return date('F d, Y', strtotime($transaction->delivery_date));
+            })
+            ->addColumn('processed_by', function ($transaction) {
+                $fullname = $transaction->processedBy->firstname.' '.$transaction->processedBy->lastname;
+                return '<label class="badge badge-primary">'.$fullname.'</label>';
+            })
+            ->filter(function ($query) use ($request) {
+                if ($request->has('search') && $request->search['value']) {
+                    $search = $request->search['value'];
+
+                    $query->where(function ($q) use ($search) {
+                        $q->where(function ($q) use ($search) {
+                            $q->where('code', 'like', "%{$search}%")
+                            ->orWhere('delivery_date', 'like', "%{$search}%");
+                        });
+                    });
+                }
+            })
+            ->addColumn('action', function ($transaction) {
+                $buttons = '<button type="button" class="btn btn-sm btn-warning waves-effect mr-2" title="View Delivery Transaction Record" value="' . $transaction->id . '" onclick="viewDeliveryTransaction(event, this)" style="width: 80px" data-toggle="modal" data-target="#view-del-trans-modal">
+                                    <i class="fas fa-eye mr-2"></i>View
+                                </button>';
+                $buttons .= '<button type="button" class="btn btn-sm btn-danger waves-effect mr-2" title="Delete Delivery Transaction Record" value="' . $transaction->id . '" onclick="deleteDeliveryTransaction(event, this)" style="width: 80px">
+                                    <i class="fas fa-trash-alt mr-2"></i>Void
+                                </button>';
+                return $buttons;
+            })
+            ->rawColumns(['processed_by', 'action'])
+            ->make(true);
+    }
+
+    function viewDeliveryTransaction(Request $request){
+        $id = $request->input('id', null);
+        $transaction = DeliveryTransaction::with(['products', 'processedBy'])->where('id', $id)->first();
+
+        if ($transaction){
+            $fullname = $transaction->processedBy->firstname.' '.$transaction->processedBy->lastname;
+            $transaction->fullname = $fullname;
+        }
+
+        return view('transactions.sales.delivery-trans-detail', compact('transaction'));
+    } 
+
+    function deleteDeliveryTransaction(Request $request){
+        $id = $request->input('id', null);
+        DeliveryTransaction::where('id', $id)->update(['status' => 0]);
+
+        $transaction = DeliveryTransaction::with(['products'])->where('id', $id)->first();
+
+        foreach ($transaction->products as $product){
+            $prod_id = $product->product_id;
+            $location = $product->location;
+            $quantity = $product->quantity;
+
+            $prodInvInfo = ProductInventory::where('product_id', $prod_id)->where('location_id', $location)->first();
+
+            if ($prodInvInfo){
+                $stocks = $prodInvInfo->stocks;
+                $new_quantity = $stocks - $quantity;
+
+                ProductInventory::where('product_id', $prod_id)->where('location_id', $location)->update(['stocks' => $new_quantity]);
+
+                InventoryLogs::create([
+                    'product_id' => $prod_id,
+                    'action' => 'Voided / Deducted',
+                    'quantity' => $quantity * -1,
+                    'processed_by' => Auth::id(),
+                    'date_processed' => date('Y-m-d H:i:s')
+                ]);
+            }
+        }
+
+    }
+
+    function getProductsByLocation(Request $request){
+        $code = $request->input('code', null);
+
+        $products = ProductInventory::with(['productInfo'])->where('location_id', $code)->get();
+
+        foreach ($products as $product){
+            $product->code = $product->productInfo->code;
+            $product->name = $product->productInfo->name;
+            $product->description = $product->productInfo->description;
+            $product->brand = $product->productInfo->brand;
+            $product->price = $product->productInfo->price;
+        }
+
+        return $products->toJson();
+    }
+
+    function sales(Request $request){
+        $towns = Town::where('province_code', '0712')->orderBy('description', 'ASC')->get();
+        $code = $this->generateSalesCode();
+        
+        return view('transactions.sales.sales-entry', compact('towns', 'code'));
+    }
+
+    function saveSalesTransaction(Request $request){
+        $trans_date = $request->input('trans_date', null);
+        $products = $request->input('products', []);
+        $code = $this->generateSalesCode();
+
+        $sale_trans_id = SalesTransaction::create([
+                                                        'code' => $code,
+                                                        'transaction_date' => $trans_date,
+                                                        'processed_by' => Auth::id(),
+                                                        'date_processed' => date('Y-m-d H:i:s'),
+                                                        'status' => 1
+                                                    ])->id;
+
+        foreach ($products as $product){
+            SoldProducts::create([
+                'sale_transaction_id' => $sale_trans_id,
+                'product_id' => $product[3],
+                'location' => $product[2],
+                'quantity' => $product[1],
+                'price' => $product[0]
+            ]);
+
+            $prod = ProductInventory::where('product_id', $product[3])->where('location_id', $product[2])->first();
+
+            if ($prod){
+                $quantity = $prod->stocks - $product[1];
+
+                ProductInventory::where('product_id', $product[3])->where('location_id', $product[2])->update([
+                    'stocks' => $quantity
+                ]);
+            }
+
+            InventoryLogs::create([
+                'product_id' => $product[3],
+                'action' => 'Sold',
+                'quantity' => $product[1] * -1,
+                'processed_by' => Auth::id(),
+                'date_processed' => date('Y-m-d H:i:s')
+            ]);
+        }
+
+        return ['icon'=>'success',
+                        'title'=>'Success',
+                        'message'=>"Sales transaction successfully saved!"];
+    }
+
+    function salesList(Request $request){
+        return view('transactions.sales.sales-list');
+    }
+
+    function salesTransList(Request $request){
+        $status = ($request->has('status')) ? ($request->input('status') ? 1 : 0) : 1;
+        $transactions = SalesTransaction::with(['products.productInfo', 'processedBy'])
+            ->where('status', $status)
+            ->orderBy('id', 'DESC');
+
+        return DataTables::eloquent($transactions)
+            ->addColumn('transaction_date', function ($transaction) {
+                return date('F d, Y', strtotime($transaction->transaction_date));
+            })
+            ->addColumn('processed_by', function ($transaction) {
+                $fullname = $transaction->processedBy->firstname.' '.$transaction->processedBy->lastname;
+                return '<label class="badge badge-primary">'.$fullname.'</label>';
+            })
+            ->filter(function ($query) use ($request) {
+                if ($request->has('search') && $request->search['value']) {
+                    $search = $request->search['value'];
+
+                    $query->where(function ($q) use ($search) {
+                        $q->where(function ($q) use ($search) {
+                            $q->where('code', 'like', "%{$search}%")
+                            ->orWhere('transaction_date', 'like', "%{$search}%");
+                        });
+                    });
+                }
+            })
+            ->addColumn('action', function ($transaction) {
+                $buttons = '<button type="button" class="btn btn-sm btn-warning waves-effect mr-2" title="View Sales Transaction Record" value="' . $transaction->id . '" onclick="viewSalesTransaction(event, this)" style="width: 80px" data-toggle="modal" data-target="#view-sales-trans-modal">
+                                    <i class="fas fa-eye mr-2"></i>View
+                                </button>';
+                $buttons .= '<button type="button" class="btn btn-sm btn-danger waves-effect mr-2" title="Void Sales Transaction Record" value="' . $transaction->id . '" onclick="voidSalesTransaction(event, this)" style="width: 80px">
+                                    <i class="fas fa-trash-alt mr-2"></i>Void
+                                </button>';
+                return $buttons;
+            })
+            ->rawColumns(['processed_by', 'action'])
+            ->make(true);
+    }
+
+    function voidSalesTransaction(Request $request){
+        $id = $request->input('id', null);
+        SalesTransaction::where('id', $id)->update(['status' => 0]);
+
+        $transaction = SalesTransaction::with(['products'])->where('id', $id)->first();
+
+        foreach ($transaction->products as $product){
+            $prod_id = $product->product_id;
+            $location = $product->location;
+            $quantity = $product->quantity;
+
+            $prodInvInfo = ProductInventory::where('product_id', $prod_id)->where('location_id', $location)->first();
+
+            if ($prodInvInfo){
+                $stocks = $prodInvInfo->stocks;
+                $new_quantity = $stocks + $quantity;
+
+                ProductInventory::where('product_id', $prod_id)->where('location_id', $location)->update(['stocks' => $new_quantity]);
+
+                InventoryLogs::create([
+                    'product_id' => $prod_id,
+                    'action' => 'Voided / Returned',
+                    'quantity' => $quantity * -1,
+                    'processed_by' => Auth::id(),
+                    'date_processed' => date('Y-m-d H:i:s')
+                ]);
+            }
+        }
+
+    }
+
+    function viewSalesTransaction(Request $request){
+        $id = $request->input('id', null);
+        $transaction = SalesTransaction::with(['products', 'processedBy'])->where('id', $id)->first();
+
+        if ($transaction){
+            $fullname = $transaction->processedBy->firstname.' '.$transaction->processedBy->lastname;
+            $transaction->fullname = $fullname;
+        }
+
+        return view('transactions.sales.sales-trans-detail', compact('transaction'));
+    } 
+
+    function generateProductCode(){
+        $lastCode = Products::latest('code')->first();
+        $lastNumber = 0;
+
+        if ($lastCode) {
+            $lastNumber = (int) substr($lastCode->code, 4);
+        }
+
+        $newNumber = $lastNumber + 1;
+        $newCode = 'PROD' . str_pad($newNumber, 7, '0', STR_PAD_LEFT);
+
+        return $newCode;
+    }
+
+    function generateDeliveryCode(){
+        $lastCode = DeliveryTransaction::latest('code')->first();
+        $lastNumber = 0;
+
+        if ($lastCode) {
+            $lastNumber = (int) substr($lastCode->code, 3);
+        }
+
+        $newNumber = $lastNumber + 1;
+        $newCode = 'DEL' . str_pad($newNumber, 8, '0', STR_PAD_LEFT);
+
+        return $newCode;
+    }
+
+    function generateSalesCode(){
+        $lastCode = SalesTransaction::latest('code')->first();
+        $lastNumber = 0;
+
+        if ($lastCode) {
+            $lastNumber = (int) substr($lastCode->code, 5);
+        }
+
+        $newNumber = $lastNumber + 1;
+        $newCode = 'SALES' . str_pad($newNumber, 8, '0', STR_PAD_LEFT);
+
+        return $newCode;
+    }
+
 }

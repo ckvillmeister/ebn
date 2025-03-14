@@ -98,7 +98,45 @@
                         </li>
                     </ul>
                 </li>
-                @can('Overall Maintenance')
+                <li class="{{ (in_array(request()->segment(2), ['delivery', 'sales', 'inventory'])) ? 'mm-active' : '' }}">
+                    <a href="#">
+                        <i class="metismenu-icon pe-7s-note2"></i>
+                        Sales & Inventory
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="{{ route('transaction-delivery') }}" class="{{ (request()->segment(2)==='delivery' && blank(request()->segment(3))) ? 'mm-active' : '' }}">
+                                <i class="metismenu-icon"></i>
+                                Delivery Entry
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('transaction-delivery-list') }}" class="{{ (request()->segment(2)==='delivery' && request()->segment(3)==='list') ? 'mm-active' : '' }}">
+                                <i class="metismenu-icon"></i>
+                                Delivery List
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('transaction-sales-entry') }}"  class="{{ (request()->segment(2)==='sales' && blank(request()->segment(3))) ? 'mm-active' : '' }}">
+                                <i class="metismenu-icon"></i>
+                                Sales Entry
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('transaction-sales-list') }}"  class="{{ (request()->segment(2)==='sales' && request()->segment(3)==='list') ? 'mm-active' : '' }}">
+                                <i class="metismenu-icon"></i>
+                                Sales List
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('transaction-inventory') }}"  class="{{ (request()->segment(2)==='inventory') ? 'mm-active' : '' }}">
+                                <i class="metismenu-icon"></i>
+                                Inventory
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="app-sidebar__heading">Maintenance</li>
                 <li class="{{ (request()->segment(1)==='setup') ? 'mm-active' : '' }}">
                     <a href="#">
@@ -200,7 +238,6 @@
                         @endcan
                     </ul>
                 </li>
-                @endcan
             </ul>
         </div>
     </div>

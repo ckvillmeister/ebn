@@ -203,7 +203,7 @@
                 $('#barangay').html('');
                 $('#barangay').append('<option value="">Select Barangay</option>');
                 $.each(result, function (key, value) {
-                    $('#barangay').append('<option>'+value['description'].toUpperCase()+'</option>');
+                    $('#barangay').append('<option value="'+value['code']+'">'+value['description'].toUpperCase()+'</option>');
                 });
             }
         })

@@ -32,13 +32,13 @@ return [
 
         'attachments' => [
             'driver' => 'local',
-            'root' => public_path().'\\files\\attachments', //storage_path('app'),
+            'root' => public_path('files/attachments'), // Correct way to set the path
             'throw' => false,
         ],
 
         'db' => [
             'driver' => 'local',
-            'root' => public_path().'\\backupdb', //storage_path('app'),
+            'root' => public_path('backupdb'), // Correct way to set the path
             'throw' => false,
         ],
 

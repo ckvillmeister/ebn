@@ -12,6 +12,7 @@ use App\Models\FSMRFireSuppressionSystem;
 use App\Models\Signatory;
 use App\Models\FSMRAssessment;
 use App\Models\FSMRExtinguishersEquipment;
+use App\Models\Town;
 
 class FSMRInfo extends Model
 {
@@ -28,8 +29,9 @@ class FSMRInfo extends Model
         'client_id',
         'processed_by',
         'date_processed',
-        'fps_reference_no',
-        'fps_building_use',
+        'reference_no',
+        'building_use',
+        'service_availed',
         'fps_manufacturer',
         'fps_model',
         'fps_circuit',
@@ -48,6 +50,8 @@ class FSMRInfo extends Model
         'assessment_fe_required',
         'assessment_fe_available',
         'assessment_fe_refilled',
+        'addr_province',
+        'addr_town',
         'status'
     ];
 
@@ -81,5 +85,9 @@ class FSMRInfo extends Model
 
     public function fee(){
         return $this->hasMany(FSMRExtinguishersEquipment::class, 'fsmr_id', 'id');
+    }
+
+    public function town(){
+        return $this->belongsTo(Town::class, 'addr_town', 'code');
     }
 }

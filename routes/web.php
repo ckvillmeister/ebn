@@ -21,6 +21,7 @@ use App\Http\Controllers\FDASController;
 use App\Http\Controllers\QuestionnaireController;
 use App\Http\Controllers\SignatoryController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use Illuminate\Support\Facades\Artisan;
 use App\Events\DocumentStored;
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,35 @@ Route::middleware('auth')->group(function () {
     Route::post('/transaction/fsmr/save-fss', [TransactionController::class, 'saveFSS']);
     Route::post('/transaction/fsmr/save-assessment', [TransactionController::class, 'saveAssessment']);
     Route::post('/transaction/fsmr/printFSMR', [TransactionController::class, 'printFSMR'])->name('transaction-fsmr-print');
+
+    #Delivery
+    Route::get('/transaction/delivery', [TransactionController::class, 'delivery'])->name('transaction-delivery');
+    Route::get('/transaction/delivery/list', [TransactionController::class, 'deliveryList'])->name('transaction-delivery-list');
+    Route::any('/transaction/delivery/trans/list', [TransactionController::class, 'deliveryTransList'])->name('transaction-delivery-trans-list');
+    Route::post('/transaction/delivery/save', [TransactionController::class, 'saveDelivery'])->name('transaction-delivery-save');
+    Route::get('/transaction/delivery/new-product', [TransactionController::class, 'productForm'])->name('transaction-delivery-product-new');
+    Route::post('/transaction/delivery/view', [TransactionController::class, 'viewDeliveryTransaction'])->name('transaction-delivery-view');
+    Route::post('/transaction/delivery/delete', [TransactionController::class, 'deleteDeliveryTransaction'])->name('transaction-delivery-delete');
+
+    #Sales
+    Route::get('/transaction/sales', [TransactionController::class, 'sales'])->name('transaction-sales-entry');
+    Route::post('/transaction/sales/get-products', [TransactionController::class, 'getProductsByLocation'])->name('transaction-sales-get-products');
+    Route::post('/transaction/sales/save', [TransactionController::class, 'saveSalesTransaction'])->name('transaction-sales-save');
+    Route::get('/transaction/sales/list', [TransactionController::class, 'salesList'])->name('transaction-sales-list');
+    Route::any('/transaction/sales/trans/list', [TransactionController::class, 'salesTransList'])->name('transaction-sales-trans-list');
+    Route::post('/transaction/sales/void', [TransactionController::class, 'voidSalesTransaction'])->name('transaction-sales-void');
+    Route::post('/transaction/sales/view', [TransactionController::class, 'viewSalesTransaction'])->name('transaction-sales-view');
+
+    #Inventory
+    Route::get('/transaction/inventory', [TransactionController::class, 'inventory'])->name('transaction-inventory');
+    Route::get('/transaction/inventory/new-product', [TransactionController::class, 'productForm'])->name('transaction-product-new');
+    Route::get('/transaction/inventory/new-update', [TransactionController::class, 'productForm'])->name('transaction-product-update');
+    Route::post('/transaction/inventory/store-product', [TransactionController::class, 'storeProduct'])->name('transaction-product-store');
+    Route::any('/transaction/inventory/product-list', [TransactionController::class, 'productList'])->name('transaction-product-list');
+    Route::post('/transaction/inventory/toggle-product-status', [TransactionController::class, 'toggleProductStatus'])->name('transaction-product-toggle-status');
+    Route::post('/transaction/inventory/manage-stocks', [TransactionController::class, 'manageStocks'])->name('transaction-manage-stocks');
+    Route::get('/transaction/inventory/view-product', [TransactionController::class, 'viewProduct'])->name('transaction-view-product');
+
     
     Route::get('/setup/fsmr-content', [FSMRContentController::class, 'index'])->name('content');
     Route::get('/setup/attachment', [AttachmentTypeController::class, 'index'])->name('attachment');
@@ -82,10 +112,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    #Address (For client info creation)
-    Route::post('/address/towns/{code}', [AddressController::class, 'towns']);
-    Route::post('/address/barangays/{code}', [AddressController::class, 'barangays']);
 
     Route::post('/reports/displayReports', [ReportsController::class, 'displayReports']);
 
@@ -153,5 +179,19 @@ Route::middleware('auth')->group(function () {
 #Registration
 Route::get('/registration', [UserController::class, 'registration'])->name('registration');
 Route::post('/register/client', [UserController::class, 'register'])->name('register-client');
+
+Route::get('/run-migrations', function () {
+    Artisan::call('migrate');
+    return 'Migrations run successfully!';
+});
+
+Route::get('/run-seeder', function () {
+    Artisan::call('db:seed');
+    return 'Seeders run successfully!';
+});
+
+#Address (For client info creation)
+Route::post('/address/towns/{code}', [AddressController::class, 'towns']);
+Route::post('/address/barangays/{code}', [AddressController::class, 'barangays']);
 
 require __DIR__.'/auth.php';

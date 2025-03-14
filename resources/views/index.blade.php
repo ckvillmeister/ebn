@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="{{ asset('plugins/bs-stepper/css/bs-stepper.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/uploader/css/uploader.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/cropper/css/cropper.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/micromodal/css/micromodal.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
     @stack('css')
     <style>
         #loading-overlay {
@@ -63,6 +65,8 @@
     <script src="{{ asset('plugins/uploader/js/uploader.js') }}"></script>
     <script src="{{ asset('plugins/cropper/js/cropper.min.js') }}"></script>
     <script src="{{ asset('plugins/chartjs/chart.js') }}"></script>
+    <script src="{{ asset('plugins/micromodal/js/micromodal.min.js') }}"></script>
+    <script src="{{ asset('plugins/select2/js/select2.min.js') }}"></script>
     <script>
         $('.btn-close-layout-options').on('click', function(){
             $('.ui-theme-settings').removeClass('settings-open');

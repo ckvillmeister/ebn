@@ -39,6 +39,11 @@ return new class extends Migration
             $table->integer('inspector')->nullable();
             $table->integer('manager')->nullable();
             $table->integer('contractor')->nullable();
+            $table->integer('assessment_fe_required')->nullable();
+            $table->integer('assessment_fe_available')->nullable();
+            $table->integer('assessment_fe_refilled')->nullable();
+            $table->string('addr_province')->nullable();
+            $table->string('addr_town')->nullable();
             $table->tinyInteger('status')->default(1);
         });
     }

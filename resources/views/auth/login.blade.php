@@ -280,7 +280,7 @@
     <!-- Login Form -->
     <form method="POST" action="{{ route('login') }}">
        @csrf
-      <input type="text" id="login" value="{{ old('username') }}" class="fadeIn second" name="username" placeholder="E-mail" required>
+      <input type="text" id="login" value="{{ old('username') }}" class="fadeIn second" name="username" placeholder="E-mail" required autofocus>
       <input type="password" id="password" value="{{ old('password') }}" class="fadeIn third" name="password" placeholder="Password" required>
       <input type="submit" class="fadeIn fourth" value="Log In">
       <br>

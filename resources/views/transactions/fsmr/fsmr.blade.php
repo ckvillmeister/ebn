@@ -11,7 +11,7 @@
             font-style: italic;
             font-weight: 100;
             font-display: swap;
-            src: url("{{ asset('fonts/banerton-demo.ttf') }}") format('woff2');
+            /* src: url("{{ asset('fonts/banerton-demo.ttf') }}") format('woff2'); */
         }
 
         @media print {
@@ -61,7 +61,7 @@
             background-size: cover;  
             background-position: center;
             background-repeat: no-repeat;
-            font-family: 'Banerton';
+            font-family: "Times New Roman", Times, serif;
         }
 
         .print-page {
@@ -72,7 +72,7 @@
             background-size: cover;   
             /* background-position: center; 
             background-repeat: no-repeat; */
-            font-family: 'Banerton';
+            font-family: "Times New Roman", Times, serif;
             page-break-after: always;
             /* z-index: 1; */
         }
@@ -109,6 +109,7 @@
             overflow: visible;
             position: relative;
             z-index: 2;
+            font-size: 10pt
         }
 
         .circle-number {
@@ -167,6 +168,26 @@
             z-index: 0; /* Places it below the text */
         }
 
+        .cover-background-lower {
+            position: relative;
+            overflow: hidden; /* Ensures no content spills out */
+            border-bottom: 3px solid #000
+        }
+
+        .cover-background-lower::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("{{ asset('images/cover-page.jpg') }}");
+            background-size: cover; /* Adjusts image to cover the div */
+            background-position: center; /* Centers the image */
+            opacity: 0.5; /* Sets the opacity of the background image */
+            z-index: 0; /* Places it below the text */
+        }
+
         .cover-header-text{
             color: #000 !important; 
             padding-left: 5%; 
@@ -175,7 +196,18 @@
             line-height: 1; 
             position: relative; 
             z-index: 1;
-            color: #000; /* Text color */
+            text-shadow: 
+                -2px -2px 0 #fff, /* Top-left */
+                2px -2px 0 #fff,  /* Top-right */
+                -2px 2px 0 #fff,  /* Bottom-left */
+                2px 2px 0 #fff;   /* Bottom-right */
+        }
+
+        .cover-header-text-lower{
+            color: #000 !important; 
+            line-height: 1; 
+            position: relative; 
+            z-index: 1;
             text-shadow: 
                 -2px -2px 0 #fff, /* Top-left */
                 2px -2px 0 #fff,  /* Top-right */
@@ -185,17 +217,35 @@
 
         .page-footer{
             position: absolute;
-            bottom: 10px;
+            bottom: 7px;
             right: 10px;
             font-size: 12px;
             color: #ff0000;
             z-index: 1000;
+            text-shadow: 
+                -2px -2px 0 #fff, /* Top-left */
+                2px -2px 0 #fff,  /* Top-right */
+                -2px 2px 0 #fff,  /* Bottom-left */
+                2px 2px 0 #fff;   /* Bottom-right */
         }
+
+        .page-footer-center {
+            position: absolute;
+            bottom: 7px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #000000;
+            z-index: 1000;
+            text-align: center;
+            white-space: nowrap;
+        }
+
 
     </style>
 </head>
 <body>
-
+    @php ($page = 1)
     <div class="cover-page">
         <div class="cover-background-div" style="height: 40%; position: relative;">
             <div class="cover-header-text" style="">
@@ -203,24 +253,27 @@
                 <b>Fire Safety Maintenance Report (FSMR)</b>
             </div>
         </div>
-        <div style="height: 10%">
-            <br><br><br>
-            <div style="padding-left: 3%; font-size: 30pt; line-height: 1;"><b>{{ date('F d, Y') }}</b></div>
-        </div>
-        <div class="text-center" style="height: 40%;">
-            <br><br><br><br><br>
-            <div style="font-size: 45pt; line-height: 1;">
-                <b>{{ ($fsmr) ? $fsmr->establishment_name : '' }}</b>
+        <div class="cover-background-lower" style="height: 60%; position: relative;">
+            <div class="cover-header-text-lower" style="height: 10%">
+                <br><br><br>
+                <div style="padding-left: 3%; font-size: 30pt; line-height: 1;"><b>{{ date('F d, Y') }}</b></div>
             </div>
-            <div style="font-size: 34pt; line-height: 1;">
-                {{ ($fsmr) ? $fsmr->establishment_address : '' }}
+            <div class="cover-header-text-lower text-center" style="height: 40%;">
+                <br><br><br><br><br><br><br>
+                <div style="font-size: 45pt; line-height: 1;">
+                    <b>{{ ($fsmr) ? $fsmr->establishment_name : '' }}</b>
+                </div>
+                <div style="font-size: 34pt; line-height: 1;">
+                    {{ ($fsmr) ? $fsmr->establishment_address : '' }}
+                </div>
             </div>
-        </div>
-        <div style="height: 10%;">
-            <div style="padding-left: 3%; font-size: 24pt; line-height: 1;">
-                <b>{{ $business->name }}</b><br>
-                {{ $business->address }}
-            </div>      
+            <div class="cover-header-text-lower" style="height: 10%;">
+                <br><br><br><br><br><br><br>
+                <div style="padding-left: 3%; font-size: 24pt; line-height: 1;">
+                    <b>{{ $business->name }}</b><br>
+                    {{ $business->address }}
+                </div>      
+            </div>
         </div>
     </div>
     <div class="print-page">
@@ -240,6 +293,9 @@
                 </div>
             </div>
             @endforeach
+        </div>
+        <div class="page-footer-center">
+            <h5>Page {{ $page++ }}</h5>
         </div>
         <div class="page-footer">
             <h3><em>{{ $fsmr->establishment_name }}</em></h3>
@@ -264,6 +320,9 @@
                         <h1 style="font-size: 70pt"><b>{{ $content->description }}</b></h1>
                     </div>
                 </div>
+            </div>
+            <div class="page-footer-center">
+                <h5>Page {{ $page++ }}</h5>
             </div>
             <div class="page-footer">
                 <h3><em>{{ $fsmr->establishment_name }}</em></h3>
@@ -322,6 +381,9 @@
 
                     </div>
                 </div>
+                <div class="page-footer-center">
+                    <h5>Page {{ $page++ }}</h5>
+                </div>
                 <div class="page-footer">
                     <h3><em>{{ $fsmr->establishment_name }}</em></h3>
                 </div>
@@ -336,6 +398,9 @@
                     {!! $settings->where('code', 'fdas_reminder')->first()->description ?? '' !!}
                     </p>
                 </div>
+                <div class="page-footer-center">
+                    <h5>Page {{ $page++ }}</h5>
+                </div>
                 <div class="page-footer">
                     <h3><em>{{ $fsmr->establishment_name }}</em></h3>
                 </div>
@@ -347,6 +412,9 @@
                     <p style="font-size: 20pt; margin-top: 50px; text-align: justify;">
                     {!! $settings->where('code', 'fss_maintenance_reminder')->first()->description ?? '' !!}
                     </p>
+                </div>
+                <div class="page-footer-center">
+                    <h5>Page {{ $page++ }}</h5>
                 </div>
                 <div class="page-footer">
                     <h3><em>{{ $fsmr->establishment_name }}</em></h3>
@@ -457,13 +525,16 @@
                                 </div>
                             </td>
                             <td colspan="2" style="padding: 1%; width: 50%;">
-                                Conforme By:<br>
+                                Conforme By:<br><br>
                                 <div class="text-center">
                                     <u><b>{{ strtoupper($fsmr->establishment_name) }}</b></u>
                                 </div>
                             </td>
                         </tr>
                     </table>
+                </div>
+                <div class="page-footer-center">
+                    <h5>Page {{ $page++ }}</h5>
                 </div>
                 <div class="page-footer">
                     <h3><em>{{ $fsmr->establishment_name }}</em></h3>
@@ -587,13 +658,16 @@
                                 </div>
                             </td>
                             <td style="padding: 1%; width: 50%;">
-                                Conforme By:<br>
+                                Conforme By:<br><br>
                                 <div class="text-center">
                                     <u><b>{{ strtoupper($fsmr->establishment_name) }}</b></u>
                                 </div>
                             </td>
                         </tr>
                     </table>
+                </div>
+                <div class="page-footer-center">
+                    <h5>Page {{ $page++ }}</h5>
                 </div>
                 <div class="page-footer">
                     <h3><em>{{ $fsmr->establishment_name }}</em></h3>
@@ -725,6 +799,9 @@
                         </tr>
                     </table>
                 </div>
+                <div class="page-footer-center">
+                    <h5>Page {{ $page++ }}</h5>
+                </div>
                 <div class="page-footer">
                     <h3><em>{{ $fsmr->establishment_name }}</em></h3>
                 </div>
@@ -793,6 +870,9 @@
                         </p>
                     </div>
                 </div>
+                <div class="page-footer-center">
+                    <h5>Page {{ $page++ }}</h5>
+                </div>
                 <div class="page-footer">
                     <h3><em>{{ $fsmr->establishment_name }}</em></h3>
                 </div>
@@ -845,6 +925,9 @@
                         @foreach ($assessments as $assessment)
                             @if ($findings_ctr == 3 && $stop == 0)
                                     </div>
+                                    <div class="page-footer-center">
+                                        <h5>Page {{ $page++ }}</h5>
+                                    </div>
                                     <div class="page-footer">
                                         <h3><em>{{ $fsmr->establishment_name }}</em></h3>
                                     </div>
@@ -865,7 +948,6 @@
                                     @php ($ctr++)
                                 @endif
 
-                                {{ $ctr.'. ' }} Assessment Question: <b>{{ $assessment->question }}</b><br>
                                 @php ($fsmr_response_type = $fsmr->assessments->where('assessment_id', $assessment->id)->first()->response_type ?? '')
                                 @php ($response = $assessment->responses->where('question_id', $assessment->id)->where('response_type', $fsmr_response_type)->first()->response ?? '')
                                 
@@ -882,6 +964,9 @@
                                                         display: block;"></canvas>
                         </div>
                     @endif
+                </div>
+                <div class="page-footer-center">
+                    <h5>Page {{ $page++ }}</h5>
                 </div>
                 <div class="page-footer">
                     <h3><em>{{ $fsmr->establishment_name }}</em></h3>
@@ -907,6 +992,9 @@
                         @foreach ($recommendations as $recommendation)
                             @php ($categ_id = $recommendation->assessment_category_id)
                             @if ($recommendations_ctr == 2 && $stop == 0)
+                                    </div>
+                                    <div class="page-footer-center">
+                                        <h5>Page {{ $page++ }}</h5>
                                     </div>
                                     <div class="page-footer">
                                         <h3><em>{{ $fsmr->establishment_name }}</em></h3>
@@ -951,10 +1039,16 @@
                                 @endif
                             </p>
                         @endforeach
-                        <p style="font-size: 13pt; margin-top: 30px; text-align: justify;">
 
+                        @if ($recommendations_ctr <= 0)
+                        <p style="font-size: 13pt; margin-top: 30px; text-align: justify;">
+                            <b>- NONE</b>
                         </p>
+                        @endif
                     @endif
+                </div>
+                <div class="page-footer-center">
+                    <h5>Page {{ $page++ }}</h5>
                 </div>
                 <div class="page-footer">
                     <h3><em>{{ $fsmr->establishment_name }}</em></h3>
@@ -998,6 +1092,9 @@
                             Copyright © 2025. <b>{{ strtoupper($business->name) }}</b>. All rights reserved. No part of this document may be reproduced or transmitted in any form or by any means, whether electronic, mechanical, photocopying, or otherwise, without the prior written permission of <b>{{ strtoupper($business->name) }}</b>. Unauthorized copying, distribution, or modification of this work is strictly prohibited and may result in legal action. <b>{{ strtoupper($business->name) }}</b> retains all rights not expressly granted herein. For permissions inquiries, please contact the CEO.
                         </div>
                     </div>
+                </div>
+                <div class="page-footer-center">
+                    <h5>Page {{ $page++ }}</h5>
                 </div>
                 <div class="page-footer">
                     <h3><em>{{ $fsmr->establishment_name }}</em></h3>
@@ -1047,6 +1144,9 @@
                         <!-- Close the page after 2 images -->
                         @if ($img_ctr >= 2)
                                 </div>
+                                <div class="page-footer-center">
+                                    <h5>Page {{ $page++ }}</h5>
+                                </div>
                                 <div class="page-footer">
                                     <h3><em>{{ $fsmr->establishment_name }}</em></h3>
                                 </div>
@@ -1060,6 +1160,9 @@
 
             <!-- Close any remaining open page -->
             @if ($page_open)
+                    </div>
+                    <div class="page-footer-center">
+                        <h5>Page {{ $page++ }}</h5>
                     </div>
                     <div class="page-footer">
                         <h3><em>{{ $fsmr->establishment_name }}</em></h3>

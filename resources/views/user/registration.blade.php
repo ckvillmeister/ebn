@@ -377,7 +377,7 @@
   //     });
   // });
 
-  $('#frm').on('submit', function(e){
+$('#frm').on('submit', function(e){
     e.preventDefault();
 
     if (!($('#agree').is(':checked'))){
@@ -425,6 +425,46 @@
                 text: err + ": " + obj.toString() + " " + ex,
                 icon: 'error',
                 confirmButtonText: 'OK'
+            });
+        }
+    })
+});
+
+$('select[name="province"]').on('change', function() {
+    var code = $(this).val();
+
+    $.ajax({
+        headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        },
+        url: '/address/towns/'+code,
+        method: 'POST',
+        dataType: 'JSON',
+        success: function(result) {
+            $('#municipality').html('');
+            $('#municipality').append('<option value="">Select Municipality</option>');
+            $.each(result, function (key, value) {
+                $('#municipality').append('<option value="'+value['code']+'">'+value['description']+'</option>');
+            });
+        }
+    })
+});
+
+$('select[name="municipality"]').on('change', function() {
+    var code = $(this).val();
+
+    $.ajax({
+        headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        },
+        url: '/address/barangays/'+code,
+        method: 'POST',
+        dataType: 'JSON',
+        success: function(result) {
+            $('#barangay').html('');
+            $('#barangay').append('<option value="">Select Barangay</option>');
+            $.each(result, function (key, value) {
+                $('#barangay').append('<option value="'+value['code']+'">'+value['description'].toUpperCase()+'</option>');
             });
         }
     })
