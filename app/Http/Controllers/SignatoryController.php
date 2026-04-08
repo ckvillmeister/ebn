@@ -32,6 +32,11 @@ class SignatoryController extends Controller
     public function store(Request $request)
     {   
         $id = $request->input('id');
+        $is_approving_officer = $request->input('is_approving_officer');
+
+        if (count(Signatory::where('is_approving_officer', 1)->get()) && $is_approving_officer){
+            Signatory::query()->update(['is_approving_officer' => 0]);
+        }
         
         if ($id){
             $validator = Validator::make($request->all(), [
@@ -47,7 +52,8 @@ class SignatoryController extends Controller
 
             Signatory::where('id', $id)->update([
                 'name' => $request->input('name'),
-                'position' => $request->input('position')
+                'position' => $request->input('position'),
+                'is_approving_officer' => $request->input('is_approving_officer')
             ]);
 
             return ['icon'=>'success',
@@ -68,7 +74,8 @@ class SignatoryController extends Controller
     
             Signatory::create([
                 'name' => $request->input('name'),
-                'position' => $request->input('position')
+                'position' => $request->input('position'),
+                'is_approving_officer' => $request->input('is_approving_officer')
             ]);
 
             return ['icon'=>'success',

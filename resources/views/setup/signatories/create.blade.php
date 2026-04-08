@@ -13,6 +13,20 @@
         </div>
     </div>
     <div class="position-relative row form-group">
+        <label for="name" class="col-sm-2 col-form-label">Approving Officer?</label>
+        <div class="col-sm-6">
+            <div class="col-sm-2">
+                <input name="is_approving_officer" type="radio" id="yes" value="1" {{ ($signatory) ? (($signatory->is_approving_officer==1) ? 'checked' : '') : '' }}> 
+                <label for="yes" class="ml-2" style="margin-top: -2px; vertical-align: middle;">Yes</label>
+                <label class="error" for="yes">{{ $errors->first('is_approving_officer') }}</label>
+            </div>
+            <div class="col-sm-2">
+                <input name="is_approving_officer" type="radio" id="no" value="F" {{ ($signatory) ? (($signatory->is_approving_officer==0) ? 'checked' : '') : '' }}> <label for="no" class="ml-2" style="margin-top: -4px; vertical-align: middle;">No</label>
+                <label class="error" for="no">{{ $errors->first('is_approving_officer') }}</label>
+            </div>
+        </div>
+    </div>
+    <div class="position-relative row form-group">
         <div class="col-sm-12 float-right mt-1">
             <div class="btn-group">
                 <button type="submit" class="btn btn-sm btn-primary waves-effect btn-save">

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('position');
+            $table->tinyInteger('is_approving_officer')->default(0);
             $table->tinyInteger('status')->default(1);
         });
     }

@@ -14,6 +14,7 @@ class Signatory extends Model
     protected $fillable = [
         'name',
         'position',
+        'is_approving_officer',
         'status'
     ];
 }

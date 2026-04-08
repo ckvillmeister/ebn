@@ -850,8 +850,8 @@
                                 <div class="col-sm-6">
                                 Prepared:
                                     <div style="margin-top: 50px;">
-                                        <b>{{ strtoupper($signatories->where('position', 'Document Control Officer')->first()->name) }}</b><br>
-                                        Document Control Officer<br>
+                                        <b>{{ strtoupper($signatories->where('is_approving_officer', 1)->first()->name) }}</b><br>
+                                        {{ $signatories->where('is_approving_officer', 1)->first()->position }}<br>
                                         {{ $business->name }}
                                     </div>
                                 </div>
