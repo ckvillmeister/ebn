@@ -41,9 +41,9 @@ class TransactionController extends Controller
 {
     function fsmrApp(Request $request){
         $save = ($request->input('save')) ? 1 : 0;
-        
+
         if ($save){
-            
+
             $appno = $this->generateAppNo();
             $fsmrid = ($request->input('fsmr-id')) ? $request->input('fsmr-id') : null;
             $name = ($request->input('establishment-name')) ? $request->input('establishment-name') : null;
@@ -56,7 +56,7 @@ class TransactionController extends Controller
             $province = $request->input('addr_province', null);
             $town = $request->input('addr_town', null);
             $requestedby = ($request->input('requested-by')) ? $request->input('requested-by') : Auth::id();
-            
+
             if ($fsmrid){
                 FSMRInfo::where('id', $fsmrid)->update([
                     'establishment_name' => $name,
@@ -79,7 +79,7 @@ class TransactionController extends Controller
                     }
                 }
                 FSMRAttachments::where('fsmr_id', $fsmrid)->delete();
-                
+
                 if ($request->hasFile('images')) {
                     $count = 0;
                     $types = ($request->input('types')) ? $request->input('types') : null;
@@ -143,13 +143,13 @@ class TransactionController extends Controller
                         "id" => $fsmrid
                 ];
             }
-            
+
         }
         else{
             if (! Gate::allows('New FSMR Application')) {
                 abort(403);
             }
-    
+
             $fsmrid = ($request->input('id')) ? $request->input('id') : '';
             $fsmr = FSMRInfo::with(['processor', 'attachments.attachmenttype'])->where('id', $fsmrid)->first();
 
@@ -176,7 +176,7 @@ class TransactionController extends Controller
         $retrieve = ($request->input('retrieve')) ? 1 : 0;
         $userid = Auth::id();
         $fsmrs = FSMRInfo::with(['processor'])->where('client_id', $userid)->where('status', 1)->get();
-        
+
         if ($retrieve){
             return view('transactions.fsmr.list.table', ['fsmrs' => $fsmrs]);
         }
@@ -192,7 +192,7 @@ class TransactionController extends Controller
     function fsmrList(Request $request){
         $retrieve = ($request->input('retrieve')) ? 1 : 0;
         $fsmrs = FSMRInfo::with(['processor', 'client'])->where('status', 1)->get();
-        
+
         if ($retrieve){
             return view('transactions.fsmr.list.table', ['fsmrs' => $fsmrs]);
         }
@@ -397,7 +397,7 @@ class TransactionController extends Controller
         $assessments = Assessment::with(['category', 'responses'])->where('status', 1)->get();
         $recommendations = Recommendation::with(['category'])->where('status', 1)->get();
         $settings = Settings::all();
-        
+
         $business_name = $settings->where('code', 'business_name')->first()->description;
         $business_address = $settings->where('code', 'business_address')->first()->description;
         $business_location = $settings->where('code', 'location')->first()->description;
@@ -414,7 +414,7 @@ class TransactionController extends Controller
             $found = 0;
             $label = $f->quantity.'-'.$f->item;
             $labels[] = $label;
-        
+
             foreach ($fsmr_fse as $fsmr_f) {
                 if ($f->item == $fsmr_f->item && $f->quantity == $fsmr_f->quantity) {
                     $available[] = $fsmr_f->available;
@@ -426,10 +426,10 @@ class TransactionController extends Controller
 
             if (!$found){
                 $available[] = 0;
-                $required[] = 0; 
+                $required[] = 0;
             }
         }
-        
+
         return view('transactions.fsmr.fsmr', [
             'contents' => $contents,
             'fsmr' => $fsmr,
@@ -543,7 +543,7 @@ class TransactionController extends Controller
             }
 
             $products = $products->orderBy('location_id', 'ASC');
-            
+
             return DataTables::eloquent($products)
                 ->addColumn('code', function ($inventory) {
                     return optional($inventory->productInfo)->code ?? '-';
@@ -577,7 +577,7 @@ class TransactionController extends Controller
                 })
                 ->rawColumns(['action'])
                 ->make(true);
-        }        
+        }
         else{
             $products = Products::with(['inventory'])
                                 ->where('status', $status)
@@ -639,12 +639,12 @@ class TransactionController extends Controller
 
     function storeProduct(Request $request){
         $productid = $request->input('id') ?? '';
-        
+
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'price' => 'required',
         ]);
-        
+
         if ($validator->fails()){
             return ['icon'=>'error',
                     'title'=>'Error',
@@ -681,7 +681,7 @@ class TransactionController extends Controller
                         'title'=>'Success',
                         'message'=>"New product info successfully stored!"];
             }
-            
+
         } catch (\Exception $e) {
             return ['icon'=>'error',
                     'title'=>'Error',
@@ -706,7 +706,7 @@ class TransactionController extends Controller
             'action' => 'required',
             'quantity' => 'required'
         ]);
-        
+
         if ($validator->fails()){
             return ['icon'=>'error',
                     'title'=>'Error',
@@ -751,7 +751,7 @@ class TransactionController extends Controller
             return ['icon'=>'success',
                         'title'=>'Success',
                         'message'=>"Product quantity successfully ".strtolower($action)."ed!"];
-            
+
         } catch (\Exception $e) {
             return ['icon'=>'error',
                     'title'=>'Error',
@@ -774,7 +774,7 @@ class TransactionController extends Controller
         $products = Products::where('status', 1)->get();
         $towns = Town::where('province_code', '0712')->orderBy('description', 'ASC')->get();
         $code = $this->generateDeliveryCode();
-        
+
         return view('transactions.sales.delivery', compact('products', 'towns', 'code'));
     }
 
@@ -825,7 +825,7 @@ class TransactionController extends Controller
             ]);
         }
 
-        
+
 
         return ['icon'=>'success',
                         'title'=>'Success',
@@ -885,7 +885,7 @@ class TransactionController extends Controller
         }
 
         return view('transactions.sales.delivery-trans-detail', compact('transaction'));
-    } 
+    }
 
     function deleteDeliveryTransaction(Request $request){
         $id = $request->input('id', null);
@@ -937,7 +937,7 @@ class TransactionController extends Controller
     function sales(Request $request){
         $towns = Town::where('province_code', '0712')->orderBy('description', 'ASC')->get();
         $code = $this->generateSalesCode();
-        
+
         return view('transactions.sales.sales-entry', compact('towns', 'code'));
     }
 
@@ -1071,7 +1071,7 @@ class TransactionController extends Controller
         }
 
         return view('transactions.sales.sales-trans-detail', compact('transaction'));
-    } 
+    }
 
     function generateProductCode(){
         $lastCode = Products::latest('code')->first();

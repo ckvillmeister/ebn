@@ -33,9 +33,9 @@ class FSMRContentController extends Controller
     }
 
     public function store(Request $request)
-    {   
+    {
         $id = $request->input('id');
-        
+
         if ($id){
             $validator = Validator::make($request->all(), [
                 'description' => 'required|unique:fsmr_content'
@@ -62,7 +62,7 @@ class FSMRContentController extends Controller
                     'title'=>'Error',
                     'message'=> $validator->errors()->first()];
             }
-    
+
             FSMRContent::create($request->all());
             return ['icon'=>'success',
                     'title'=>'Success',
@@ -104,7 +104,7 @@ class FSMRContentController extends Controller
         return view('setup.content.sub-content.create', compact('attachmenttypes', 'content_id'));
     }
 
-    public function storeSubContent(Request $request){   
+    public function storeSubContent(Request $request){
         FSMRSubContents::create($request->all());
         return ['icon'=>'success',
                 'title'=>'Success',

@@ -33,5 +33,9 @@ class DatabaseSeeder extends Seeder
         $this->call(AssessmentSeeder::class);
         $this->call(FireSuppressionEquipmentsSeeder::class);
         $this->call(RecommendationsSeeder::class);
+        $this->call([
+            BidTblDefaultUploadTypesSeeder::class,
+            BidTblPagesSeeder::class,
+        ]);
     }
 }

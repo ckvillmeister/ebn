@@ -28,7 +28,7 @@
                 </span>
             </button>
         </span>
-    </div>    
+    </div>
     <div class="scrollbar-sidebar">
         <div class="app-sidebar__inner">
             <ul class="vertical-nav-menu">
@@ -81,6 +81,39 @@
                             </a>
                         </li>
                         @endcan
+                    </ul>
+                </li>
+                <li class="{{ (request()->segment(2)==='bids') ? 'mm-active' : '' }}">
+                    <a href="#">
+                        <i class="metismenu-icon pe-7s-safe"></i>
+                        Bid Documents
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="{{ route('projects.index') }}" class="{{ (request()->segment(3)==='projects') ? 'mm-active' : '' }}">
+                                <i class="metismenu-icon"></i>
+                                Projects List
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('default-upload-types') }}"  class="{{ (request()->segment(3)==='default-upload-types') ? 'mm-active' : '' }}">
+                                <i class="metismenu-icon"></i>
+                                Default Documents
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('manpower.index') }}"  class="{{ (request()->segment(3)==='man-power-types') ? 'mm-active' : '' }}">
+                                <i class="metismenu-icon"></i>
+                                Man-Power Types
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('equipment.index') }}"  class="{{ (request()->segment(3)==='tools-equipments') ? 'mm-active' : '' }}">
+                                <i class="metismenu-icon"></i>
+                                Tools and Equipment List
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -189,7 +222,7 @@
                 </li>
                 <li class="{{ (request()->is(['roles', 'user'])) ? 'mm-active' : '' }}">
                     <a href="#">
-                    
+
                         <i class="metismenu-icon pe-7s-way"></i>
                         Accessibility
                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
@@ -241,4 +274,4 @@
             </ul>
         </div>
     </div>
-</div>    
+</div>

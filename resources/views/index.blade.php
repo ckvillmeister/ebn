@@ -29,11 +29,15 @@
             align-items: center;
             z-index: 9999;
         }
+        .modal__container {
+            max-width: 800px; /* default is around 500px */
+            width: 90%;
+        }
     </style>
 </head>
 
 <body>
-    
+
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
         @include('admin-panel-components.navbar')
         <div class="app-main">
@@ -45,14 +49,14 @@
                             <span class="visually-hidden"></span>
                         </div>
                     </div>
-                    @yield('content')   
+                    @yield('content')
                 </div>
                 <br><br>
                 <!-- Footer Here -->
             </div>
         </div>
     </div>
-    
+
 </body>
 
 <footer>

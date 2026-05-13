@@ -1,0 +1,31 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('bid_tbl_tools_and_equipments', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('description', 500)->nullable();
+            $table->enum('type', ['Tool', 'Equipment']);
+            $table->tinyInteger('status')->default(1);
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('bid_tbl_equipment_requirements');
+    }
+};

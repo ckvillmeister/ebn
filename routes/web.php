@@ -15,6 +15,7 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\BidTransactionController;
 use App\Http\Controllers\FSMRContentController;
 use App\Http\Controllers\AttachmentTypeController;
 use App\Http\Controllers\FDASController;
@@ -84,7 +85,72 @@ Route::middleware('auth')->group(function () {
     Route::post('/transaction/inventory/manage-stocks', [TransactionController::class, 'manageStocks'])->name('transaction-manage-stocks');
     Route::get('/transaction/inventory/view-product', [TransactionController::class, 'viewProduct'])->name('transaction-view-product');
 
-    
+    #Bid Documents
+    Route::get('/transaction/bid-docs-list', [BidTransactionController::class, 'index'])->name('bid-docs-list');
+
+
+    Route::prefix('transaction/bids')->group(function () {
+        #Bid Documents - Projects
+        Route::get('projects', [BidTransactionController::class, 'projectIndex'])->name('projects.index');
+        Route::get('projects/create', [BidTransactionController::class, 'projectCreate'])->name('projects.create');
+        Route::post('projects/store', [BidTransactionController::class, 'projectStore'])->name('projects.store');
+        Route::get('projects/edit/{id}', [BidTransactionController::class, 'projectEdit'])->name('projects.edit');
+        Route::post('projects/update/{id}', [BidTransactionController::class, 'projectUpdate'])->name('projects.update');
+        Route::get('projects/view/{id}', [BidTransactionController::class, 'projectView'])->name('projects.view');
+        Route::get('projects/toggle/{id}', [BidTransactionController::class, 'projectToggle'])->name('projects.toggle');
+        Route::delete('/projects/trash/{id}', [BidTransactionController::class, 'trash'])->name('projects.trash');
+        Route::post('/projects/restore/{id}', [BidTransactionController::class, 'restore'])->name('projects.restore');
+
+        Route::get('projects/{project}/delivery-schedule', [BidTransactionController::class, 'deliveryScheduleIndex']);
+        Route::post('projects/{project}/delivery-schedule/store', [BidTransactionController::class, 'deliveryScheduleStore']);
+        Route::post('delivery-schedule/update/{id}', [BidTransactionController::class, 'deliveryScheduleUpdate']);
+        Route::delete('delivery-schedule/delete/{id}', [BidTransactionController::class, 'deliveryScheduleDelete']);
+
+        Route::get('projects/{project}/detailed-estimates', [BidTransactionController::class, 'detailedEstimateIndex']);
+        Route::post('projects/{project}/detailed-estimates/store', [BidTransactionController::class, 'detailedEstimateStore']);
+        Route::post('detailed-estimates/update/{id}', [BidTransactionController::class, 'detailedEstimateUpdate']);
+        Route::delete('detailed-estimates/delete/{id}', [BidTransactionController::class, 'detailedEstimateDelete']);
+
+        Route::get('projects/{project}/manpower', [BidTransactionController::class, 'manpowerIndex']);
+        Route::post('projects/{project}/manpower/store', [BidTransactionController::class, 'manpowerStore']);
+        Route::post('manpower/update/{id}', [BidTransactionController::class, 'manpowerUpdate']);
+        Route::delete('manpower/delete/{id}', [BidTransactionController::class, 'manpowerDelete']);
+
+        Route::get('projects/{project}/tools-equipments', [BidTransactionController::class, 'teIndex']);
+        Route::post('projects/{project}/tools-equipments/store', [BidTransactionController::class, 'teStore']);
+        Route::post('tools-equipments-requirement/update/{id}', [BidTransactionController::class, 'teUpdate']);
+        Route::delete('tools-equipments-requirement/delete/{id}', [BidTransactionController::class, 'teDelete']);
+
+        Route::get('projects/{project}/nfcc', [BidTransactionController::class, 'nfccIndex']);
+        Route::post('projects/{project}/nfcc/store', [BidTransactionController::class, 'nfccStore']);
+        Route::post('nfcc/update/{id}', [BidTransactionController::class, 'nfccUpdate']);
+        Route::delete('nfcc/delete/{id}', [BidTransactionController::class, 'nfccDelete']);
+
+        Route::get('/transaction/bids/projects/{id}/{component}/print', [BidTransactionController::class, 'printBidDocs'])->name('projects.print');
+
+        #Bid Documents - Default Upload Types
+        Route::get('default-upload-types', [BidTransactionController::class, 'defDocumentIndex'])->name('default-upload-types');
+        Route::post('default-upload-types/store', [BidTransactionController::class, 'defDocumentStore'])->name('default-upload-types.store');
+        Route::post('default-upload-types/update/{id}', [BidTransactionController::class, 'defDocumentUpdate']);
+        Route::get('default-upload-types/toggle/{id}', [BidTransactionController::class, 'defDocumentToggle']);
+        Route::get('default-upload-types/{id}/uploads', [BidTransactionController::class, 'defDocumentUploadPage'])->name('def-doc.upload.page');
+        Route::post('default-upload-types/{id}/uploads/store', [BidTransactionController::class, 'defDocumentUploadStore'])->name('def-doc.upload.store');
+        Route::get('default-upload-types/uploads/set-active/{id}', [BidTransactionController::class, 'defDocumentUploadSetActive']);
+        Route::get('default-upload-types/uploads/set-inactive/{id}', [BidTransactionController::class, 'defDocumentUploadSetInactive']);
+
+        #Bid Documents - Man-Power Types
+        Route::get('man-power-types', [BidTransactionController::class, 'manPowerTypeIndex'])->name('manpower.index');
+        Route::post('man-power-types/store', [BidTransactionController::class, 'manPowerTypeStore'])->name('manpower.store');
+        Route::post('man-power-types/update/{id}', [BidTransactionController::class, 'manPowerTypeUpdate']);
+        Route::get('man-power-types/toggle/{id}', [BidTransactionController::class, 'manPowerTypeToggle']);
+
+        #Bid Documents - Tools and Equipment
+        Route::get('tools-equipments', [BidTransactionController::class, 'equipmentIndex'])->name('equipment.index');
+        Route::post('tools-equipments/store', [BidTransactionController::class, 'equipmentStore'])->name('equipment.store');
+        Route::post('tools-equipments/update/{id}', [BidTransactionController::class, 'equipmentUpdate']);
+        Route::get('tools-equipments/toggle/{id}', [BidTransactionController::class, 'equipmentToggle']);
+    });
+
     Route::get('/setup/fsmr-content', [FSMRContentController::class, 'index'])->name('content');
     Route::get('/setup/attachment', [AttachmentTypeController::class, 'index'])->name('attachment');
     Route::get('/setup/fdas', [FDASController::class, 'index'])->name('fdas');
