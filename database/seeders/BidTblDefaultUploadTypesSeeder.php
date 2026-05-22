@@ -13,14 +13,10 @@ class BidTblDefaultUploadTypesSeeder extends Seeder
             ['name' => 'PhilGEPS Certificate'],
             ['name' => "Mayor's Permit"],
             ['name' => 'BIR Certificate of Registration'],
-            ['name' => 'Notice to Proceed'],
-            ['name' => 'Notice of Awards'],
-            ['name' => 'Certificate from Project Proponent'],
             ['name' => 'Audited Financial Statement'],
             ['name' => 'Tax Clearance Certificate'],
             ['name' => 'Organizational Chart'],
             ['name' => 'Tools and Equipments Requirement'],
-            ['name' => 'Notice to Bidders'],
             ['name' => 'Brochure']
         ];
 

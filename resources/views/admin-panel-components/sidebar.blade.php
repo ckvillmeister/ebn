@@ -114,6 +114,12 @@
                                 Tools and Equipment List
                             </a>
                         </li>
+                        <li>
+                            <a href="#"  class="{{ (request()->segment(3)==='nfcc') ? 'mm-active' : '' }}">
+                                <i class="metismenu-icon"></i>
+                                Net Financial
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li>

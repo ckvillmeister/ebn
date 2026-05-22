@@ -13,6 +13,7 @@ use App\Models\BidTblNetFinancialContractingCapacity;
 use App\Models\BidTblProject;
 use App\Models\BidTblPages;
 use App\Models\BidTblProjectDeliverySchedule;
+use App\Models\BidTblDocumentAttachments;
 use App\Models\Settings;
 use App\Models\Signatory;
 use Illuminate\Http\Request;
@@ -403,8 +404,11 @@ class BidTransactionController extends Controller
         $data = BidTblProject::findOrFail($id);
         $manPowerTypes = BidTblManPowerType::where('status', 1)->get();
         $equipments = BidTblEquipments::where('status', 1)->get();
+        $attachments = BidTblDocumentAttachments::where('project_id', $id)
+        ->orderBy('id', 'desc')
+        ->get();
 
-        return view('transactions.bid.projects.view', compact('data', 'manPowerTypes', 'equipments'));
+        return view('transactions.bid.projects.view', compact('data', 'manPowerTypes', 'equipments', 'attachments'));
     }
     //End of Projects Module
 
@@ -741,6 +745,59 @@ class BidTransactionController extends Controller
     }
     //End NFCC Module
 
+    //Start Project Attachments
+    public function attachmentStore(Request $request, $id)
+    {
+        $request->validate([
+            'image' => 'required',
+            'attachment_type' => 'required'
+        ]);
+
+        $image = $request->image;
+
+        preg_match('/^data:image\/(\w+);base64,/', $image, $type);
+
+        $extension = strtolower($type[1]);
+
+        $image = substr($image, strpos($image, ',') + 1);
+
+        $image = str_replace(' ', '+', $image);
+
+        $imageName = time() . '.' . $extension;
+
+        \File::put(
+            public_path('uploads/project-attachments/') . $imageName,
+            base64_decode($image)
+        );
+
+        BidTblDocumentAttachments::create([
+            'project_id' => $id,
+            'attachment_type' => $request->attachment_type,
+            'image_url' => 'uploads/project-attachments/' . $imageName
+        ]);
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    public function attachmentDelete($id)
+    {
+        $attachment = BidTblDocumentAttachments::findOrFail($id);
+
+        if (\File::exists(public_path($attachment->image_url))) {
+            \File::delete(public_path($attachment->image_url));
+        }
+
+        $attachment->delete();
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    //End Project Attachments
+
     public function printBidDocs($id, $component)
     {
         $settings = Settings::all();
@@ -760,7 +817,8 @@ class BidTransactionController extends Controller
 
         $project = BidTblProject::findOrFail($id);
         $projects = BidTblProject::where('status', 1)->whereNot('id', $id)->orderBy('project_type', 'ASC')->get();
-        $attachments = BidTblDefaultUploadType::with(['defaultUploads' => function ($query) {
+        $project_attachments = BidTblDocumentAttachments::where('project_id', $id)->get();
+        $default_attachments = BidTblDefaultUploadType::with(['defaultUploads' => function ($query) {
             $query->where('is_active', 1);
         }])->get();
         $bill_of_materials = BidTblDetailedEstimate::where('project_id', $id)->get();
@@ -800,13 +858,15 @@ class BidTransactionController extends Controller
                     'bir' => $business_bir,
                     'mo_permit' => $business_permit
                 ],
-                'attachments' => $attachments,
+                'project_attachments' => $project_attachments,
+                'attachments' => $default_attachments,
                 'signatories' => $signatories,
                 'nfcc' => $nfcc,
                 'delivery' => $delivery,
                 'manpower' => $manpower,
                 'tools_and_equipments' => $tools_and_equipments,
-                'bill_of_materials' => $bill_of_materials
+                'bill_of_materials' => $bill_of_materials,
+                'component' => $component
 
             ]
         );

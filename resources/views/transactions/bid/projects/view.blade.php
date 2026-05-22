@@ -143,7 +143,7 @@
         <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
             <li class="nav-item">
                 <a role="tab" class="nav-link active" data-toggle="tab" href="#tab-nfcc">
-                    <span>Net Financial Contracting Capacity</span>
+                    <span>Net Financial</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -164,6 +164,11 @@
             <li class="nav-item">
                 <a role="tab" class="nav-link" data-toggle="tab" href="#tab-pow">
                     <span>FC - Bill of Materials</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a role="tab" class="nav-link" data-toggle="tab" href="#tab-attachments">
+                    <span>Attachments</span>
                 </a>
             </li>
         </ul>
@@ -480,6 +485,82 @@
                             </tr>
                         </thead>
                     </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- DELIVERY SCHEDULE -->
+            <div class="tab-pane" id="tab-attachments" role="tabpanel">
+                <div id="attachments">
+                    <!-- CRUD UI goes here -->
+                    <div class="card p-3">
+
+                        <form id="attachmentForm">
+
+                            <div class="form-group">
+                                <label>Attachment Type</label>
+
+                                <select class="form-control" id="attachment_type">
+                                    @foreach(App\Enums\BidDocAttachmentTypes::$attachmentTypes as $key => $value)
+                                        <option value="{{ $key }}">
+                                            {{ $value }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Select Image</label>
+
+                                <input type="file"
+                                    id="attachment_image"
+                                    class="form-control"
+                                    accept="image/png,image/jpeg">
+                            </div>
+
+                            <div class="mt-3 mb-3 text-center">
+
+                                <img id="previewImage"
+                                    style="max-width:100%; display:none;">
+
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                Upload
+                            </button>
+
+                        </form>
+
+                        <div class="row mt-3">
+
+                            @foreach($attachments as $attachment)
+
+                                <div class="col-md-3 mb-3">
+
+                                    <div class="card p-2">
+
+                                        <img src="{{ asset($attachment->image_url) }}"
+                                            style="width:100%; height:250px; object-fit:cover;">
+
+                                        <div class="mt-2">
+                                            <b>
+                                                {{ App\Enums\BidDocAttachmentTypes::$attachmentTypes[$attachment->attachment_type] ?? '' }}
+                                            </b>
+                                        </div>
+
+                                        <button class="btn btn-danger btn-sm mt-2 deleteAttachmentBtn"
+                                                data-id="{{ $attachment->id }}">
+                                            Delete
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            @endforeach
+
+                            </div>
 
                     </div>
                 </div>
@@ -1007,5 +1088,122 @@
 
     });
     //End NFCC Module
+
+    //Start Project Attachments
+    let cropper;
+
+    $('#attachment_image').change(function(e) {
+
+        let file = e.target.files[0];
+
+        if (!file) return;
+
+        let reader = new FileReader();
+
+        reader.onload = function(event) {
+
+            $('#previewImage')
+                .attr('src', event.target.result)
+                .show();
+
+            if (cropper) {
+                cropper.destroy();
+            }
+
+            cropper = new Cropper(
+                document.getElementById('previewImage'),
+                {
+                    aspectRatio: 210 / 297, // A4 ratio
+                    viewMode: 1
+                }
+            );
+
+        };
+
+        reader.readAsDataURL(file);
+
+    });
+
+    $('#attachmentForm').submit(function(e) {
+
+        e.preventDefault();
+
+        if (!cropper) {
+
+            alert('Please select image.');
+
+            return;
+        }
+
+        let canvas = cropper.getCroppedCanvas({
+
+            width: 1240,
+            height: 1754
+
+        });
+
+        // DETECT ORIGINAL EXTENSION
+        let file = $('#attachment_image')[0].files[0];
+
+        let mimeType = file.type;
+
+        let base64 = canvas.toDataURL(mimeType);
+
+        $.ajax({
+
+            url: '/transaction/bids/projects/{{ $data->id }}/attachments/store',
+
+            method: 'POST',
+
+            data: {
+
+                _token: $('meta[name="csrf-token"]').attr('content'),
+
+                attachment_type: $('#attachment_type').val(),
+
+                image: base64
+
+            },
+
+            success: function() {
+
+                location.reload();
+
+            }
+
+        });
+
+    });
+
+
+    $(document).on('click', '.deleteAttachmentBtn', function(){
+
+        let id = $(this).data('id');
+
+        Swal.fire({
+            title: 'Delete attachment?',
+            icon: 'warning',
+            showCancelButton: true
+        }).then((result) => {
+
+            if(result.isConfirmed){
+
+                $.ajax({
+                    url: `/transaction/bids/projects/attachments/delete/${id}`,
+                    type: 'DELETE',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(){
+                        location.reload();
+                    }
+                });
+
+            }
+
+        });
+
+        });
+    //End Project Attachments
 </script>
 @endpush

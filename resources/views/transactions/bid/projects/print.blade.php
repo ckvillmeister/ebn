@@ -1,6 +1,7 @@
 @use('Illuminate\Support\Number')
 <!DOCTYPE html>
 <html>
+    <title>{{ $component ?? '' }}</title>
     <link href="{{ asset('architectui/architectui/main.css') }}" rel="stylesheet">
     <style>
         body {
@@ -749,48 +750,42 @@
                     </div>
                 </div>
             @elseif($page->page_name == "Notice to Proceed")
-                @foreach ($attachments as $attachment)
-                    @if ($attachment->name == "Notice to Proceed")
-                        @foreach ($attachment->defaultUploads as $upload)
-                            <div class="print-page">
-                                <img class="attachments" src="{{ asset($upload->image_url) }}">
-                                <div class="print-footer">
-                                    <div class="footer-line-black"></div>
-                                    <div class="footer-line-yellow"></div>
-                                    <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
-                                </div>
+                @foreach ($project_attachments as $attachment)
+                    @if ($attachment->attachment_type == 1)
+                        <div class="print-page">
+                            <img class="attachments" src="{{ asset($attachment->image_url) }}">
+                            <div class="print-footer">
+                                <div class="footer-line-black"></div>
+                                <div class="footer-line-yellow"></div>
+                                <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
                             </div>
-                        @endforeach
+                        </div>
                     @endif
                 @endforeach
             @elseif($page->page_name == "Notice of Awards")
-                @foreach ($attachments as $attachment)
-                    @if ($attachment->name == "Notice of Awards")
-                        @foreach ($attachment->defaultUploads as $upload)
-                            <div class="print-page">
-                                <img class="attachments" src="{{ asset($upload->image_url) }}">
-                                <div class="print-footer">
-                                    <div class="footer-line-black"></div>
-                                    <div class="footer-line-yellow"></div>
-                                    <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
-                                </div>
+                @foreach ($project_attachments as $attachment)
+                    @if ($attachment->attachment_type == 2)
+                        <div class="print-page">
+                            <img class="attachments" src="{{ asset($attachment->image_url) }}">
+                            <div class="print-footer">
+                                <div class="footer-line-black"></div>
+                                <div class="footer-line-yellow"></div>
+                                <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
                             </div>
-                        @endforeach
+                        </div>
                     @endif
                 @endforeach
             @elseif($page->page_name == "Certificate from Project Proponent")
-                @foreach ($attachments as $attachment)
-                    @if ($attachment->name == "Certificate from Project Proponent")
-                        @foreach ($attachment->defaultUploads as $upload)
-                            <div class="print-page">
-                                <img class="attachments" src="{{ asset($upload->image_url) }}">
-                                <div class="print-footer">
-                                    <div class="footer-line-black"></div>
-                                    <div class="footer-line-yellow"></div>
-                                    <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
-                                </div>
+                @foreach ($project_attachments as $attachment)
+                    @if ($attachment->attachment_type == 4)
+                        <div class="print-page">
+                            <img class="attachments" src="{{ asset($attachment->image_url) }}">
+                            <div class="print-footer">
+                                <div class="footer-line-black"></div>
+                                <div class="footer-line-yellow"></div>
+                                <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
                             </div>
-                        @endforeach
+                        </div>
                     @endif
                 @endforeach
             @elseif($page->page_name == "Audited Financial Statement")
@@ -1293,18 +1288,16 @@
                     @endif
                 @endforeach
             @elseif($page->page_name == "Notice to Bidders")
-                @foreach ($attachments as $attachment)
-                    @if ($attachment->name == "Notice to Bidders")
-                        @foreach ($attachment->defaultUploads as $upload)
-                            <div class="print-page">
-                            <img class="attachments" src="{{ asset($upload->image_url) }}">
-                                <div class="print-footer">
-                                    <div class="footer-line-black"></div>
-                                    <div class="footer-line-yellow"></div>
-                                    <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
-                                </div>
+                @foreach ($project_attachments as $attachment)
+                    @if ($attachment->attachment_type == 3)
+                        <div class="print-page">
+                            <img class="attachments" src="{{ asset($attachment->image_url) }}">
+                            <div class="print-footer">
+                                <div class="footer-line-black"></div>
+                                <div class="footer-line-yellow"></div>
+                                <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
                             </div>
-                        @endforeach
+                        </div>
                     @endif
                 @endforeach
             @elseif($page->page_name == "Detailed Estimate")
@@ -1574,7 +1567,7 @@
     }
 
     window.onafterprint = function () {
-        //window.close();
+        window.close();
     };
 </script>
 

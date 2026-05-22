@@ -126,6 +126,9 @@ Route::middleware('auth')->group(function () {
         Route::post('nfcc/update/{id}', [BidTransactionController::class, 'nfccUpdate']);
         Route::delete('nfcc/delete/{id}', [BidTransactionController::class, 'nfccDelete']);
 
+        Route::post('projects/{id}/attachments/store',[BidTransactionController::class, 'attachmentStore'])->name('projects.attachments.store');
+        Route::delete('projects/attachments/delete/{id}',[BidTransactionController::class, 'attachmentDelete'])->name('projects.attachments.delete');
+
         Route::get('/transaction/bids/projects/{id}/{component}/print', [BidTransactionController::class, 'printBidDocs'])->name('projects.print');
 
         #Bid Documents - Default Upload Types
