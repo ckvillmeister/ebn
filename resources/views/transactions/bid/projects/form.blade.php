@@ -195,33 +195,32 @@
         </div>
 
         <!-- FINAL CONTRACT FIELDS -->
-        <div class="col-md-6">
-            <label>Proponent (For Financial Component)</label>
+        <!-- <div class="col-md-6">
+            <label>Proponent <b><em>For Financial Component</em></b></label>
             <input type="text" name="fc_proponent"
                    value="{{ $data->fc_proponent ?? '' }}"
                    class="form-control" required>
-        </div>
+        </div> -->
 
-        <div class="col-md-6">
-            <label>Warranty Calendar Days (For Financial Component)</label>
-            <input type="text" name="fc_warranty_calendar_days"
+        <div class="col-md-6 mt-2">
+            <label>Warranty Calendar Days <b><em>For Financial Component</em></b></label>
+            <input type="number" name="fc_warranty_calendar_days"
                    value="{{ $data->fc_warranty_calendar_days ?? '' }}"
                    class="form-control">
         </div>
 
         <div class="col-md-6 mt-2">
-            <label>Product to be Supplied (For Financial Component)</label>
-            <textarea name="fc_product_to_be_supplied"
-                      class="form-control">{{ $data->fc_product_to_be_supplied ?? '' }}</textarea>
-        </div>
-
-        <div class="col-md-6 mt-2">
-            <label>Warranty (For Financial Component)</label>
-            <input type="text" name="fc_warranty"
+            <label>Warranty (in Months) <b><em>For Financial Component</em></b></label>
+            <input type="number" name="fc_warranty"
                    value="{{ $data->fc_warranty ?? '' }}"
                    class="form-control">
         </div>
 
+        <div class="col-md-12 mt-2">
+            <label>Product to be Supplied <b><em>For Financial Component</em></b></label>
+            <textarea name="fc_product_to_be_supplied"
+                      class="form-control">{{ $data->fc_product_to_be_supplied ?? '' }}</textarea>
+        </div>
     </div>
 
     <div class="mt-3">

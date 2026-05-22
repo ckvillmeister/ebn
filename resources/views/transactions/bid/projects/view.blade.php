@@ -124,20 +124,17 @@
         </div>
 
         <div class="col-md-6 mt-2">
-            <strong>FC Proponent:</strong> {{ $data->fc_proponent }}
+            <strong>Price Validity (Days):</strong> {{ $data->fc_warranty_calendar_days }}
         </div>
 
         <div class="col-md-6 mt-2">
-            <strong>Warranty Days:</strong> {{ $data->fc_warranty_calendar_days }}
+            <strong>Warranty (Months):</strong> {{ $data->fc_warranty }}
         </div>
 
-        <div class="col-md-6 mt-2">
+        <div class="col-md-12 mt-2">
             <strong>Product:</strong> {{ $data->fc_product_to_be_supplied }}
         </div>
 
-        <div class="col-md-6 mt-2">
-            <strong>Warranty:</strong> {{ $data->fc_warranty }}
-        </div>
 
     </div>
     <div class="card p-3 mt-3">

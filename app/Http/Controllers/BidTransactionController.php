@@ -16,6 +16,7 @@ use App\Models\BidTblProjectDeliverySchedule;
 use App\Models\Settings;
 use App\Models\Signatory;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use DataTables;
 
 class BidTransactionController extends Controller
@@ -332,7 +333,7 @@ class BidTransactionController extends Controller
 
         $project = BidTblProject::create($data);
 
-        return redirect()->route('transactions.bid.projects.view', $project->id)
+        return redirect()->route('projects.view', $project->id)
             ->with('success', 'Project created successfully');
 
     }
@@ -758,6 +759,7 @@ class BidTransactionController extends Controller
         $tools_and_equipments = BidTblTERequirements::with('equipment')->where('project_id', $id)->get();
 
         $project = BidTblProject::findOrFail($id);
+        $projects = BidTblProject::where('status', 1)->whereNot('id', $id)->orderBy('project_type', 'ASC')->get();
         $attachments = BidTblDefaultUploadType::with(['defaultUploads' => function ($query) {
             $query->where('is_active', 1);
         }])->get();
@@ -769,10 +771,25 @@ class BidTransactionController extends Controller
             ->orderBy('order', 'ASC')
             ->get();
 
+        //Filter uncompleted projects
+        $now = Carbon::now();
+        $uncompletedProjects = $projects->filter(function ($project) use ($now) {
+            return empty($project->date_of_completion) || Carbon::parse($project->date_of_completion)->greaterThan($now);
+        });
+
+        $searchTerm = '%' . $project->project_name . '%';
+        $highestCostProjects = BidTblProject::where('status', 1)
+            ->where('project_name', 'LIKE', $searchTerm)
+            ->orderBy('project_cost', 'DESC')
+            ->get();
+            //->unique('project_type');
+
         return view(
             'transactions.bid.projects.print',
             [
                 'project' => $project,
+                'uncompleted_projects' => $uncompletedProjects,
+                'highest_cost_projects' => $highestCostProjects,
                 'tc_pages' => $tc_pages,
                 'business' => (object) [
                     'name' => $business_name,
