@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\BidTblAllOngoingProjects;
+use App\Models\BidTblSingleLargestContracts;
 
 class BidTblProject extends Model
 {
@@ -39,4 +41,12 @@ class BidTblProject extends Model
         'fc_warranty',
         'status'
     ];
+
+    public function aogpc(){
+        return $this->hasMany(BidTblAllOngoingProjects::class, 'project_id', 'id');
+    }
+
+    public function slcc(){
+        return $this->hasMany(BidTblSingleLargestContracts::class, 'project_id', 'id');
+    }
 }

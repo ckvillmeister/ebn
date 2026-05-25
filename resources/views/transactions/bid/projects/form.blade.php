@@ -103,78 +103,7 @@
 
         <div class="col-md-12 mt-3"><hr></div>
 
-        <div class="col-md-12 mb-3">
-            <h4>Project Progress Details</h4>
-        </div>
-        <!-- WORK DETAILS -->
-        <div class="col-md-6">
-            <label>Nature of Work</label>
-            <textarea name="nature_of_work" class="form-control">{{ $data->nature_of_work ?? '' }}</textarea>
-        </div>
 
-        <div class="col-md-6">
-            <label>Bidder Role Description</label>
-            <textarea name="bidder_role_desc" class="form-control">{{ $data->bidder_role_desc ?? '' }}</textarea>
-        </div>
-
-        <div class="col-md-6 mt-2">
-            <label>Bidder Role Percent</label>
-            <input type="text" name="bidder_role_percent"
-                   value="{{ $data->bidder_role_percent ?? '' }}"
-                   class="form-control">
-        </div>
-
-        <div class="col-md-12 mt-3"></div>
-
-        <!-- DATES -->
-        <div class="col-md-4">
-            <label>Date Awarded</label>
-            <input type="date" name="date_awarded"
-                   value="{{ $data->date_awarded ?? '' }}"
-                   class="form-control">
-        </div>
-
-        <div class="col-md-4">
-            <label>Date Started</label>
-            <input type="date" name="date_started"
-                   value="{{ $data->date_started ?? '' }}"
-                   class="form-control">
-        </div>
-
-        <div class="col-md-4">
-            <label>Date of Completion</label>
-            <input type="date" name="date_of_completion"
-                   value="{{ $data->date_of_completion ?? '' }}"
-                   class="form-control">
-        </div>
-
-        <div class="col-md-12 mt-3"></div>
-
-        <!-- PROGRESS -->
-        <div class="col-md-6">
-            <label>Planned % Accomplishment</label>
-            <input type="number" step="0.01"
-                   name="percent_accomplishment_planned"
-                   value="{{ $data->percent_accomplishment_planned ?? '' }}"
-                   class="form-control">
-        </div>
-
-        <div class="col-md-6">
-            <label>Actual % Accomplishment</label>
-            <input type="number" step="0.01"
-                   name="percent_accomplishment_actual"
-                   value="{{ $data->percent_accomplishment_actual ?? '' }}"
-                   class="form-control">
-        </div>
-
-        <div class="col-md-6 mt-2">
-            <label>Value</label>
-            <input type="text" name="value"
-                   value="{{ $data->value ?? '' }}"
-                   class="form-control">
-        </div>
-
-        <div class="col-md-12 mt-3"><hr></div>
 
         <div class="col-md-12 mb-3">
             <h4>Other Details</h4>

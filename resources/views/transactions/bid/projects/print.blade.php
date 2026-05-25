@@ -425,26 +425,26 @@
                                         <tr>
                                             <td colspan="9"><b>Government</b></td>
                                         </tr>
-                                        @foreach ($uncompleted_projects as $proj)
+                                        @foreach ($project->aogpc as $proj)
                                             @if($proj->project_type == 'Government')
                                                 <tr>
                                                     <td>
-                                                        Name of Contract: <b>{{ $proj->project_name ?? '' }}</b><br>
+                                                        Name of Contract: <b>{{ $proj->name_of_contract ?? '' }}</b><br>
                                                         Project Cost: <b>{{ $proj->project_cost ?? '' }}</b><br>
                                                     </td>
                                                     <td>
-                                                        a. <b>{{ $proj->agency_name ?? '' }}</b><br>
+                                                        a. <b>{{ $proj->owner_name ?? '' }}</b><br>
                                                         b. <b>{{ $proj->address ?? '' }}</b><br>
-                                                        c. <b>{{ $proj->contact_no ?? '' }}</b><br>
+                                                        c. <b>{{ $proj->telephone_no ?? '' }}</b><br>
                                                     </td>
                                                     <td>
                                                         {{ $proj->nature_of_work ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {{ $proj->bidder_role_desc ?? '' }}
+                                                        {{ $proj->bidder_role_description ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {{ $proj->bidder_role_percent ?? '' }}
+                                                        {{ $proj->bidder_role_percentage ?? '' }}
                                                     </td>
                                                     <td>
                                                         a. <b>{{ date('F d, Y', strtotime($proj->date_awarded)) ?? '' }}</b><br>
@@ -452,13 +452,13 @@
                                                         c. <b>{{ date('F d, Y', strtotime($proj->date_of_completion)) ?? '' }}</b><br>
                                                     </td>
                                                     <td>
-                                                        {{ $proj->percent_accomplishment_planned ?? '' }}
+                                                        {{ $proj->planned_percentage ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {{ $proj->percent_accomplishment_actual ?? '' }}
+                                                        {{ $proj->actualt_percentage ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {{ $proj->value ?? '' }}
+                                                        {{ $proj->outstanding_works ?? '' }}
                                                     </td>
                                                 </tr>
                                             @endif
@@ -466,26 +466,26 @@
                                         <tr>
                                             <td colspan="9"><b>Private</b></td>
                                         </tr>
-                                        @foreach ($uncompleted_projects as $proj)
+                                        @foreach ($project->aogpc as $proj)
                                             @if($proj->project_type == 'Private')
-                                                <tr>
+                                            <tr>
                                                     <td>
-                                                        Name of Contract: <b>{{ $proj->project_name ?? '' }}</b><br>
+                                                        Name of Contract: <b>{{ $proj->name_of_contract ?? '' }}</b><br>
                                                         Project Cost: <b>{{ $proj->project_cost ?? '' }}</b><br>
                                                     </td>
                                                     <td>
-                                                        a. <b>{{ $proj->agency_name ?? '' }}</b><br>
+                                                        a. <b>{{ $proj->owner_name ?? '' }}</b><br>
                                                         b. <b>{{ $proj->address ?? '' }}</b><br>
-                                                        c. <b>{{ $proj->contact_no ?? '' }}</b><br>
+                                                        c. <b>{{ $proj->telephone_no ?? '' }}</b><br>
                                                     </td>
                                                     <td>
                                                         {{ $proj->nature_of_work ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {{ $proj->bidder_role_desc ?? '' }}
+                                                        {{ $proj->bidder_role_description ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {{ $proj->bidder_role_percent ?? '' }}
+                                                        {{ $proj->bidder_role_percentage ?? '' }}
                                                     </td>
                                                     <td>
                                                         a. <b>{{ date('F d, Y', strtotime($proj->date_awarded)) ?? '' }}</b><br>
@@ -493,13 +493,13 @@
                                                         c. <b>{{ date('F d, Y', strtotime($proj->date_of_completion)) ?? '' }}</b><br>
                                                     </td>
                                                     <td>
-                                                        {{ $proj->percent_accomplishment_planned ?? '' }}
+                                                        {{ $proj->planned_percentage ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {{ $proj->percent_accomplishment_actual ?? '' }}
+                                                        {{ $proj->actualt_percentage ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {{ $proj->value ?? '' }}
+                                                        {{ $proj->outstanding_works ?? '' }}
                                                     </td>
                                                 </tr>
                                             @endif
@@ -634,35 +634,35 @@
                                         <tr>
                                             <td colspan="7"><b>Government</b></td>
                                         </tr>
-                                        @foreach ($highest_cost_projects as $proj)
+                                        @foreach ($project->slcc as $proj)
                                             @if($proj->project_type == 'Government')
                                                 <tr>
                                                     <td>
-                                                        Name of Contract: <b>{{ $proj->project_name ?? '' }}</b>
+                                                        Name of Contract: <b>{{ $proj->name_of_contract ?? '' }}</b>
                                                     </td>
                                                     <td>
-                                                        a. <b>{{ $proj->agency_name ?? '' }}</b><br>
+                                                        a. <b>{{ $proj->owner_name ?? '' }}</b><br>
                                                         b. <b>{{ $proj->address ?? '' }}</b><br>
-                                                        c. <b>{{ $proj->contact_no ?? '' }}</b><br>
+                                                        c. <b>{{ $proj->telephone_no ?? '' }}</b><br>
                                                     </td>
                                                     <td>
                                                         {{ $proj->nature_of_work ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {{ $proj->bidder_role_desc ?? '' }}
+                                                        {{ $proj->bidder_role_description ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {{ $proj->bidder_role_percent ?? '' }}
+                                                        {{ $proj->bidder_role_percentage ?? '' }}
                                                     </td>
                                                     <td>
-                                                        a. <b>{{ number_format($proj->project_cost, 2) ?? '' }}</b><br>
-                                                        b. <b>{{ number_format($proj->project_cost, 2) ?? '' }}</b><br>
-                                                        c. <b>{{ \Carbon\Carbon::parse($proj->date_started)->startOfDay()->diffInDays(\Carbon\Carbon::now()->startOfDay()) }} Days</b><br>
+                                                        a. <b>{{ number_format($proj->amount_of_award, 2) ?? '' }}</b><br>
+                                                        b. <b>{{ number_format($proj->amount_of_completion, 2) ?? '' }}</b><br>
+                                                        c. <b>{{ $proj->duration }} Days</b><br>
                                                     </td>
                                                     <td>
                                                         a. <b>{{ date('F d, Y', strtotime($proj->date_awarded)) ?? '' }}</b><br>
-                                                        b. <b>{{ date('F d, Y', strtotime($proj->date_started)) ?? '' }}</b><br>
-                                                        c. <b>{{ date('F d, Y', strtotime($proj->date_of_completion)) ?? '' }}</b><br>
+                                                        b. <b>{{ date('F d, Y', strtotime($proj->contract_effectivity)) ?? '' }}</b><br>
+                                                        c. <b>{{ date('F d, Y', strtotime($proj->date_completed)) ?? '' }}</b><br>
                                                     </td>
                                                 </tr>
                                             @endif
@@ -670,35 +670,35 @@
                                         <tr>
                                             <td colspan="7"><b>Private</b></td>
                                         </tr>
-                                        @foreach ($highest_cost_projects as $proj)
+                                        @foreach ($project->slcc as $proj)
                                             @if($proj->project_type == 'Private')
-                                            <tr>
+                                                <tr>
                                                     <td>
-                                                        Name of Contract: <b>{{ $proj->project_name ?? '' }}</b>
+                                                        Name of Contract: <b>{{ $proj->name_of_contract ?? '' }}</b>
                                                     </td>
                                                     <td>
-                                                        a. <b>{{ $proj->agency_name ?? '' }}</b><br>
+                                                        a. <b>{{ $proj->owner_name ?? '' }}</b><br>
                                                         b. <b>{{ $proj->address ?? '' }}</b><br>
-                                                        c. <b>{{ $proj->contact_no ?? '' }}</b><br>
+                                                        c. <b>{{ $proj-telephone_no ?? '' }}</b><br>
                                                     </td>
                                                     <td>
                                                         {{ $proj->nature_of_work ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {{ $proj->bidder_role_desc ?? '' }}
+                                                        {{ $proj->bidder_role_description ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {{ $proj->bidder_role_percent ?? '' }}
+                                                        {{ $proj->bidder_role_percentage ?? '' }}
                                                     </td>
                                                     <td>
-                                                        a. <b>{{ number_format($proj->project_cost, 2) ?? '' }}</b><br>
-                                                        b. <b>{{ number_format($proj->project_cost, 2) ?? '' }}</b><br>
-                                                        c. <b>{{ \Carbon\Carbon::parse($proj->date_started)->startOfDay()->diffInDays(\Carbon\Carbon::now()->startOfDay()) }} Days</b><br>
+                                                        a. <b>{{ number_format($proj->amount_of_award, 2) ?? '' }}</b><br>
+                                                        b. <b>{{ number_format($proj->amount_of_completion, 2) ?? '' }}</b><br>
+                                                        c. <b>{{ $proj->duration }} Days</b><br>
                                                     </td>
                                                     <td>
                                                         a. <b>{{ date('F d, Y', strtotime($proj->date_awarded)) ?? '' }}</b><br>
-                                                        b. <b>{{ date('F d, Y', strtotime($proj->date_started)) ?? '' }}</b><br>
-                                                        c. <b>{{ date('F d, Y', strtotime($proj->date_of_completion)) ?? '' }}</b><br>
+                                                        b. <b>{{ date('F d, Y', strtotime($proj->contract_effectivity)) ?? '' }}</b><br>
+                                                        c. <b>{{ date('F d, Y', strtotime($proj->date_completed)) ?? '' }}</b><br>
                                                     </td>
                                                 </tr>
                                             @endif
@@ -1512,9 +1512,36 @@
                     @endif
                 @endforeach
             @else
-                <p>
-                    No template yet for this page.
-                </p>
+                @if ($component == 'Technical Components')
+                    <?php
+                        $defaults = [
+                            'DTI Permit',
+                            'PhilGEPS Certificate',
+                            "Mayor's Permit",
+                            'BIR Certificate of Registration',
+                            'Audited Financial Statement',
+                            'Net Financial Contracting Capacity (NFCC)',
+                            'Tax Clearance Certificate',
+                            'Organizational Chart',
+                            'Tools and Equipments Requirement',
+                            'Brochure'
+                        ];
+                    ?>
+                    @foreach ($attachments as $attachment)
+                        @if (!in_array($attachment->name, $defaults))
+                            @foreach ($attachment->defaultUploads as $upload)
+                                <div class="print-page">
+                                <img class="attachments" src="{{ asset($upload->image_url) }}">
+                                    <div class="print-footer">
+                                        <div class="footer-line-black"></div>
+                                        <div class="footer-line-yellow"></div>
+                                        <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    @endforeach
+                @endif
             @endif
 
 

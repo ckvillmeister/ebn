@@ -101,6 +101,18 @@ Route::middleware('auth')->group(function () {
         Route::delete('/projects/trash/{id}', [BidTransactionController::class, 'trash'])->name('projects.trash');
         Route::post('/projects/restore/{id}', [BidTransactionController::class, 'restore'])->name('projects.restore');
 
+        Route::get('projects/{projectId}/ongoing/list', [BidTransactionController::class, 'ongoingList']);
+        Route::post('projects/{projectId}/ongoing/store', [BidTransactionController::class, 'storeOrUpdateOngoing']);
+        Route::delete('projects/ongoing/delete/{id}', [BidTransactionController::class, 'ongoingDelete']);
+        Route::get('/projects/ongoing/search/all', [BidTransactionController::class, 'searchAllOngoing']);
+        Route::get('/projects/ongoing/show/{id}', [BidTransactionController::class, 'showOngoing']);
+
+        Route::get('projects/{projectId}/slcc/list', [BidTransactionController::class, 'slccList']);
+        Route::post('projects/{projectId}/slcc/store', [BidTransactionController::class, 'storeOrUpdateSlcc']);
+        Route::delete('projects/slcc/delete/{id}', [BidTransactionController::class, 'slccDelete']);
+        Route::get('projects/slcc/search/all', [BidTransactionController::class, 'searchAllSlcc']);
+        Route::get('projects/slcc/show/{id}', [BidTransactionController::class, 'showSlcc']);
+
         Route::get('projects/{project}/delivery-schedule', [BidTransactionController::class, 'deliveryScheduleIndex']);
         Route::post('projects/{project}/delivery-schedule/store', [BidTransactionController::class, 'deliveryScheduleStore']);
         Route::post('delivery-schedule/update/{id}', [BidTransactionController::class, 'deliveryScheduleUpdate']);
@@ -152,6 +164,10 @@ Route::middleware('auth')->group(function () {
         Route::post('tools-equipments/store', [BidTransactionController::class, 'equipmentStore'])->name('equipment.store');
         Route::post('tools-equipments/update/{id}', [BidTransactionController::class, 'equipmentUpdate']);
         Route::get('tools-equipments/toggle/{id}', [BidTransactionController::class, 'equipmentToggle']);
+
+        #Bid Documents - Manage Pages
+        Route::get('/pages/sequencing', [BidTransactionController::class, 'pagesSequencing'])->name('pages.index');
+        Route::post('/pages/sequencing/update', [BidTransactionController::class, 'pagesSequencingUpdate']);
     });
 
     Route::get('/setup/fsmr-content', [FSMRContentController::class, 'index'])->name('content');

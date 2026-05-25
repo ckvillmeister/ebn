@@ -14,6 +14,7 @@ class BidTblDefaultUploadTypesSeeder extends Seeder
             ['name' => "Mayor's Permit"],
             ['name' => 'BIR Certificate of Registration'],
             ['name' => 'Audited Financial Statement'],
+            ['name' => 'Net Financial Contracting Capacity (NFCC)'],
             ['name' => 'Tax Clearance Certificate'],
             ['name' => 'Organizational Chart'],
             ['name' => 'Tools and Equipments Requirement'],

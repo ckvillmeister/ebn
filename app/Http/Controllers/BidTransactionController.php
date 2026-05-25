@@ -16,6 +16,8 @@ use App\Models\BidTblProjectDeliverySchedule;
 use App\Models\BidTblDocumentAttachments;
 use App\Models\Settings;
 use App\Models\Signatory;
+use App\Models\BidTblAllOngoingProjects;
+use App\Models\BidTblSingleLargestContracts;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DataTables;
@@ -795,9 +797,275 @@ class BidTransactionController extends Controller
             'success' => true
         ]);
     }
-
     //End Project Attachments
 
+    //Start Ongoing Projects
+    public function ongoingList($projectId)
+    {
+        $data = BidTblAllOngoingProjects::where('project_id', $projectId);
+
+        return DataTables::of($data)
+            ->addColumn('action', function ($row) {
+
+                return '
+                    <button class="btn btn-sm btn-info editOngoing" data-id="'.$row->id.'">Edit</button>
+                    <button class="btn btn-sm btn-danger deleteOngoing" data-id="'.$row->id.'">Delete</button>
+                ';
+
+            })
+            ->make(true);
+    }
+
+    public function storeOrUpdateOngoing(Request $request)
+    {
+        $request->validate([
+            'name_of_contract' => 'required'
+        ]);
+
+        // If existing record is selected → UPDATE
+        if ($request->id) {
+
+            $record = BidTblAllOngoingProjects::findOrFail($request->id);
+
+            $record->update([
+                'name_of_contract' => $request->name_of_contract,
+                'project_cost' => $request->project_cost,
+                'owner_name' => $request->owner_name,
+                'project_type' => $request->project_type,
+                'address' => $request->address,
+                'telephone_no' => $request->telephone_no,
+                'nature_of_work' => $request->nature_of_work,
+                'bidder_role_description' => $request->bidder_role_description,
+                'bidder_role_percentage' => $request->bidder_role_percentage,
+                'date_awarded' => $request->date_awarded,
+                'date_started' => $request->date_started,
+                'date_of_completion' => $request->date_of_completion,
+                'planned_percentage' => $request->planned_percentage,
+                'actual_percentage' => $request->actual_percentage,
+                'outstanding_works' => $request->outstanding_works,
+            ]);
+
+        } else {
+
+            // CREATE NEW
+            $record = BidTblAllOngoingProjects::create([
+                'name_of_contract' => $request->name_of_contract,
+                'project_cost' => $request->project_cost,
+                'owner_name' => $request->owner_name,
+                'project_type' => $request->project_type,
+                'address' => $request->address,
+                'telephone_no' => $request->telephone_no,
+                'nature_of_work' => $request->nature_of_work,
+                'bidder_role_description' => $request->bidder_role_description,
+                'bidder_role_percentage' => $request->bidder_role_percentage,
+                'date_awarded' => $request->date_awarded,
+                'date_started' => $request->date_started,
+                'date_of_completion' => $request->date_of_completion,
+                'planned_percentage' => $request->planned_percentage,
+                'actual_percentage' => $request->actual_percentage,
+                'outstanding_works' => $request->outstanding_works,
+            ]);
+        }
+
+        // Always attach to project (if not already linked logic exists)
+        $record->update([
+            'project_id' => $request->project_id
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Saved successfully'
+        ]);
+    }
+
+    public function ongoingUpdate(Request $request, $projectId, $id)
+    {
+        $data = BidTblAllOngoingProjects::findOrFail($id);
+        $data->update($request->all());
+        return response()->json(['success' => true]);
+    }
+
+    public function ongoingDelete($id)
+    {
+        BidTblAllOngoingProjects::findOrFail($id)->delete();
+        return response()->json(['success' => true]);
+    }
+
+    public function searchAllOngoing()
+    {
+        $records = BidTblAllOngoingProjects::select(
+            'id',
+            'name_of_contract',
+            'owner_name'
+        )
+        ->orderBy('name_of_contract', 'asc')
+        ->get();
+
+        return response()->json($records);
+    }
+
+    public function showOngoing($id)
+    {
+        $record = BidTblAllOngoingProjects::findOrFail($id);
+
+        return response()->json($record);
+    }
+
+    //End Ongoing Projects
+
+    //Start Single largest Contract
+    public function slccList($projectId)
+    {
+        $data = BidTblSingleLargestContracts::where(
+            'project_id',
+            $projectId
+        );
+
+        return DataTables::of($data)
+
+            ->addColumn('action', function ($row) {
+
+                return '
+                    <button class="btn btn-info btn-sm editSlcc"
+                        data-id="'.$row->id.'">
+                        Edit
+                    </button>
+
+                    <button class="btn btn-danger btn-sm deleteSlcc"
+                        data-id="'.$row->id.'">
+                        Delete
+                    </button>
+                ';
+            })
+
+            ->make(true);
+    }
+
+    public function storeOrUpdateSlcc(Request $request)
+    {
+        $request->validate([
+            'name_of_contract' => 'required'
+        ]);
+
+        if ($request->id) {
+
+            $record = BidTblSingleLargestContracts::findOrFail(
+                $request->id
+            );
+
+            $record->update([
+
+                'name_of_contract' => $request->name_of_contract,
+                'project_cost' => $request->project_cost,
+                'project_type' => $request->project_type,
+                'owner_name' => $request->owner_name,
+                'address' => $request->address,
+                'telephone_no' => $request->telephone_no,
+                'nature_of_work' => $request->nature_of_work,
+                'bidder_role_description' => $request->bidder_role_description,
+                'bidder_role_percentage' => $request->bidder_role_percentage,
+                'amount_of_award' => $request->amount_of_award,
+                'amount_of_completion' => $request->amount_of_completion,
+                'duration' => $request->duration,
+                'date_awarded' => $request->date_awarded,
+                'contract_effectivity' => $request->contract_effectivity,
+                'date_completed' => $request->date_completed,
+
+            ]);
+
+        } else {
+
+            $record = BidTblSingleLargestContracts::create([
+
+                'project_id' => $request->project_id,
+                'name_of_contract' => $request->name_of_contract,
+                'project_cost' => $request->project_cost,
+                'project_type' => $request->project_type,
+                'owner_name' => $request->owner_name,
+                'address' => $request->address,
+                'telephone_no' => $request->telephone_no,
+                'nature_of_work' => $request->nature_of_work,
+                'bidder_role_description' => $request->bidder_role_description,
+                'bidder_role_percentage' => $request->bidder_role_percentage,
+                'amount_of_award' => $request->amount_of_award,
+                'amount_of_completion' => $request->amount_of_completion,
+                'duration' => $request->duration,
+                'date_awarded' => $request->date_awarded,
+                'contract_effectivity' => $request->contract_effectivity,
+                'date_completed' => $request->date_completed,
+
+            ]);
+        }
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    public function slccDelete($id)
+    {
+        BidTblSingleLargestContracts::findOrFail($id)
+            ->delete();
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    public function searchAllSlcc()
+    {
+        $records = BidTblSingleLargestContracts::select(
+            'id',
+            'name_of_contract',
+            'owner_name'
+        )
+        ->orderBy('name_of_contract', 'asc')
+        ->get();
+
+        return response()->json($records);
+    }
+
+    public function showSlcc($id)
+    {
+        $record = BidTblSingleLargestContracts::findOrFail($id);
+
+        return response()->json($record);
+    }
+    //End Single Largest Contract
+
+    //Start Page Sequencing
+    public function pagesSequencing(Request $request)
+    {
+        $componentType = $request->component_type ?? 'Technical Components';
+
+        $pages = BidTblPages::where('component_type', $componentType)
+            ->where('status', 1)
+            ->orderBy('order', 'asc')
+            ->get();
+
+        return view(
+            'transactions.bid.pages.sequence',
+            compact('pages', 'componentType')
+        );
+    }
+
+    public function pagesSequencingUpdate(Request $request)
+    {
+        foreach ($request->pages as $index => $id) {
+
+            BidTblPages::where('id', $id)
+                ->update([
+                    'order' => $index + 1
+                ]);
+        }
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+    //End Page Sequencing
+
+    //Print Bid Docs
     public function printBidDocs($id, $component)
     {
         $settings = Settings::all();
@@ -815,7 +1083,10 @@ class BidTransactionController extends Controller
         $manpower = $data = BidTblManPowerRequirement::with('type')->where('project_id', $id)->get();
         $tools_and_equipments = BidTblTERequirements::with('equipment')->where('project_id', $id)->get();
 
-        $project = BidTblProject::findOrFail($id);
+        $project = BidTblProject::with([
+            'aogpc',
+            'slcc'
+        ])->findOrFail($id);
         $projects = BidTblProject::where('status', 1)->whereNot('id', $id)->orderBy('project_type', 'ASC')->get();
         $project_attachments = BidTblDocumentAttachments::where('project_id', $id)->get();
         $default_attachments = BidTblDefaultUploadType::with(['defaultUploads' => function ($query) {
@@ -829,25 +1100,10 @@ class BidTransactionController extends Controller
             ->orderBy('order', 'ASC')
             ->get();
 
-        //Filter uncompleted projects
-        $now = Carbon::now();
-        $uncompletedProjects = $projects->filter(function ($project) use ($now) {
-            return empty($project->date_of_completion) || Carbon::parse($project->date_of_completion)->greaterThan($now);
-        });
-
-        $searchTerm = '%' . $project->project_name . '%';
-        $highestCostProjects = BidTblProject::where('status', 1)
-            ->where('project_name', 'LIKE', $searchTerm)
-            ->orderBy('project_cost', 'DESC')
-            ->get();
-            //->unique('project_type');
-
         return view(
             'transactions.bid.projects.print',
             [
                 'project' => $project,
-                'uncompleted_projects' => $uncompletedProjects,
-                'highest_cost_projects' => $highestCostProjects,
                 'tc_pages' => $tc_pages,
                 'business' => (object) [
                     'name' => $business_name,

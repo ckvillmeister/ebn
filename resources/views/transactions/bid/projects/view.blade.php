@@ -141,9 +141,19 @@
 
     <!-- Tabs Navigation -->
         <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a role="tab" class="nav-link active" data-toggle="tab" href="#tab-nfcc">
                     <span>Net Financial</span>
+                </a>
+            </li> -->
+            <li class="nav-item">
+                <a role="tab" class="nav-link active" data-toggle="tab" href="#tab-aogpc">
+                    <span>TC - All Ongoing Contracts</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a role="tab" class="nav-link" data-toggle="tab" href="#tab-slcc">
+                    <span>TC - Largest Contract</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -176,8 +186,274 @@
         <!-- Tabs Content -->
         <div class="tab-content mt-3">
 
+            <!-- AOGPC -->
+            <div class="tab-pane fade show active" id="tab-aogpc" role="tabpanel">
+                <div id="aogpc-container">
+                    <!-- CRUD UI goes here -->
+                    <button class="btn btn-success mb-4" id="btnToggleForm">New</button>
+
+                    <div id="ongoingFormPanel" style="display:none;" class="card card-body mb-3 border">
+
+                        <div class="mb-2">
+                            <label><b>Search Existing Record</b></label>
+                            <select id="existingSelect" class="form-control"></select>
+                            <small class="text-muted">Select existing record or create new</small>
+                        </div>
+
+                        <hr>
+
+                        <form id="ongoingForm">
+
+                            <input type="hidden" id="record_id">
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <label>Name of Contract</label>
+                                    <input type="text" class="form-control" id="contract_name">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Project Cost</label>
+                                    <input type="number" class="form-control" id="project_cost">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Project Type</label>
+
+                                    <select class="form-control" id="project_type">
+                                        <option value="Government">Government</option>
+                                        <option value="Private">Private</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Owner Name</label>
+                                    <input type="text" class="form-control" id="owner_name">
+                                </div>
+
+                                <div class="col-md-12 mt-3">
+                                    <label>Address</label>
+                                    <input type="text" class="form-control" id="address">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Telephone</label>
+                                    <input type="text" class="form-control" id="telephone">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Nature of Work</label>
+                                    <input type="text" class="form-control" id="nature">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Role Description</label>
+                                    <input type="text" class="form-control" id="role_desc">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Role %</label>
+                                    <input type="text" class="form-control" id="role_percent">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Date Awarded</label>
+                                    <input type="date" class="form-control" id="date_awarded">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Date Started</label>
+                                    <input type="date" class="form-control" id="date_started">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Date Completed</label>
+                                    <input type="date" class="form-control" id="date_completed">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Percentage Planned</label>
+                                    <input type="text" class="form-control" id="planned">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Percentage Actual</label>
+                                    <input type="text" class="form-control" id="actual">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Outstanding Works</label>
+                                    <input type="text" class="form-control" id="outstanding">
+                                </div>
+
+                            </div>
+
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-success">
+                                    Save Record
+                                </button>
+
+                                <button type="button" class="btn btn-secondary" id="btnCancelForm">
+                                    Cancel
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                    <table class="table" id="ongoingTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Cost</th>
+                                <th>Owner</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SLCC -->
+            <div class="tab-pane fade" id="tab-slcc" role="tabpanel">
+                <div id="slcc-container">
+                    <!-- CRUD UI goes here -->
+                    <button class="btn btn-success mb-4" id="btnToggleSlccForm">New</button>
+
+                    <div id="slccFormPanel" style="display:none;" class="card card-body mb-3 border">
+
+                        <div class="mb-2">
+                            <label><b>Search Existing Record</b></label>
+
+                            <select id="existingSlccSelect" class="form-control">
+                                <option value="">-- Select Existing --</option>
+                            </select>
+
+                            <small class="text-muted">
+                                Select existing record or create new
+                            </small>
+                        </div>
+
+                        <hr>
+
+                        <form id="slccForm">
+
+                            <input type="hidden" id="slcc_record_id">
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <label>Name of Contract</label>
+                                    <input type="text" class="form-control" id="slcc_contract_name">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Project Cost</label>
+                                    <input type="number" class="form-control" id="slcc_project_cost">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Project Type</label>
+
+                                    <select class="form-control" id="slcc_project_type">
+                                        <option value="Government">Government</option>
+                                        <option value="Private">Private</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Owner Name</label>
+                                    <input type="text" class="form-control" id="slcc_owner_name">
+                                </div>
+
+                                <div class="col-md-12 mt-3">
+                                    <label>Address</label>
+                                    <input type="text" class="form-control" id="slcc_address">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Telephone No.</label>
+                                    <input type="text" class="form-control" id="slcc_telephone">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Nature of Work</label>
+                                    <input type="text" class="form-control" id="slcc_nature">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Bidder Role Description</label>
+                                    <input type="text" class="form-control" id="slcc_role_desc">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Bidder Role Percentage</label>
+                                    <input type="text" class="form-control" id="slcc_role_percent">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Amount of Award</label>
+                                    <input type="number" class="form-control" id="slcc_award">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Amount of Completion</label>
+                                    <input type="number" class="form-control" id="slcc_completion">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Duration</label>
+                                    <input type="text" class="form-control" id="slcc_duration">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Date Awarded</label>
+                                    <input type="date" class="form-control" id="slcc_date_awarded">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Contract Effectivity</label>
+                                    <input type="date" class="form-control" id="slcc_effectivity">
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label>Date Completed</label>
+                                    <input type="date" class="form-control" id="slcc_date_completed">
+                                </div>
+
+                            </div>
+
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-success">
+                                    Save Record
+                                </button>
+
+                                <button type="button" class="btn btn-secondary" id="btnCancelSlccForm">
+                                    Cancel
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                    <table class="table" id="slccTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Owner</th>
+                                <th>Type</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
             <!-- DELIVERY SCHEDULE -->
-            <div class="tab-pane fade show active" id="tab-delivery" role="tabpanel">
+            <div class="tab-pane fade" id="tab-delivery" role="tabpanel">
                 <div id="delivery-container">
                     <!-- CRUD UI goes here -->
                     <div>
@@ -434,7 +710,7 @@
             </div>
 
             <!-- NFCC -->
-            <div class="tab-pane fade" id="tab-nfcc" role="tabpanel">
+            <!-- <div class="tab-pane fade" id="tab-nfcc" role="tabpanel">
                 <div id="nfcc-container">
                 <div>
 
@@ -442,7 +718,6 @@
                         <button class="btn btn-success btn-sm" id="btnNewNfcc"><i class="fas fa-plus mr-2"></i>New</button>
                     </div>
 
-                    <!-- FORM -->
                     <div class="card p-3 mb-3" id="nfccFormContainer" style="display:none;">
                         <form id="nfccForm">
 
@@ -474,7 +749,6 @@
                         </form>
                     </div>
 
-                    <!-- TABLE -->
                     <table class="table table-bordered w-100" id="nfccTable">
                         <thead>
                             <tr>
@@ -488,7 +762,7 @@
 
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- DELIVERY SCHEDULE -->
             <div class="tab-pane" id="tab-attachments" role="tabpanel">
@@ -577,27 +851,31 @@
 @push('scripts')
 <script>
     let loadedTabs = {
+        aogpc: false,
         delivery: false,
         pow: false,
         manpower: false,
-        tools: false,
-        nfcc: false
+        tools: false
     };
 
     $(function () {
         initTabFix();
 
-        loadTable();
+    loadTable();
     loadPowTable();
     loadManTable();
     loadTeTable();
     loadNfccTable();
+    loadAllOngoingProjects();
+    loadAllOngoingProjectsDropdown()
+    loadSlccTable();
+    loadSlccDropdown();
 
+    loadedTabs.aogpc = true;
     loadedTabs.delivery = true;
     loadedTabs.pow = true;
     loadedTabs.manpower = true;
     loadedTabs.tools = true;
-    loadedTabs.nfcc = true;
     });
 
     function initTabFix() {
@@ -632,76 +910,72 @@
         });
     }
 
-    $(document).ready(function () {
+    //loadTable();
 
-        loadTable();
+    $('#btnNew').click(function () {
+        $('#formContainer').toggle();
+        $('#deliveryForm')[0].reset();
+        $('#record_id').val('');
+    });
 
-        $('#btnNew').click(function () {
-            $('#formContainer').toggle();
-            $('#deliveryForm')[0].reset();
-            $('#record_id').val('');
+    // EDIT
+    $(document).on('click', '.editBtn', function () {
+        $('#formContainer').show();
+
+        $('#record_id').val($(this).data('id'));
+        $('#description').val($(this).data('description'));
+        $('#schedule').val($(this).data('schedule'));
+        $('#amount').val($(this).data('amount'));
+        $('#remarks').val($(this).data('remarks'));
+    });
+
+    // DELETE
+    $(document).on('click', '.deleteBtn', function () {
+        let id = $(this).data('id');
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'This will permanently delete the record.',
+            icon: 'warning',
+            showCancelButton: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    url: `/transaction/bids/delivery-schedule/delete/${id}`,
+                    type: 'DELETE',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function () {
+                        loadTable();
+                    }
+                });
+
+            }
         });
+    });
 
-        // EDIT
-        $(document).on('click', '.editBtn', function () {
-            $('#formContainer').show();
+    // SAVE
+    $('#deliveryForm').submit(function (e) {
+        e.preventDefault();
 
-            $('#record_id').val($(this).data('id'));
-            $('#description').val($(this).data('description'));
-            $('#schedule').val($(this).data('schedule'));
-            $('#amount').val($(this).data('amount'));
-            $('#remarks').val($(this).data('remarks'));
+        let id = $('#record_id').val();
+
+        let url = id
+            ? `/transaction/bids/delivery-schedule/update/${id}`
+            : `/transaction/bids/projects/${projectId}/delivery-schedule/store`;
+
+        $.post(url, {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            description: $('#description').val(),
+            schedule: $('#schedule').val(),
+            amount: $('#amount').val(),
+            remarks: $('#remarks').val()
+        }, function () {
+            $('#formContainer').hide();
+            loadTable();
         });
-
-        // DELETE
-        $(document).on('click', '.deleteBtn', function () {
-            let id = $(this).data('id');
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'This will permanently delete the record.',
-                icon: 'warning',
-                showCancelButton: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-
-                    $.ajax({
-                        url: `/transaction/bids/delivery-schedule/delete/${id}`,
-                        type: 'DELETE',
-                        data: {
-                            _token: $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function () {
-                            loadTable();
-                        }
-                    });
-
-                }
-            });
-        });
-
-        // SAVE
-        $('#deliveryForm').submit(function (e) {
-            e.preventDefault();
-
-            let id = $('#record_id').val();
-
-            let url = id
-                ? `/transaction/bids/delivery-schedule/update/${id}`
-                : `/transaction/bids/projects/${projectId}/delivery-schedule/store`;
-
-            $.post(url, {
-                _token: $('meta[name="csrf-token"]').attr('content'),
-                description: $('#description').val(),
-                schedule: $('#schedule').val(),
-                amount: $('#amount').val(),
-                remarks: $('#remarks').val()
-            }, function () {
-                $('#formContainer').hide();
-                loadTable();
-            });
-        });
-
     });
     //End Project Delivery Module
 
@@ -1205,5 +1479,408 @@
 
         });
     //End Project Attachments
+    //let projectId = "{{ $data->id }}";
+
+    /* =======================
+    ONGOING TABLE
+    ======================= */
+    let ongoingTable;
+
+    $('#btnToggleForm').click(function () {
+        $('#ongoingFormPanel').slideToggle();
+    });
+
+    $('#btnCancelForm').click(function () {
+        $('#ongoingFormPanel').slideUp();
+        $('#ongoingForm')[0].reset();
+        $('#record_id').val('');
+    });
+
+    function loadAllOngoingProjects(){
+        ongoingTable = $('#ongoingTable').DataTable({
+            processing: true,
+            serverSide: true,
+            autoWidth: false,
+            ajax: `/transaction/bids/projects/${projectId}/ongoing/list`,
+            columns: [
+                { data: 'name_of_contract' },
+                { data: 'project_cost' },
+                { data: 'owner_name' },
+                { data: 'action', orderable:false }
+            ]
+        });
+
+        setTimeout(() => ongoingTable.columns.adjust(), 150);
+    }
+
+    function loadAllOngoingProjectsDropdown() {
+        $.get(`/transaction/bids/projects/ongoing/search/all`, function (res) {
+
+            $('#existingSelect').html(`<option value="">-- Select Existing --</option>`);
+
+            res.forEach(r => {
+                $('#existingSelect').append(`
+                    <option value="${r.id}">
+                        ${r.name_of_contract} - ${r.owner_name}
+                    </option>
+                `);
+            });
+
+        });
+    }
+
+    $('#existingSelect').on('change', function () {
+
+        let id = $(this).val();
+        if (!id) return;
+
+        $.get(`/transaction/bids/projects/ongoing/show/${id}`, function (data) {
+            $('#record_id').val('');
+            // $('#record_id').val(data.id);
+            $('#contract_name').val(data.name_of_contract);
+            $('#project_cost').val(data.project_cost);
+            $('#project_type').val(data.project_type);
+            $('#owner_name').val(data.owner_name);
+            $('#address').val(data.address);
+            $('#telephone').val(data.telephone_no);
+            $('#nature').val(data.nature_of_work);
+            $('#role_desc').val(data.bidder_role_description);
+            $('#role_percent').val(data.bidder_role_percentage);
+            $('#date_awarded').val(data.date_awarded);
+            $('#date_started').val(data.date_started);
+            $('#date_completed').val(data.date_of_completion);
+            $('#planned').val(data.percent_planned);
+            $('#actual').val(data.percent_actual);
+            $('#outstanding').val(data.outstanding_works_value);
+
+            $('#ongoingFormPanel').slideDown();
+
+        });
+
+    });
+
+    // EDIT BUTTON
+    $(document).on('click', '.editOngoing', function () {
+
+    let id = $(this).data('id');
+
+    $.get(`/transaction/bids/projects/ongoing/show/${id}`, function (data) {
+
+        // show form
+        $('#ongoingFormPanel').slideDown();
+
+        // set hidden id
+        $('#record_id').val(data.id);
+
+        // fill fields
+        $('#contract_name').val(data.name_of_contract);
+        $('#project_cost').val(data.project_cost);
+        $('#owner_name').val(data.owner_name);
+        $('#project_type').val(data.project_type);
+        $('#address').val(data.address);
+        $('#telephone').val(data.telephone_no);
+        $('#nature').val(data.nature_of_work);
+        $('#role_desc').val(data.bidder_role_description);
+        $('#role_percent').val(data.bidder_role_percentage);
+        $('#date_awarded').val(data.date_awarded);
+        $('#date_started').val(data.date_started);
+        $('#date_completed').val(data.date_of_completion);
+        $('#planned').val(data.planned_percentage);
+        $('#actual').val(data.actual_percentage);
+        $('#outstanding').val(data.outstanding_works);
+
+    });
+
+    });
+
+    $('#ongoingForm').submit(function (e) {
+        e.preventDefault();
+
+        $.post(`/transaction/bids/projects/${projectId}/ongoing/store`, {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            project_id: projectId,
+            id: $('#record_id').val(),
+
+            name_of_contract: $('#contract_name').val(),
+            project_cost: $('#project_cost').val(),
+            project_type: $('#project_type').val(),
+            owner_name: $('#owner_name').val(),
+            address: $('#address').val(),
+            telephone_no: $('#telephone').val(),
+            nature_of_work: $('#nature').val(),
+            bidder_role_description: $('#role_desc').val(),
+            bidder_role_percentage: $('#role_percent').val(),
+            date_awarded: $('#date_awarded').val(),
+            date_started: $('#date_started').val(),
+            date_of_completion: $('#date_completed').val(),
+            planned_percentage: $('#planned').val(),
+            actual_percentage: $('#actual').val(),
+            outstanding_works: $('#outstanding').val()
+
+        }, function () {
+
+            $('#ongoingFormPanel').slideUp();
+            $('#ongoingForm')[0].reset();
+            $('#record_id').val('');
+
+            ongoingTable.ajax.reload();
+            loadAllOngoingProjectsDropdown();
+
+        });
+
+    });
+
+    /* DELETE ONGOING */
+    $(document).on('click', '.deleteOngoing', function () {
+
+        let id = $(this).data('id');
+
+        $.ajax({
+            url: `/transaction/bids/projects/ongoing/delete/${id}`,
+            type: 'DELETE',
+            data: { _token: $('meta[name="csrf-token"]').attr('content') },
+            success: function () {
+                ongoingTable.ajax.reload();
+            }
+        });
+
+    });
+
+
+    /* =======================
+    SINGLE TABLE
+    ======================= */
+    let singleTable;
+
+    function loadSingleLargestContracts(){
+        singleTable = $('#singleTable').DataTable({
+            processing: true,
+            serverSide: true,
+            autoWidth: false,
+            ajax: `/transaction/bids/projects/${projectId}/single/list`,
+            columns: [
+                { data: 'name_of_contract' },
+                { data: 'project_cost' },
+                { data: 'owner_name' },
+                { data: 'action', orderable:false }
+            ]
+        });
+
+        setTimeout(() => singleTable.columns.adjust(), 150);
+    }
+
+    /* ADD SINGLE */
+    $('#btnAddSingle').click(function () {
+
+        $.post(`/transaction/bids/projects/${projectId}/single/store`, {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            name_of_contract: prompt("Contract Name"),
+            project_cost: prompt("Cost"),
+            owner_name: prompt("Owner")
+        }, function () {
+
+            singleTable.ajax.reload();
+
+        });
+
+    });
+
+    /* DELETE SINGLE */
+    $(document).on('click', '.deleteSingle', function () {
+
+        let id = $(this).data('id');
+
+        $.ajax({
+            url: `/transaction/bids/projects/single/delete/${id}`,
+            type: 'DELETE',
+            data: { _token: $('meta[name="csrf-token"]').attr('content') },
+            success: function () {
+                singleTable.ajax.reload();
+            }
+        });
+
+    });
+
+    //SLCC
+    let slccTable;
+
+    $('#btnToggleSlccForm').click(function () {
+        $('#slccFormPanel').slideToggle();
+    });
+
+    $('#btnCancelSlccForm').click(function () {
+
+        $('#slccFormPanel').slideUp();
+
+        $('#slccForm')[0].reset();
+
+        $('#slcc_record_id').val('');
+
+    });
+
+    function loadSlccTable(){
+
+        slccTable = $('#slccTable').DataTable({
+            processing: true,
+            serverSide: true,
+            autoWidth: false,
+            ajax: `/transaction/bids/projects/${projectId}/slcc/list`,
+            columns: [
+                { data: 'name_of_contract' },
+                { data: 'owner_name' },
+                { data: 'project_type' },
+                { data: 'action', orderable:false }
+            ]
+        });
+
+        setTimeout(() => slccTable.columns.adjust(), 150);
+    }
+
+    function loadSlccDropdown() {
+
+        $.get(`/transaction/bids/projects/slcc/search/all`, function (res) {
+
+            $('#existingSlccSelect').html(`
+                <option value="">-- Select Existing --</option>
+            `);
+
+            res.forEach(r => {
+
+                $('#existingSlccSelect').append(`
+                    <option value="${r.id}">
+                        ${r.name_of_contract} - ${r.owner_name}
+                    </option>
+                `);
+
+            });
+
+        });
+
+    }
+
+    $('#existingSlccSelect').on('change', function () {
+
+        let id = $(this).val();
+
+        if (!id) return;
+
+        $.get(`/transaction/bids/projects/slcc/show/${id}`, function (data) {
+
+            $('#slcc_record_id').val(data.id);
+
+            $('#slcc_contract_name').val(data.name_of_contract);
+            $('#slcc_project_cost').val(data.project_cost);
+            $('#slcc_project_type').val(data.project_type);
+            $('#slcc_owner_name').val(data.owner_name);
+            $('#slcc_address').val(data.address);
+            $('#slcc_telephone').val(data.telephone_no);
+            $('#slcc_nature').val(data.nature_of_work);
+            $('#slcc_role_desc').val(data.bidder_role_description);
+            $('#slcc_role_percent').val(data.bidder_role_percentage);
+            $('#slcc_award').val(data.amount_of_award);
+            $('#slcc_completion').val(data.amount_of_completion);
+            $('#slcc_duration').val(data.duration);
+            $('#slcc_date_awarded').val(data.date_awarded);
+            $('#slcc_effectivity').val(data.contract_effectivity);
+            $('#slcc_date_completed').val(data.date_completed);
+
+            $('#slccFormPanel').slideDown();
+
+        });
+
+    });
+
+    $(document).on('click', '.editSlcc', function () {
+
+        let id = $(this).data('id');
+
+        $.get(`/transaction/bids/projects/slcc/show/${id}`, function (data) {
+
+            $('#slccFormPanel').slideDown();
+
+            $('#slcc_record_id').val(data.id);
+
+            $('#slcc_contract_name').val(data.name_of_contract);
+            $('#slcc_project_cost').val(data.project_cost);
+            $('#slcc_project_type').val(data.project_type);
+            $('#slcc_owner_name').val(data.owner_name);
+            $('#slcc_address').val(data.address);
+            $('#slcc_telephone').val(data.telephone_no);
+            $('#slcc_nature').val(data.nature_of_work);
+            $('#slcc_role_desc').val(data.bidder_role_description);
+            $('#slcc_role_percent').val(data.bidder_role_percentage);
+            $('#slcc_award').val(data.amount_of_award);
+            $('#slcc_completion').val(data.amount_of_completion);
+            $('#slcc_duration').val(data.duration);
+            $('#slcc_date_awarded').val(data.date_awarded);
+            $('#slcc_effectivity').val(data.contract_effectivity);
+            $('#slcc_date_completed').val(data.date_completed);
+
+        });
+
+    });
+
+    $('#slccForm').submit(function (e) {
+
+        e.preventDefault();
+
+        $.post(`/transaction/bids/projects/${projectId}/slcc/store`, {
+
+            _token: $('meta[name="csrf-token"]').attr('content'),
+
+            project_id: projectId,
+
+            id: $('#slcc_record_id').val(),
+
+            name_of_contract: $('#slcc_contract_name').val(),
+            project_cost: $('#slcc_project_cost').val(),
+            project_type: $('#slcc_project_type').val(),
+            owner_name: $('#slcc_owner_name').val(),
+            address: $('#slcc_address').val(),
+            telephone_no: $('#slcc_telephone').val(),
+            nature_of_work: $('#slcc_nature').val(),
+            bidder_role_description: $('#slcc_role_desc').val(),
+            bidder_role_percentage: $('#slcc_role_percent').val(),
+            amount_of_award: $('#slcc_award').val(),
+            amount_of_completion: $('#slcc_completion').val(),
+            duration: $('#slcc_duration').val(),
+            date_awarded: $('#slcc_date_awarded').val(),
+            contract_effectivity: $('#slcc_effectivity').val(),
+            date_completed: $('#slcc_date_completed').val()
+
+        }, function () {
+
+            $('#slccFormPanel').slideUp();
+
+            $('#slccForm')[0].reset();
+
+            $('#slcc_record_id').val('');
+
+            slccTable.ajax.reload();
+
+            loadSlccDropdown();
+
+        });
+
+    });
+
+    $(document).on('click', '.deleteSlcc', function () {
+
+        let id = $(this).data('id');
+
+        $.ajax({
+            url: `/transaction/bids/projects/slcc/delete/${id}`,
+            type: 'DELETE',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function () {
+
+                slccTable.ajax.reload();
+
+            }
+        });
+
+    });
 </script>
 @endpush

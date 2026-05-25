@@ -115,9 +115,9 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#"  class="{{ (request()->segment(3)==='nfcc') ? 'mm-active' : '' }}">
+                            <a href="{{ route('pages.index') }}"  class="{{ (request()->segment(3)==='pages') ? 'mm-active' : '' }}">
                                 <i class="metismenu-icon"></i>
-                                Net Financial
+                                Manage Pages
                             </a>
                         </li>
                     </ul>

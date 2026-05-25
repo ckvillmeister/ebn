@@ -24,18 +24,18 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('contact_no', 20)->nullable();
 
-            $table->string('nature_of_work', 500)->nullable();
-            $table->string('bidder_role_desc', 500)->nullable();
-            $table->string('bidder_role_percent', 20)->nullable();
+            // $table->string('nature_of_work', 500)->nullable();
+            // $table->string('bidder_role_desc', 500)->nullable();
+            // $table->string('bidder_role_percent', 20)->nullable();
 
-            $table->date('date_awarded')->nullable();
-            $table->date('date_started')->nullable();
-            $table->date('date_of_completion')->nullable();
+            // $table->date('date_awarded')->nullable();
+            // $table->date('date_started')->nullable();
+            // $table->date('date_of_completion')->nullable();
 
-            $table->double('percent_accomplishment_planned')->nullable();
-            $table->double('percent_accomplishment_actual')->nullable();
+            // $table->double('percent_accomplishment_planned')->nullable();
+            // $table->double('percent_accomplishment_actual')->nullable();
 
-            $table->string('value', 500)->nullable();
+            // $table->string('value', 500)->nullable();
 
             $table->date('bid_securing_declaration_date')->nullable();
             $table->date('omnibus_sworn_statement_date')->nullable();
