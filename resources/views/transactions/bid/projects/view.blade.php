@@ -25,25 +25,22 @@
                         <a href="{{ route('projects.print', [$data->id, 'technical']) }}"
                         target="_blank"
                         class="btn btn-success col-12">
-                            <i class="fas fa-print mr-2"></i>Print Technical Components
+                            <i class="fas fa-print mr-2"></i>Technical Components
                         </a>
                     </div>
                     <div class="col-6">
                         <a href="{{ route('projects.print', [$data->id, 'financial']) }}"
                         target="_blank"
                         class="btn btn-success col-12">
-                            <i class="fas fa-print mr-2"></i>Print Financial Components
+                            <i class="fas fa-print mr-2"></i>Financial Components
                         </a>
                     </div>
                 </div>
-                <div class="row mt-2 mb-3">
-                    <div class="col-4">
-                        <button class="btn btn-success col-12"><i class="fas fa-file-pdf mr-2"></i>PDF</button>
-                    </div>
-                    <div class="col-4">
+                <div class="row mt-3 mb-3">
+                    <div class="col-6">
                         <a href="{{ route('projects.edit', $data->id) }}" class="btn btn-warning col-12"><i class="fas fa-edit mr-2"></i>Edit</a>
                     </div>
-                    <div class="col-4">
+                    <div class="col-6">
                         <a href="{{ route('projects.index') }}" class="btn btn-secondary col-12"><i class="fas fa-backward mr-2"></i>Back</a>
                     </div>
                 </div>

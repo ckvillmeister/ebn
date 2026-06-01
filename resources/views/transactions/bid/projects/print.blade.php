@@ -1042,15 +1042,35 @@
                         </div>
                     </div>
                     <hr>
-                    <h6><b>I. SYSTEM COMPONENTS</b></h6><br>
+                    <div>
+                        <h6><b>I. SYSTEM COMPONENTS</b></h6><br>
+                        {!! $project->system_components ?? '' !!}
+                    </div>
+                    <div class="print-footer">
+                        <div class="footer-line-black"></div>
+                        <div class="footer-line-yellow"></div>
+                        <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
+                    </div>
+                </div>
+                <div class="print-page">
                     <h6><b>II. PRODUCTION & DELIVERY SCHEDULE</b></h6><br>
+
+                    <h6><ul>
+                    @foreach ($delivery as $dl)
+                        <li><b>{{ $dl->description }}:</b>&nbsp;{{ $dl->schedule }}&nbsp;({{ $dl->remarks }})</li>
+                    @endforeach</ul></h6><br>
+
                     <h6><b>III. MAN-POWER REQUIREMENTS</b></h6><br>
+                    <h6><ul>
                     @php ($ctr = 1)
                     @foreach ($manpower as $mp)
-                        <h6>&nbsp;&nbsp;&nbsp;{{ $ctr++ }}.&nbsp;<b>{{ strtoupper($mp->type->name) }}:</b>&nbsp;{{ $mp->quantity }}M/P&nbsp;({{ $mp->task }})</h6>
-                    @endforeach<br>
+                        <li><b>{{ strtoupper($mp->type->name) }}:</b>&nbsp;{{ $mp->quantity }}M/P&nbsp;({{ $mp->task }})</li>
+                    @endforeach</ul></h6><br>
                     <h6><b>IV. AFTER SALES SERVICE & PARTS</b></h6><br>
-                    <h6><b>V. COMPLIANCE & CERTIFICATIONS</b></h6><br><br>
+                    <h6>{!! $project->service_parts ?? '' !!}</h6>
+                    <h6><b>V. COMPLIANCE & CERTIFICATIONS</b></h6><br>
+                    <h6>{!! $project->certifications ?? '' !!}</h6>
+                    <br>
                     <table class="mt-2">
                         <tr>
                             <td style="width:25%; border: none; padding: 0">Name:</td>
@@ -1070,7 +1090,7 @@
                         </tr>
                         <tr>
                             <td style="width:25%; border: none; padding: 0">Date:</td>
-                            <td style="border: none; padding: 0"></td>
+                            <td style="border: none; padding: 0">{{ date('F d, Y', strtotime($proj->date_awarded)) ?? '' }}</td>
                         </tr>
                     </table>
                     <div class="print-footer">

@@ -102,9 +102,26 @@
         </div>
 
         <div class="col-md-12 mt-3"><hr></div>
+        <div class="col-md-12 mb-3">
+            <h4>Technical Specifications</h4>
+        </div>
 
+        <div class="col-md-12 mb-2">
+            <label>System Components</label>
+            <textarea id="system_components" name="system_components">{{ $data->system_components ?? '' }}</textarea>
+        </div>
 
+        <div class="col-md-12 mb-2">
+            <label>After Sales Service & Parts</label>
+            <textarea id="service_parts" name="service_parts">{{ $data->service_parts ?? '<ul><li><b>WARRANTY:</b></li><li><b>SPARE PARTS:</b></li><li><b>SUPPORT:</b></li></ul>' }}</textarea>
+        </div>
 
+        <div class="col-md-12 mb-2">
+            <label>Compliance and Certifications</label>
+            <textarea id="certifications" name="certifications">{{ $data->certifications ?? '<ul><li>Certificate of Completing</li><li>Testing and Commissioning</li></ul>' }}</textarea>
+        </div>
+
+        <div class="col-md-12 mt-3"><hr></div>
         <div class="col-md-12 mb-3">
             <h4>Other Details</h4>
         </div>
@@ -162,3 +179,25 @@
 </div>
 
 @endsection
+@push('scripts')
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+    .create(document.querySelector('#system_components'))
+    .catch(error => {
+        console.error(error);
+    });
+
+    ClassicEditor
+    .create(document.querySelector('#service_parts'))
+    .catch(error => {
+        console.error(error);
+    });
+
+    ClassicEditor
+    .create(document.querySelector('#certifications'))
+    .catch(error => {
+        console.error(error);
+    });
+</script>
+@endpush
