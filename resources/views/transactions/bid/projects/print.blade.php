@@ -679,7 +679,7 @@
                                                     <td>
                                                         a. <b>{{ $proj->owner_name ?? '' }}</b><br>
                                                         b. <b>{{ $proj->address ?? '' }}</b><br>
-                                                        c. <b>{{ $proj-telephone_no ?? '' }}</b><br>
+                                                        c. <b>{{ $proj->telephone_no ?? '' }}</b><br>
                                                     </td>
                                                     <td>
                                                         {{ $proj->nature_of_work ?? '' }}
