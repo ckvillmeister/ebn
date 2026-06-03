@@ -341,7 +341,7 @@
                                 Project Reference No.:
                             </div>
                             <div class="col-3 border-bottom">
-                                <b>{{ $project->reference_no }}</b>
+                                <b>{{ $project->project_reference_no ?? '' }}</b>
                             </div>
                         </div>
                         <div class="row">
@@ -561,7 +561,7 @@
                                 Project Reference No.:
                             </div>
                             <div class="col-3 border-bottom">
-                                <b>{{ $project->reference_no }}</b>
+                                <b>{{ $project->project_reference_no ?? '' }}</b>
                             </div>
                         </div>
                         <div class="row">
