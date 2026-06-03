@@ -275,6 +275,14 @@ Route::get('/run-seeder', function () {
     return 'Seeders run successfully!';
 });
 
+Route::get('/clear-everything', function() {
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    return "All caches are cleared!";
+});
+
 #Address (For client info creation)
 Route::post('/address/towns/{code}', [AddressController::class, 'towns']);
 Route::post('/address/barangays/{code}', [AddressController::class, 'barangays']);
