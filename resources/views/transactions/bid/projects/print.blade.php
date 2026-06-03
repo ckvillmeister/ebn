@@ -804,11 +804,21 @@
                     @endif
                 @endforeach
             @elseif($page->page_name == "Net Financial Contracting Capacity")
-                <div class="print-page">
-                    <div class="text-center">
-                        <h3><b>NET FINANCIAL CONTRACTING CAPACITY (NFCC)</b></h3>
-                    </div><br>
-                    <h5>A.</h5>
+                @foreach ($attachments as $attachment)
+                    @if ($attachment->name == "NFCC")
+                        @foreach ($attachment->defaultUploads as $upload)
+                            <div class="print-page">
+                                <img class="attachments" src="{{ asset($upload->image_url) }}">
+                                <div class="print-footer">
+                                    <div class="footer-line-black"></div>
+                                    <div class="footer-line-yellow"></div>
+                                    <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+                @endforeach
+                    <!-- <h5>A.</h5>
                     <table class="table table-sm">
                         <thead>
                             <tr>
@@ -843,8 +853,7 @@
                         <div class="footer-line-black"></div>
                         <div class="footer-line-yellow"></div>
                         <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
-                    </div>
-                </div>
+                    </div> -->
             @elseif($page->page_name == "Tax Clearance Certificate")
                 @foreach ($attachments as $attachment)
                     @if ($attachment->name == "Tax Clearance Certificate")
