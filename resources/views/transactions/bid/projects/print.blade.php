@@ -1090,7 +1090,7 @@
                         </tr>
                         <tr>
                             <td style="width:25%; border: none; padding: 0">Date:</td>
-                            <td style="border: none; padding: 0">{{ date('F d, Y', strtotime($proj->date_awarded)) ?? '' }}</td>
+                            <td style="border: none; padding: 0">{{ date('F d, Y') ?? '' }}</td>
                         </tr>
                     </table>
                     <div class="print-footer">
