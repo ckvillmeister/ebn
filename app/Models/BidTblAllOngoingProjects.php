@@ -11,7 +11,7 @@ class BidTblAllOngoingProjects extends Model
     protected $table = 'bid_tbl_all_ongoing_projects';
 
     protected $fillable = [
-        'project_id',
+        // 'project_id',
         'name_of_contract',
         'project_cost',
         'project_type',

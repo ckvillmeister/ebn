@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('bid_tbl_all_ongoing_projects', function (Blueprint $table) {
 
             $table->id();
-            $table->foreignId('project_id')
-                ->constrained('bid_tbl_projects')
-                ->cascadeOnDelete();
+            // $table->foreignId('project_id')
+            //     ->constrained('bid_tbl_projects')
+            //     ->cascadeOnDelete();
             $table->string('name_of_contract');
             $table->double('project_cost', 15, 2)->default(0);
             $table->enum('project_type', ['Government', 'Private']);
