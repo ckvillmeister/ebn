@@ -849,6 +849,7 @@ class BidTransactionController extends Controller
 
             // CREATE NEW
             $record = BidTblAllOngoingProjects::create([
+                'project_id' => $request->project_id,
                 'name_of_contract' => $request->name_of_contract,
                 'project_cost' => $request->project_cost,
                 'owner_name' => $request->owner_name,

@@ -1595,9 +1595,8 @@
 
         $.post(`/transaction/bids/projects/${projectId}/ongoing/store`, {
             _token: $('meta[name="csrf-token"]').attr('content'),
-            project_id: projectId,
             id: $('#record_id').val(),
-
+            project_id: projectId,
             name_of_contract: $('#contract_name').val(),
             project_cost: $('#project_cost').val(),
             project_type: $('#project_type').val(),
