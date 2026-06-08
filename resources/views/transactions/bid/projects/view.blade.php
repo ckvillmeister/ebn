@@ -61,7 +61,7 @@
         </div>
 
         <div class="col-md-6 mt-2">
-            <strong>Project Cost:</strong> {{ $data->project_cost }}
+            <strong>Project Cost:</strong> {{ number_format($data->project_cost, 2) }}
         </div>
 
         <div class="col-md-6 mt-2">
@@ -590,6 +590,8 @@
 
                     <div class="mb-4">
                         <button class="btn btn-success btn-sm" id="btnNewMan"><i class="fas fa-plus mr-2"></i>New</button>
+                        <button class="btn btn-info btn-sm" id="btnAutoAddSPMP"><i class="fas fa-plus mr-2"></i>Auto-Add Solar Project MP</button>
+                        <button class="btn btn-info btn-sm" id="btnAutoAddFSMP"><i class="fas fa-plus mr-2"></i>Auto-Add Fire Suppression MP</button>
                     </div>
 
                     <!-- FORM -->
@@ -1113,6 +1115,28 @@
             $('#man_id').val('');
         });
 
+        $('#btnAutoAddSPMP').click(function () {
+            let url = `/transaction/bids/manpower/autoadd/${projectId}/`;
+
+            $.post(url, {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                project_type: 'solar'
+            }, function () {
+                loadManTable();
+            });
+        });
+
+        $('#btnAutoAddFSMP').click(function () {
+            let url = `/transaction/bids/manpower/autoadd/${projectId}/`;
+
+            $.post(url, {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                project_type: 'fire suppression'
+            }, function () {
+                loadManTable();
+            });
+        });
+
         // EDIT
         $(document).on('click', '.editManBtn', function () {
 
@@ -1549,7 +1573,6 @@
             $('#planned').val(data.percent_planned);
             $('#actual').val(data.percent_actual);
             $('#outstanding').val(data.outstanding_works_value);
-
             $('#ongoingFormPanel').slideDown();
 
         });
@@ -1611,7 +1634,7 @@
             date_of_completion: $('#date_completed').val(),
             planned_percentage: $('#planned').val(),
             actual_percentage: $('#actual').val(),
-            outstanding_works: $('#outstanding').val()
+            outstanding_works: $('#outstanding').val(),
 
         }, function () {
 
@@ -1779,7 +1802,6 @@
             $('#slcc_date_awarded').val(data.date_awarded);
             $('#slcc_effectivity').val(data.contract_effectivity);
             $('#slcc_date_completed').val(data.date_completed);
-
             $('#slccFormPanel').slideDown();
 
         });
@@ -1842,7 +1864,7 @@
             duration: $('#slcc_duration').val(),
             date_awarded: $('#slcc_date_awarded').val(),
             contract_effectivity: $('#slcc_effectivity').val(),
-            date_completed: $('#slcc_date_completed').val()
+            date_completed: $('#slcc_date_completed').val(),
 
         }, function () {
 

@@ -23,6 +23,10 @@
             overflow: hidden;
         }
 
+        .page-content-85 {
+            max-height: 170mm;
+        }
+
         .watermark {
             position: absolute;
             top: 50%;
@@ -232,8 +236,98 @@
 @foreach($tc_pages as $page)
 
         {{-- DYNAMIC PAGE CONTENT --}}
-
-            @if($page->page_name == 'Cover Page')
+            @if($page->page_name == 'Front Page')
+                @if ($page->component_type == 'Technical Components')
+                    <div class="landscape-page">
+                        <div class="row mt-5">
+                            <div class="col-9">
+                                <div class="col-md-12">
+                                    <h4><b>{{ strtoupper($business->name) ?? '' }}</b></h4>
+                                </div>
+                                <div class="col-md-12">
+                                    <h4><b>{{ strtoupper($business->address) ?? '' }}</b></h4>
+                                </div>
+                                <div class="col-md-12">
+                                    <h4><b>{{ strtoupper($business->number) ?? '' }}</b></h4>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="col-md-12">
+                                    <img src="{{ asset($project->agency_logo_url) }}" style="height: 200px;">
+                                </div>
+                                <div class="col-md-12 mt-5 text-center">
+                                    <h4><b>Main Folder</b></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="height: 150px"></div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h1><b>{{ strtoupper($project->project_name) ?? '' }}</b></h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="landscape-page">
+                        <div class="row mt-5">
+                            <div class="col-9">
+                                <div class="col-md-12">
+                                    <h4><b>{{ strtoupper($business->name) ?? '' }}</b></h4>
+                                </div>
+                                <div class="col-md-12">
+                                    <h4><b>{{ strtoupper($business->address) ?? '' }}</b></h4>
+                                </div>
+                                <div class="col-md-12">
+                                    <h4><b>{{ strtoupper($business->number) ?? '' }}</b></h4>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="col-md-12">
+                                    <img src="{{ asset($project->agency_logo_url) }}" style="height: 200px;">
+                                </div>
+                                <div class="col-md-12 mt-5 text-center">
+                                    <h4><b>Technical Documents</b></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="height: 150px"></div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h1><b>{{ strtoupper($project->project_name) ?? '' }}</b></h1>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="landscape-page">
+                        <div class="row mt-5">
+                            <div class="col-9">
+                                <div class="col-md-12">
+                                    <h4><b>{{ strtoupper($business->name) ?? '' }}</b></h4>
+                                </div>
+                                <div class="col-md-12">
+                                    <h4><b>{{ strtoupper($business->address) ?? '' }}</b></h4>
+                                </div>
+                                <div class="col-md-12">
+                                    <h4><b>{{ strtoupper($business->number) ?? '' }}</b></h4>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="col-md-12">
+                                    <img src="{{ asset($project->agency_logo_url) }}" style="height: 200px;">
+                                </div>
+                                <div class="col-md-12 mt-5 text-center">
+                                    <h4><b>Financial Documents</b></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="height: 150px"></div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h1><b>{{ strtoupper($project->project_name) ?? '' }}</b></h1>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @elseif($page->page_name == 'Cover Page')
                 <div class="print-page">
                     <img src="{{ asset($project->agency_logo_url) }}" class="watermark">
                     <div class="row text-center">
@@ -528,7 +622,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-4">Date:</div>
-                                    <div class="col-5 border-bottom text-center">{{ date('F d, Y') }}</div>
+                                    <div class="col-5 border-bottom text-center">{{ date('F d, Y', strtotime($project->aogpc_date_signed)) }}</div>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -727,7 +821,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-4">Date:</div>
-                                    <div class="col-5 border-bottom text-center">{{ date('F d, Y') }}</div>
+                                    <div class="col-5 border-bottom text-center">{{ date('F d, Y', strtotime($project->slcc_date_signed)) }}</div>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -1045,67 +1139,81 @@
                 </div>
             @elseif($page->page_name == "Technical Specifications")
                 <div class="print-page">
-                    <div class="row text-center">
-                        <div class="col-md-12">
-                            <h4><b>{{ strtoupper($page->page_name) }}</b></h4>
+                    <div class="page-content-85">
+                        <div class="row text-center">
+                            <div class="col-md-12">
+                                <h4><b>{{ strtoupper($page->page_name) }}</b></h4>
+                            </div>
                         </div>
-                    </div>
-                    <hr>
-                    <div>
-                        <h6><b>I. SYSTEM COMPONENTS</b></h6><br>
-                        {!! $project->system_components ?? '' !!}
-                    </div>
-                    <div class="print-footer">
-                        <div class="footer-line-black"></div>
-                        <div class="footer-line-yellow"></div>
-                        <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
+                        <hr>
+                        <div>
+                            <h6><b>I. SYSTEM COMPONENTS</b></h6><br>
+                            <div style="font-size: 8pt !important">{!! $project->system_components ?? '' !!}</div>
+                        </div>
+                        <div class="print-footer">
+                            <div class="footer-line-black"></div>
+                            <div class="footer-line-yellow"></div>
+                            <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
+                        </div>
                     </div>
                 </div>
                 <div class="print-page">
-                    <h6><b>II. PRODUCTION & DELIVERY SCHEDULE</b></h6><br>
+                    <div class="page-content-85">
+                        <h6><b>II. PRODUCTION & DELIVERY SCHEDULE</b></h6><br>
 
-                    <h6><ul>
-                    @foreach ($delivery as $dl)
-                        <li><b>{{ $dl->description }}:</b>&nbsp;{{ $dl->schedule }}&nbsp;({{ $dl->remarks }})</li>
-                    @endforeach</ul></h6><br>
+                        <h6><ul>
+                        @foreach ($delivery as $dl)
+                            <li><b>{{ $dl->description }}:</b>&nbsp;{{ $dl->schedule }}&nbsp;({{ $dl->remarks }})</li>
+                        @endforeach</ul></h6><br>
 
-                    <h6><b>III. MAN-POWER REQUIREMENTS</b></h6><br>
-                    <h6><ul>
-                    @php ($ctr = 1)
-                    @foreach ($manpower as $mp)
-                        <li><b>{{ strtoupper($mp->type->name) }}:</b>&nbsp;{{ $mp->quantity }}M/P&nbsp;({{ $mp->task }})</li>
-                    @endforeach</ul></h6><br>
-                    <h6><b>IV. AFTER SALES SERVICE & PARTS</b></h6><br>
-                    <h6>{!! $project->service_parts ?? '' !!}</h6>
-                    <h6><b>V. COMPLIANCE & CERTIFICATIONS</b></h6><br>
-                    <h6>{!! $project->certifications ?? '' !!}</h6>
-                    <br>
-                    <table class="mt-2">
-                        <tr>
-                            <td style="width:25%; border: none; padding: 0">Name:</td>
-                            <td style="border: none; padding: 0"><b>{{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}</b></td>
-                        </tr>
-                        <tr>
-                            <td style="width:25%; border: none; padding: 0">Legal Capacity:</td>
-                            <td style="border: none; padding: 0"><b>CHIEF EXECUTIVE OFFICER (CEO)</b></td>
-                        </tr>
-                        <tr>
-                            <td style="width:25%; border: none; padding: 0">Signature:</td>
-                            <td style="border: none; padding: 0"></td>
-                        </tr>
-                        <tr>
-                            <td style="width:25%; border: none; padding: 0">Duly authorized to sign the Bid for and behalf of:</td>
-                            <td style="border: none; padding: 0"><b>EBN ENTERPRISES</b></td>
-                        </tr>
-                        <tr>
-                            <td style="width:25%; border: none; padding: 0">Date:</td>
-                            <td style="border: none; padding: 0">{{ date('F d, Y') ?? '' }}</td>
-                        </tr>
-                    </table>
-                    <div class="print-footer">
-                        <div class="footer-line-black"></div>
-                        <div class="footer-line-yellow"></div>
-                        <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
+                        <h6><b>III. MAN-POWER REQUIREMENTS</b></h6><br>
+                        <h6><ul>
+                        @php ($ctr = 1)
+                        @foreach ($manpower as $mp)
+                            <li><b>{{ strtoupper($mp->type->name) }}:</b>&nbsp;{{ $mp->quantity }}M/P&nbsp;({{ $mp->task }})</li>
+                        @endforeach</ul></h6><br>
+                        <div class="print-footer">
+                            <div class="footer-line-black"></div>
+                            <div class="footer-line-yellow"></div>
+                            <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
+                        </div>
+                    </div>
+                </div>
+                <div class="print-page">
+                    <div class="page-content-85">
+                        <h6><b>IV. AFTER SALES SERVICE & PARTS</b></h6><br>
+                        @php ($service_parts = strtr(($project->service_parts ?? ''), ['{warranty}' => $project->fc_warranty]))
+                        <h6>{!! $service_parts !!}</h6>
+                        <h6><b>V. COMPLIANCE & CERTIFICATIONS</b></h6><br>
+                        <h6>{!! $project->certifications ?? '' !!}</h6>
+                        <br>
+                        <table class="mt-2">
+                            <tr>
+                                <td style="width:25%; border: none; padding: 0">Name:</td>
+                                <td style="border: none; padding: 0"><b>{{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}</b></td>
+                            </tr>
+                            <tr>
+                                <td style="width:25%; border: none; padding: 0">Legal Capacity:</td>
+                                <td style="border: none; padding: 0"><b>CHIEF EXECUTIVE OFFICER (CEO)</b></td>
+                            </tr>
+                            <tr>
+                                <td style="width:25%; border: none; padding: 0">Signature:</td>
+                                <td style="border: none; padding: 0"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:25%; border: none; padding: 0">Duly authorized to sign the Bid for and behalf of:</td>
+                                <td style="border: none; padding: 0"><b>EBN ENTERPRISES</b></td>
+                            </tr>
+                            <tr>
+                                <td style="width:25%; border: none; padding: 0">Date:</td>
+                                <td style="border: none; padding: 0">{{ date('F d, Y') ?? '' }}</td>
+                            </tr>
+                        </table>
+                        <div class="print-footer">
+                            <div class="footer-line-black"></div>
+                            <div class="footer-line-yellow"></div>
+                            <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
+                        </div>
                     </div>
                 </div>
             @elseif($page->page_name == "Organizational Chart")
@@ -1407,6 +1515,112 @@
                         <b>CONTACT NO.: {{ strtoupper($business->number) }}</b><br>
                         <b>EMAIL ADDRESS: elnuez2003@gmail.com</b><br>
                         </p>
+                        <div class="print-footer">
+                            <div class="footer-line-black"></div>
+                            <div class="footer-line-yellow"></div>
+                            <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
+                        </div>
+                    </div>
+                </div>
+            @elseif($page->page_name == "Bid Forms for the Procurement of Goods")
+                <div class="print-page">
+                    <div class="row text-center">
+                        <div class="col-md-12">
+                            <h4><b>{{ strtoupper($page->page_name) }}</b></h4>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-center"><h4><b>BID FORM</b></h4></div>
+                    <div class="row">
+                        <div class="col-6"></div>
+                        <div class="col-6">
+                            Date: <b>{{ date('F d, Y') }}</b><br>
+                            Project Identification No: <b>{{ $project->project_identification_no ?? '' }}</b>
+                        </div>
+                    </div><br>
+                    <div>
+                        <p><b><em>
+                            To: {{ $project->project_name }} @ {{ $project->address }}
+                        </em></b></p>
+                    </div>
+                    <div>
+                        <p style="text-align: justify;">
+                            Having examined the Philippine Bidding Documents (PBDs) including the
+                            Supplemental or Bid Bulletin Numbers, the receipt of which is hereby duly acknowledged, we,
+                            the undersigned, offer to supply and deliver the following with the details below
+                        </p>
+                    </div>
+                        <table class="table table-sm table-bordered w-100" id="powTable" style="font-size: 8pt !important">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Item No.</th>
+                                    <th class="text-center">Description of Articles</th>
+                                    <th class="text-center">Brand Offered / <br>Country of Origin</th>
+                                    <th class="text-center">Qty / Units</th>
+                                    <th class="text-center">Unit Price</th>
+                                    <th class="text-center">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @php ($ctr = 1)
+                            @php ($total = 0.0)
+                            @foreach ($bill_of_materials as $bm)
+                                <tr>
+                                    <td class="text-center">{{ $ctr++ }}</td>
+                                    <td>{{ $bm->description }}</td>
+                                    <td class="text-center">Philippines</td>
+                                    <td class="text-center">{{ $bm->quantity }} / {{ $bm->unit }}</td>
+                                    <td class="text-right">{{ number_format($bm->unit_cost, 2) }}</td>
+                                    <td class="text-right">{{ number_format(($bm->unit_cost * $bm->quantity), 2) }}</td>
+                                    @php ($total += ($bm->unit_cost * $bm->quantity))
+                                </tr>
+                            @endforeach
+                            </tbody>
+                            <tfooter>
+                                <tr>
+                                    <td colspan = "5" class="text-right">Grand Total Cost</td>
+                                    <td class="text-right">{{ number_format($total, 2) }}</td>
+                                </tr>
+                            </tfooter>
+                        </table>
+                        <div class="print-footer">
+                            <div class="footer-line-black"></div>
+                            <div class="footer-line-yellow"></div>
+                            <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
+                        </div>
+                    </div>
+                    <div class="print-page">
+                        <p style="text-align: justify;">
+                            @php ($formatter = new \NumberFormatter('en', \NumberFormatter::SPELLOUT))
+                            In conformity with the said PBDs for the sum of <b>{{ ucwords($formatter->format($total ?? 0)) }}</b> or the
+                            total calculated bid price, as evaluated and corrected for computational errors, and other bid
+                            modifications in accordance with the Price Schedules attached herewith and made part of this
+                            Bid. The total bid price includes the cost of all taxes, such as, but not limited to: (i) value added
+                            tax (VAT), (ii) income tax, (iii) local taxes, and (iv) other fiscal levies and duties, which are
+                            itemized herein or in the Price Schedules,
+                        </p>
+                        <p style="text-align: justify;">
+                            If our Bid is accepted, we undertake:
+                            <ol type="a">
+                                <li>to deliver the goods in accordance with the delivery schedule specified in the Schedule of Requirements of the Philippine Bidding Documents (PBDs);</li>
+                                <li>to provide a performance security in the form, amounts, and within the times prescribed in the PBDs;</li>
+                                <li>to abide by the Bid Validity Period specified in the PBDs and it shall remain binding upon us at any time before the expiration of that period.</li>
+                            </ol>
+                        </p>
+                        <p style="text-align: justify;">
+                            Until a formal Contract is prepared and executed, this Bid, together with your written acceptance thereof and your Notice of Award, shall be binding upon us.<br><br>
+                            We understand that you are not bound to accept the Lowest Calculated Bid or any Bid you may receive.<br><br>
+                            We certify/confirm that we comply with the eligibility requirements pursuant to the PBDs.<br><br>
+                            The undersigned is authorized to submit the bid on behalf of EBN ENTERPRISES as evidenced by the attached.<br><br>
+                            We acknowledge that failure to sign each and every page of this Bid Form, including the attached Schedule of Prices, shall be a ground for the rejection of our bid.<br>
+                        </p>
+                        <br><br><br>
+
+                        Name: <b>{{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}</b><br>
+                        Legal Capacity: <b>PROPRIETOR</b><br>
+                        Signature: __________________________<br>
+                        Duly authorized to sign the Bid for and behalf of: <b>{{ $business->name ?? '' }}</b><br>
+                        Date: <b>{{ date('F d, Y') }}</b>
                         <div class="print-footer">
                             <div class="footer-line-black"></div>
                             <div class="footer-line-yellow"></div>

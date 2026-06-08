@@ -325,7 +325,19 @@ class BidTransactionController extends Controller
 
     public function projectStore(Request $request)
     {
+        $request->merge([
+            'project_cost' => str_replace(',', '', $request->project_cost)
+        ]);
+
+        $request->validate([
+            'project_cost' => 'required',
+            'agency_logo_url' => 'nullable|image'
+        ]);
+
         $data = $request->all();
+
+        // Remove commas from project_cost
+        //$data['project_cost'] = str_replace(',', '', $request->project_cost);
 
         if ($request->hasFile('agency_logo_url')) {
             $file = $request->file('agency_logo_url');
@@ -614,6 +626,38 @@ class BidTransactionController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function manPowerAutoAdd($projectid, Request $request)
+    {
+        $solar_mp = [['man_power_type_id' => 1, 'quantity' => 1, 'task' => "Oversee timeline and compliance"],
+        ['man_power_type_id' => 2, 'quantity' => 1, 'task' => "System Design"],
+        ['man_power_type_id' => 3, 'quantity' => 3, 'task' => "Installation, wiring and commissioning"],
+        ['man_power_type_id' => 4, 'quantity' => 3, 'task' => "Pole foundation, concrete works"],
+        ['man_power_type_id' => 5, 'quantity' => 1, 'task' => "Inspect materials and final installation"]];
+
+        $firesup_mp = [['man_power_type_id' => 1, 'quantity' => 1, 'task' => "Overall supervision and coordination of project activities"],
+        ['man_power_type_id' => 6, 'quantity' => 1, 'task' => "Procurement, supplier coordination and documentation"],
+        ['man_power_type_id' => 7, 'quantity' => 2, 'task' => "Receiving, inspection, storage, and preparation of units"],
+        ['man_power_type_id' => 8, 'quantity' => 1, 'task' => "Inspection and verification of product specifications"],
+        ['man_power_type_id' => 9, 'quantity' => 1, 'task' => "Transportation and delivery of fire extinguishers"],
+        ['man_power_type_id' => 10, 'quantity' => 2, 'task' => "Loading, unloading and installation assistance"],
+        ['man_power_type_id' => 11, 'quantity' => 1, 'task' => "Documentation, reports and turnover requirements"]];
+
+        if ($request->project_type == 'solar'){
+            foreach ($solar_mp as $item){
+                $item['project_id'] = $projectid;
+                $item['created_at'] = now();
+                BidTblManPowerRequirement::create($item);
+            }
+        }
+        else{
+            foreach ($firesup_mp as $item){
+                $item['project_id'] = $projectid;
+                $item['created_at'] = now();
+                BidTblManPowerRequirement::create($item);
+            }
+        }
+    }
     //End Man-Power Requirements Module
 
     //Start Tools & Equipment Module
@@ -843,6 +887,7 @@ class BidTransactionController extends Controller
                 'planned_percentage' => $request->planned_percentage,
                 'actual_percentage' => $request->actual_percentage,
                 'outstanding_works' => $request->outstanding_works,
+                'date_signed' => $request->date_signed
             ]);
 
         } else {
@@ -865,6 +910,7 @@ class BidTransactionController extends Controller
                 'planned_percentage' => $request->planned_percentage,
                 'actual_percentage' => $request->actual_percentage,
                 'outstanding_works' => $request->outstanding_works,
+                'date_signed' => $request->date_signed
             ]);
         }
 
@@ -971,7 +1017,7 @@ class BidTransactionController extends Controller
                 'date_awarded' => $request->date_awarded,
                 'contract_effectivity' => $request->contract_effectivity,
                 'date_completed' => $request->date_completed,
-
+                'date_signed' => $request->date_signed
             ]);
 
         } else {
@@ -994,7 +1040,7 @@ class BidTransactionController extends Controller
                 'date_awarded' => $request->date_awarded,
                 'contract_effectivity' => $request->contract_effectivity,
                 'date_completed' => $request->date_completed,
-
+                'date_signed' => $request->date_signed
             ]);
         }
 

@@ -47,6 +47,8 @@ return new class extends Migration
             $table->string('fc_warranty_calendar_days', 20)->nullable();
             $table->string('fc_product_to_be_supplied', 1000)->nullable();
             $table->string('fc_warranty')->nullable();
+            $table->date('aogpc_date_signed')->nullable();
+            $table->date('slcc_date_signed')->nullable();
 
             $table->timestamps();
 

@@ -127,6 +127,7 @@ Route::middleware('auth')->group(function () {
         Route::post('projects/{project}/manpower/store', [BidTransactionController::class, 'manpowerStore']);
         Route::post('manpower/update/{id}', [BidTransactionController::class, 'manpowerUpdate']);
         Route::delete('manpower/delete/{id}', [BidTransactionController::class, 'manpowerDelete']);
+        Route::post('manpower/autoadd/{id}', [BidTransactionController::class, 'manPowerAutoAdd']);
 
         Route::get('projects/{project}/tools-equipments', [BidTransactionController::class, 'teIndex']);
         Route::post('projects/{project}/tools-equipments/store', [BidTransactionController::class, 'teStore']);

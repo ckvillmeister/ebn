@@ -11,6 +11,7 @@ class BidTblPagesSeeder extends Seeder
         $data = [
 
             // TECHNICAL COMPONENTS
+            ['page_name' => 'Front Page', 'component_type' => 'Technical Components', 'order' => 1],
             ['page_name' => 'Cover Page', 'component_type' => 'Technical Components', 'order' => 1],
             ['page_name' => 'DTI', 'component_type' => 'Technical Components', 'order' => 2],
             ['page_name' => 'PhilGEPS', 'component_type' => 'Technical Components', 'order' => 3],
@@ -40,6 +41,7 @@ class BidTblPagesSeeder extends Seeder
             ['page_name' => 'Cash Flow', 'component_type' => 'Financial Components', 'order' => 4],
             ['page_name' => 'Warranty and Price Validity', 'component_type' => 'Financial Components', 'order' => 5],
             ['page_name' => 'Brochure', 'component_type' => 'Financial Components', 'order' => 6],
+            ['page_name' => 'Bid Forms for the Procurement of Goods', 'component_type' => 'Financial Components', 'order' => 7]
         ];
 
         foreach ($data as &$item) {
