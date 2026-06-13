@@ -115,6 +115,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('project-template.index') }}"  class="{{ (request()->segment(3)==='project-template') ? 'mm-active' : '' }}">
+                                <i class="metismenu-icon"></i>
+                                Project Template
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('pages.index') }}"  class="{{ (request()->segment(3)==='pages') ? 'mm-active' : '' }}">
                                 <i class="metismenu-icon"></i>
                                 Manage Pages

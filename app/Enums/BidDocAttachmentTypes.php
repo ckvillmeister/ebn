@@ -15,6 +15,7 @@ final class BidDocAttachmentTypes extends Enum
         1 => 'Notice to Proceed',
         2 => 'Notice of Awards',
         3 => 'Notice to Bidders',
-        4 => 'Certificate from Project Proponent'
+        4 => 'Certificate from Project Proponent',
+        5 => 'Receipts'
     ];
 }

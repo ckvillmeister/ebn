@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('contact_no', 20)->nullable();
 
-            $table->string('system_components', 2000)->nullable();
-            $table->string('service_parts', 2000)->nullable();
+            $table->string('system_components', 5000)->nullable();
+            $table->string('service_parts', 5000)->nullable();
             $table->string('certifications', 2000)->nullable();
             // $table->string('nature_of_work', 500)->nullable();
             // $table->string('bidder_role_desc', 500)->nullable();

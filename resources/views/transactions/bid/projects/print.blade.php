@@ -524,7 +524,7 @@
                                                 <tr>
                                                     <td>
                                                         Name of Contract: <b>{{ $proj->name_of_contract ?? '' }}</b><br>
-                                                        Project Cost: <b>{{ $proj->project_cost ?? '' }}</b><br>
+                                                        Project Cost: <b>{{ number_format($proj->project_cost, 2) ?? '' }}</b><br>
                                                     </td>
                                                     <td>
                                                         a. <b>{{ $proj->owner_name ?? '' }}</b><br>
@@ -565,7 +565,7 @@
                                             <tr>
                                                     <td>
                                                         Name of Contract: <b>{{ $proj->name_of_contract ?? '' }}</b><br>
-                                                        Project Cost: <b>{{ $proj->project_cost ?? '' }}</b><br>
+                                                        Project Cost: <b>{{ number_format($proj->project_cost, 2) ?? '' }}</b><br>
                                                     </td>
                                                     <td>
                                                         a. <b>{{ $proj->owner_name ?? '' }}</b><br>

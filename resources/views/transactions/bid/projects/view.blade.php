@@ -212,7 +212,7 @@
 
                                 <div class="col-md-6">
                                     <label>Project Cost</label>
-                                    <input type="number" class="form-control" id="project_cost">
+                                    <input type="text" class="form-control" id="project_cost">
                                 </div>
 
                                 <div class="col-md-6 mt-3">
@@ -348,7 +348,7 @@
 
                                 <div class="col-md-6">
                                     <label>Project Cost</label>
-                                    <input type="number" class="form-control" id="slcc_project_cost">
+                                    <input type="text" class="form-control" id="slcc_project_cost">
                                 </div>
 
                                 <div class="col-md-6 mt-3">
@@ -849,6 +849,60 @@
 
 @push('scripts')
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('project_cost');
+
+        input.addEventListener('input', function () {
+            let value = this.value.replace(/,/g, '');
+
+            // Allow only numbers and one decimal point
+            value = value.replace(/[^\d.]/g, '');
+            value = value.replace(/(\..*)\./g, '$1');
+
+            if (value !== '') {
+                const parts = value.split('.');
+                parts[0] = Number(parts[0]).toLocaleString('en-US');
+
+                this.value = parts.length > 1
+                    ? parts[0] + '.' + parts[1]
+                    : parts[0];
+            }
+        });
+
+        // Remove commas before form submission
+        input.form.addEventListener('submit', function () {
+            input.value = input.value.replace(/,/g, '');
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('slcc_project_cost');
+
+        input.addEventListener('input', function () {
+            let value = this.value.replace(/,/g, '');
+
+            // Allow only numbers and one decimal point
+            value = value.replace(/[^\d.]/g, '');
+            value = value.replace(/(\..*)\./g, '$1');
+
+            if (value !== '') {
+                const parts = value.split('.');
+                parts[0] = Number(parts[0]).toLocaleString('en-US');
+
+                this.value = parts.length > 1
+                    ? parts[0] + '.' + parts[1]
+                    : parts[0];
+            }
+        });
+
+            // Remove commas before form submission
+        input.form.addEventListener('submit', function () {
+            input.value = input.value.replace(/,/g, '');
+        });
+    });
+</script>
+<script>
+
     let loadedTabs = {
         aogpc: false,
         delivery: false,

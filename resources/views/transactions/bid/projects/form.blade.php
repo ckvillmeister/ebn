@@ -113,8 +113,11 @@
             <label>Project Template</label>
             <select id="project_template" class="form-control">
                 <option value=""></option>
-                <option value="solar">Solar Project</option>
-                <option value="fire">Fire Suppression</option>
+                @foreach($templates as $template)
+                    <option value="{{ $template->id }}">
+                        {{ $template->template_name }}
+                    </option>
+                @endforeach
             </select>
         </div>
 
@@ -204,24 +207,46 @@
 @push('scripts')
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const input = document.getElementById('project_cost');
+    $('#project_template').change(function(){
+    let id = $(this).val();
+    if(id == '') return;
+    $.get('/transaction/bids/project-template/load/' + id, function(data){
 
-    input.addEventListener('input', function () {
-        let value = this.value.replace(/,/g, '');
+        systemEditor.setData(
+            data.system_components ?? ''
+        );
 
-        // Allow only numbers and one decimal point
-        value = value.replace(/[^\d.]/g, '');
-        value = value.replace(/(\..*)\./g, '$1');
+        serviceEditor.setData(
+            data.service_parts ?? ''
+        );
 
-        if (value !== '') {
-            const parts = value.split('.');
-            parts[0] = Number(parts[0]).toLocaleString('en-US');
+        certEditor.setData(
+            data.certifications ?? ''
+        );
 
-            this.value = parts.length > 1
-                ? parts[0] + '.' + parts[1]
-                : parts[0];
-        }
+    });
+
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('project_cost');
+
+        input.addEventListener('input', function () {
+            let value = this.value.replace(/,/g, '');
+
+            // Allow only numbers and one decimal point
+            value = value.replace(/[^\d.]/g, '');
+            value = value.replace(/(\..*)\./g, '$1');
+
+            if (value !== '') {
+                const parts = value.split('.');
+                parts[0] = Number(parts[0]).toLocaleString('en-US');
+
+                this.value = parts.length > 1
+                    ? parts[0] + '.' + parts[1]
+                    : parts[0];
+            }
     });
 
     // Remove commas before form submission

@@ -100,6 +100,12 @@ Route::middleware('auth')->group(function () {
         Route::get('projects/toggle/{id}', [BidTransactionController::class, 'projectToggle'])->name('projects.toggle');
         Route::delete('/projects/trash/{id}', [BidTransactionController::class, 'trash'])->name('projects.trash');
         Route::post('/projects/restore/{id}', [BidTransactionController::class, 'restore'])->name('projects.restore');
+        Route::get(
+            '/project-template/load/{id}',
+            function ($id) {
+                return \App\Models\ProjectTemplate::findOrFail($id);
+            }
+        );
 
         Route::get('projects/{projectId}/ongoing/list', [BidTransactionController::class, 'ongoingList']);
         Route::post('projects/{projectId}/ongoing/store', [BidTransactionController::class, 'storeOrUpdateOngoing']);
@@ -165,6 +171,14 @@ Route::middleware('auth')->group(function () {
         Route::post('tools-equipments/store', [BidTransactionController::class, 'equipmentStore'])->name('equipment.store');
         Route::post('tools-equipments/update/{id}', [BidTransactionController::class, 'equipmentUpdate']);
         Route::get('tools-equipments/toggle/{id}', [BidTransactionController::class, 'equipmentToggle']);
+
+        #Bid Documents - Project Template
+        Route::get('project-template', [BidTransactionController::class, 'projectTemplateIndex'])->name('project-template.index');
+        Route::get('project-template/create', [BidTransactionController::class, 'projectTemplateCreate'])->name('project-template.create');
+        Route::post('project-template/store', [BidTransactionController::class, 'projectTemplateStore'])->name('project-template.store');
+        Route::get('project-template/edit/{id}', [BidTransactionController::class, 'projectTemplateEdit'])->name('project-template.edit');
+        Route::post('project-template/update/{projectTemplate}', [BidTransactionController::class, 'projectTemplateUpdate'])->name('project-template.update');
+        Route::get('project-template/delete/{id}', [BidTransactionController::class, 'projectTemplateDestroy'])->name('project-template.destroy');
 
         #Bid Documents - Manage Pages
         Route::get('/pages/sequencing', [BidTransactionController::class, 'pagesSequencing'])->name('pages.index');

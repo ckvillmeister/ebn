@@ -18,6 +18,7 @@ use App\Models\Settings;
 use App\Models\Signatory;
 use App\Models\BidTblAllOngoingProjects;
 use App\Models\BidTblSingleLargestContracts;
+use App\Models\ProjectTemplate;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DataTables;
@@ -320,7 +321,8 @@ class BidTransactionController extends Controller
 
     public function projectCreate()
     {
-        return view('transactions.bid.projects.form');
+        $templates = ProjectTemplate::orderBy('template_name')->get();
+        return view('transactions.bid.projects.form', compact('templates'));
     }
 
     public function projectStore(Request $request)
@@ -1111,6 +1113,63 @@ class BidTransactionController extends Controller
         ]);
     }
     //End Page Sequencing
+
+    //Start Project Template Module
+    public function projectTemplateIndex()
+    {
+        $templates = ProjectTemplate::orderBy('template_name')->get();
+
+        return view('transactions.bid.project-template.index', compact('templates'));
+    }
+
+    public function projectTemplateCreate()
+    {
+        return view('transactions.bid.project-template.create');
+    }
+
+    public function projectTemplateStore(Request $request)
+    {
+        $request->validate([
+            'template_name' => 'required|max:255'
+        ]);
+
+        ProjectTemplate::create($request->all());
+
+        return redirect()
+            ->route('project-template.index')
+            ->with('success', 'Template created successfully.');
+    }
+
+    public function projectTemplateEdit($id)
+    {
+        $projectTemplate = ProjectTemplate::findOrFail($id);
+        return view(
+            'transactions.bid.project-template.edit',
+            compact('projectTemplate')
+        );
+    }
+
+    public function projectTemplateUpdate(Request $request, ProjectTemplate $projectTemplate)
+    {
+        $request->validate([
+            'template_name' => 'required|max:255'
+        ]);
+
+        $projectTemplate->update($request->all());
+
+        return redirect()
+            ->route('project-template.index')
+            ->with('success', 'Template updated successfully.');
+    }
+
+    public function projectTemplateDestroy(ProjectTemplate $projectTemplate)
+    {
+        $projectTemplate->delete();
+
+        return back()
+            ->with('success', 'Template deleted successfully.');
+    }
+    //End Project Template Module
 
     //Print Bid Docs
     public function printBidDocs($id, $component)
