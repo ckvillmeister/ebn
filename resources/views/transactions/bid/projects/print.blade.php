@@ -1678,14 +1678,14 @@
                 </div>
             @elseif($page->page_name == "Warranty and Price Validity")
                 <div class="print-page">
-                    <div class="row d-print-flex">
+                    <div class="row d-print-flex mb-1">
                         <div class="col-1">
                             <br><br><br><br><br>
                             <img src="{{ asset('images/ebn.png') }}" style="margin-left: 30%; height: 100px">
                         </div>
                         <div class="col-10">
                             <div class="text-center">
-                                <p style="font-size: 8pt">
+                                <p style="font-size: 7pt">
                                     <h2 style="color: red"><b>{{ strtoupper($business->name) }}</b></h2>
                                     {{ $business->address }}<br>
                                     Location: {{ $business->location }}<br>
@@ -1699,15 +1699,14 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="col-1"></div>
-                    </div><br>
+                    </div>
                     <div class="row text-center">
                         <div class="col-md-12">
                             <h6><b>WARRANTY AND PRICE VALIDITY DECLARATION</b></h6>
                         </div>
                     </div>
                     @php ($formatter = new \NumberFormatter('en', \NumberFormatter::SPELLOUT))
-                    <p style="text-align: justify;">To Whom It May Concern:<br><br>
+                    <p style="text-align: justify; font-size: 9.5pt">To Whom It May Concern:<br><br>
                     In connection with our submitted bid for the <b>{{ $project->project_name ?? '' }}, {{ $project->agency_name ?? '' }}, {{ $project->address ?? '' }}</b>,
                     we hereby declare and certify the following:<br><br>
                     1. <b>Price Validity</b><br><br>
