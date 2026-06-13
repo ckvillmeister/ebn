@@ -358,8 +358,8 @@ class BidTransactionController extends Controller
     public function projectEdit($id)
     {
         $data = BidTblProject::findOrFail($id);
-
-        return view('transactions.bid.projects.form', compact('data'));
+        $templates = ProjectTemplate::orderBy('template_name')->get();
+        return view('transactions.bid.projects.form', compact('data', 'templates'));
     }
 
     public function projectUpdate(Request $request, $id)
