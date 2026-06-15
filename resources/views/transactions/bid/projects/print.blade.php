@@ -541,15 +541,15 @@
                                                         {{ $proj->bidder_role_percentage ?? '' }}
                                                     </td>
                                                     <td>
-                                                        a. <b>{{ date('F d, Y', strtotime($proj->date_awarded)) ?? '' }}</b><br>
-                                                        b. <b>{{ date('F d, Y', strtotime($proj->date_started)) ?? '' }}</b><br>
-                                                        c. <b>{{ date('F d, Y', strtotime($proj->date_of_completion)) ?? '' }}</b><br>
+                                                        a. <b>{{ $proj->date_awarded ? date('F d, Y', strtotime($proj->date_awarded)) : '' }}</b><br>
+                                                        b. <b>{{ $proj->date_started ? date('F d, Y', strtotime($proj->date_started)) : '' }}</b><br>
+                                                        c. <b>{{ $proj->date_of_completion ? date('F d, Y', strtotime($proj->date_of_completion)) : '' }}</b><br>
                                                     </td>
                                                     <td>
                                                         {{ $proj->planned_percentage ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {{ $proj->actualt_percentage ?? '' }}
+                                                        {{ $proj->actual_percentage ?? '' }}
                                                     </td>
                                                     <td>
                                                         {{ $proj->outstanding_works ?? '' }}
@@ -582,15 +582,15 @@
                                                         {{ $proj->bidder_role_percentage ?? '' }}
                                                     </td>
                                                     <td>
-                                                        a. <b>{{ date('F d, Y', strtotime($proj->date_awarded)) ?? '' }}</b><br>
-                                                        b. <b>{{ date('F d, Y', strtotime($proj->date_started)) ?? '' }}</b><br>
-                                                        c. <b>{{ date('F d, Y', strtotime($proj->date_of_completion)) ?? '' }}</b><br>
+                                                        a. <b>{{ $proj->date_awarded ? date('F d, Y', strtotime($proj->date_awarded)) : '' }}</b><br>
+                                                        b. <b>{{ $proj->date_started ? date('F d, Y', strtotime($proj->date_started)) : '' }}</b><br>
+                                                        c. <b>{{ $proj->date_of_completion ? date('F d, Y', strtotime($proj->date_of_completion)) : '' }}</b><br>
                                                     </td>
                                                     <td>
                                                         {{ $proj->planned_percentage ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {{ $proj->actualt_percentage ?? '' }}
+                                                        {{ $proj->actual_percentage ?? '' }}
                                                     </td>
                                                     <td>
                                                         {{ $proj->outstanding_works ?? '' }}
