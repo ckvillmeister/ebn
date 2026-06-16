@@ -392,12 +392,12 @@
 
                                 <div class="col-md-6 mt-3">
                                     <label>Amount of Award</label>
-                                    <input type="number" class="form-control" id="slcc_award">
+                                    <input type="text" class="form-control" id="slcc_award">
                                 </div>
 
                                 <div class="col-md-6 mt-3">
                                     <label>Amount of Completion</label>
-                                    <input type="number" class="form-control" id="slcc_completion">
+                                    <input type="text" class="form-control" id="slcc_completion">
                                 </div>
 
                                 <div class="col-md-6 mt-3">
@@ -850,56 +850,53 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const input = document.getElementById('project_cost');
+
+    function formatCurrencyInput(id) {
+        const input = document.getElementById(id);
+
+        if (!input) return;
 
         input.addEventListener('input', function () {
             let value = this.value.replace(/,/g, '');
 
-            // Allow only numbers and one decimal point
             value = value.replace(/[^\d.]/g, '');
             value = value.replace(/(\..*)\./g, '$1');
 
-            if (value !== '') {
-                const parts = value.split('.');
-                parts[0] = Number(parts[0]).toLocaleString('en-US');
-
-                this.value = parts.length > 1
-                    ? parts[0] + '.' + parts[1]
-                    : parts[0];
+            if (value === '') {
+                this.value = '';
+                return;
             }
+
+            let parts = value.split('.');
+
+            // SAFE thousand separator (NO Number())
+            parts[0] = parts[0]
+                .replace(/^0+(?=\d)/, '')
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            this.value = parts.length > 1
+                ? parts[0] + '.' + parts[1]
+                : parts[0];
         });
 
-        // Remove commas before form submission
-        input.form.addEventListener('submit', function () {
-            input.value = input.value.replace(/,/g, '');
-        });
-    });
+        const form = input.closest('form');
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const input = document.getElementById('slcc_project_cost');
+        if (form) {
+            form.addEventListener('submit', function () {
+                input.value = input.value.replace(/,/g, '');
+            }, true);
+        }
+    }
 
-        input.addEventListener('input', function () {
-            let value = this.value.replace(/,/g, '');
+    // Form 1
+    formatCurrencyInput('project_cost');
 
-            // Allow only numbers and one decimal point
-            value = value.replace(/[^\d.]/g, '');
-            value = value.replace(/(\..*)\./g, '$1');
+    // Form 2
+    formatCurrencyInput('slcc_project_cost');
+    formatCurrencyInput('slcc_award');
+    formatCurrencyInput('slcc_completion');
 
-            if (value !== '') {
-                const parts = value.split('.');
-                parts[0] = Number(parts[0]).toLocaleString('en-US');
-
-                this.value = parts.length > 1
-                    ? parts[0] + '.' + parts[1]
-                    : parts[0];
-            }
-        });
-
-            // Remove commas before form submission
-        input.form.addEventListener('submit', function () {
-            input.value = input.value.replace(/,/g, '');
-        });
-    });
+});
 </script>
 <script>
 
