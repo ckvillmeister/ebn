@@ -644,6 +644,19 @@
                         <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
                     </div>
                 </div>
+                <!-- AOGPC Attachments -->
+                @foreach ($project_attachments as $attachment)
+                    @if ($attachment->category == 'AOGPC')
+                        <div class="print-page">
+                            <img class="attachments" src="{{ asset($attachment->image_url) }}">
+                            <div class="print-footer">
+                                <div class="footer-line-black"></div>
+                                <div class="footer-line-yellow"></div>
+                                <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
             @elseif($page->page_name == "Statement of Single Largest Completed Contract")
                 <div class="landscape-page">
                     <div style="font-size: 8pt !important">
@@ -843,9 +856,22 @@
                         <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
                     </div>
                 </div>
+                <!-- SLCC Attachments -->
+                @foreach ($project_attachments as $attachment)
+                    @if ($attachment->category == 'SLCC')
+                        <div class="print-page">
+                            <img class="attachments" src="{{ asset($attachment->image_url) }}">
+                            <div class="print-footer">
+                                <div class="footer-line-black"></div>
+                                <div class="footer-line-yellow"></div>
+                                <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
             @elseif($page->page_name == "Notice to Proceed")
                 @foreach ($project_attachments as $attachment)
-                    @if ($attachment->attachment_type == 1)
+                    @if ($attachment->attachment_type == 1 && !$attachment->category)
                         <div class="print-page">
                             <img class="attachments" src="{{ asset($attachment->image_url) }}">
                             <div class="print-footer">
@@ -858,7 +884,7 @@
                 @endforeach
             @elseif($page->page_name == "Notice of Awards")
                 @foreach ($project_attachments as $attachment)
-                    @if ($attachment->attachment_type == 2)
+                    @if ($attachment->attachment_type == 2 && !$attachment->category)
                         <div class="print-page">
                             <img class="attachments" src="{{ asset($attachment->image_url) }}">
                             <div class="print-footer">
@@ -871,7 +897,7 @@
                 @endforeach
             @elseif($page->page_name == "Certificate from Project Proponent")
                 @foreach ($project_attachments as $attachment)
-                    @if ($attachment->attachment_type == 4)
+                    @if ($attachment->attachment_type == 4 && !$attachment->category)
                         <div class="print-page">
                             <img class="attachments" src="{{ asset($attachment->image_url) }}">
                             <div class="print-footer">
@@ -1426,7 +1452,7 @@
                 @endforeach
             @elseif($page->page_name == "Notice to Bidders")
                 @foreach ($project_attachments as $attachment)
-                    @if ($attachment->attachment_type == 3)
+                    @if ($attachment->attachment_type == 3 && !$attachment->category)
                         <div class="print-page">
                             <img class="attachments" src="{{ asset($attachment->image_url) }}">
                             <div class="print-footer">

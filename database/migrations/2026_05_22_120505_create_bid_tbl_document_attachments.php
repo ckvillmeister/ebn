@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('project_id')->constrained('bid_tbl_projects')->cascadeOnDelete();
             $table->integer('attachment_type');
+            $table->enum('category', ['AOGPC', 'SLCC'])->nullable();
             $table->string('image_url');
         });
     }

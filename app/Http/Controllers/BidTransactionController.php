@@ -821,6 +821,7 @@ class BidTransactionController extends Controller
         BidTblDocumentAttachments::create([
             'project_id' => $id,
             'attachment_type' => $request->attachment_type,
+            'category' => $request->category ?? null,
             'image_url' => 'uploads/project-attachments/' . $imageName
         ]);
 

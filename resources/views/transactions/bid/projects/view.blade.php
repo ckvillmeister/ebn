@@ -154,6 +154,11 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a role="tab" class="nav-link" data-toggle="tab" href="#tab-aogpc-slcc-attachments">
+                    <span>TC - Ongoing & SLCC Attachments</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a role="tab" class="nav-link" data-toggle="tab" href="#tab-delivery">
                     <span>TC - Delivery Schedule</span>
                 </a>
@@ -446,6 +451,119 @@
                             </tr>
                         </thead>
                     </table>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="tab-aogpc-slcc-attachments" role="tabpanel">
+                <div id="aogpc-slcc-attachments">
+                    <!-- CRUD UI goes here -->
+                    <div class="card p-3">
+
+                        <form id="aogpcSlccAttachmentForm">
+
+                            <div class="form-group">
+                                <label>Attachment Type</label>
+
+                                <select class="form-control" id="attachment_type_aogpc_slcc">
+                                    @foreach(App\Enums\BidDocAttachmentTypes::$attachmentTypes as $key => $value)
+                                        <option value="{{ $key }}">
+                                            {{ $value }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Category</label>
+
+                                <select class="form-control" id="attachment_category">
+                                    <option value="AOGPC">All Ongoing Government & Private Contracts Attachment</option>
+                                    <option value="SLCC">Single Largest Contract Attachment</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Select Image</label>
+
+                                <input type="file"
+                                    id="attachment_image_aogpc_slcc"
+                                    class="form-control"
+                                    accept="image/png,image/jpeg">
+                            </div>
+
+                            <div class="mt-3 mb-3 text-center">
+
+                                <img id="aogpcSlccPreviewImage"
+                                    style="max-width:100%; display:none;">
+
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                Upload
+                            </button>
+
+                        </form>
+
+                        <div class="row mt-3">
+                            @foreach($attachments as $attachment)
+                                @if ($attachment->category == 'AOGPC')
+                            <div class="col-12 text-center">
+                                <h5>All Ongoing Government & Private Contract Attachments</h5>
+                            </div><br>
+
+                                    <div class="col-md-3 mb-3">
+
+                                        <div class="card p-2">
+
+                                            <img src="{{ asset($attachment->image_url) }}"
+                                                style="width:100%; height:250px; object-fit:cover;">
+
+                                            <div class="mt-2">
+                                                <b>
+                                                    {{ App\Enums\BidDocAttachmentTypes::$attachmentTypes[$attachment->attachment_type] ?? '' }}
+                                                </b>
+                                            </div>
+
+                                            <button class="btn btn-danger btn-sm mt-2 aogpcSlccDeleteAttachmentBtn"
+                                                    data-id="{{ $attachment->id }}">
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+
+                        <div class="row mt-3">
+                            @foreach($attachments as $attachment)
+                                @if ($attachment->category == 'SLCC')
+                            <div class="col-12 text-center">
+                                <h5>Single Largest Contract Attachments</h5>
+                            </div><br>
+                                    <div class="col-md-3 mb-3">
+
+                                        <div class="card p-2">
+
+                                            <img src="{{ asset($attachment->image_url) }}"
+                                                style="width:100%; height:250px; object-fit:cover;">
+
+                                            <div class="mt-2">
+                                                <b>
+                                                    {{ App\Enums\BidDocAttachmentTypes::$attachmentTypes[$attachment->attachment_type] ?? '' }}
+                                                </b>
+                                            </div>
+
+                                            <button class="btn btn-danger btn-sm mt-2 aogpcSlccDeleteAttachmentBtn"
+                                                    data-id="{{ $attachment->id }}">
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
@@ -808,29 +926,25 @@
                         <div class="row mt-3">
 
                             @foreach($attachments as $attachment)
+                                @if (!$attachment->category)
+                                    <div class="col-md-3 mb-3">
+                                        <div class="card p-2">
+                                            <img src="{{ asset($attachment->image_url) }}"
+                                                style="width:100%; height:250px; object-fit:cover;">
 
-                                <div class="col-md-3 mb-3">
+                                            <div class="mt-2">
+                                                <b>
+                                                    {{ App\Enums\BidDocAttachmentTypes::$attachmentTypes[$attachment->attachment_type] ?? '' }}
+                                                </b>
+                                            </div>
 
-                                    <div class="card p-2">
-
-                                        <img src="{{ asset($attachment->image_url) }}"
-                                            style="width:100%; height:250px; object-fit:cover;">
-
-                                        <div class="mt-2">
-                                            <b>
-                                                {{ App\Enums\BidDocAttachmentTypes::$attachmentTypes[$attachment->attachment_type] ?? '' }}
-                                            </b>
+                                            <button class="btn btn-danger btn-sm mt-2 deleteAttachmentBtn"
+                                                    data-id="{{ $attachment->id }}">
+                                                Delete
+                                            </button>
                                         </div>
-
-                                        <button class="btn btn-danger btn-sm mt-2 deleteAttachmentBtn"
-                                                data-id="{{ $attachment->id }}">
-                                            Delete
-                                        </button>
-
                                     </div>
-
-                                </div>
-
+                                @endif
                             @endforeach
 
                             </div>
@@ -1435,6 +1549,121 @@
     });
     //End NFCC Module
 
+    //Start AOGPC / SLCC Attachments
+    $('#attachment_image_aogpc_slcc').change(function(e) {
+
+        let file = e.target.files[0];
+
+        if (!file) return;
+
+        let reader = new FileReader();
+
+        reader.onload = function(event) {
+
+            $('#aogpcSlccPreviewImage')
+                .attr('src', event.target.result)
+                .show();
+
+            if (cropper) {
+                cropper.destroy();
+            }
+
+            cropper = new Cropper(
+                document.getElementById('aogpcSlccPreviewImage'),
+                {
+                    aspectRatio: 210 / 297,
+                    viewMode: 1
+                }
+            );
+
+        };
+
+        reader.readAsDataURL(file);
+
+    });
+
+    $('#aogpcSlccAttachmentForm').submit(function(e) {
+
+        e.preventDefault();
+
+        if (!cropper) {
+
+            alert('Please select image.');
+
+            return;
+        }
+
+        let canvas = cropper.getCroppedCanvas({
+
+            width: 1240,
+            height: 1754
+
+        });
+
+        let file = $('#attachment_image_aogpc_slcc')[0].files[0];
+
+        let mimeType = file.type;
+
+        let base64 = canvas.toDataURL(mimeType);
+
+        $.ajax({
+
+            url: '/transaction/bids/projects/{{ $data->id }}/attachments/store',
+
+            method: 'POST',
+
+            data: {
+
+                _token: $('meta[name="csrf-token"]').attr('content'),
+
+                attachment_type: $('#attachment_type_aogpc_slcc').val(),
+
+                category: $('#attachment_category').val(),
+
+                image: base64
+
+            },
+
+            success: function() {
+
+                location.reload();
+
+            }
+
+        });
+
+    });
+
+    $(document).on('click', '.aogpcSlccDeleteAttachmentBtn', function(){
+
+        let id = $(this).data('id');
+
+        Swal.fire({
+            title: 'Delete attachment?',
+            icon: 'warning',
+            showCancelButton: true
+        }).then((result) => {
+
+            if(result.isConfirmed){
+
+                $.ajax({
+                    url: `/transaction/bids/projects/attachments/delete/${id}`,
+                    type: 'DELETE',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(){
+                        location.reload();
+                    }
+                });
+
+            }
+
+        });
+
+    });
+    //End AOGPC / SLCC Attachments
+
     //Start Project Attachments
     let cropper;
 
@@ -1521,7 +1750,6 @@
 
     });
 
-
     $(document).on('click', '.deleteAttachmentBtn', function(){
 
         let id = $(this).data('id');
@@ -1551,6 +1779,7 @@
 
         });
     //End Project Attachments
+
     //let projectId = "{{ $data->id }}";
 
     /* =======================

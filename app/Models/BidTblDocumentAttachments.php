@@ -15,6 +15,7 @@ class BidTblDocumentAttachments extends Model
     protected $fillable = [
         'project_id',
         'attachment_type',
+        'category',
         'image_url'
     ];
 }
