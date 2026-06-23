@@ -42,6 +42,7 @@ class BidTblProject extends Model
         'fc_warranty_calendar_days',
         'fc_product_to_be_supplied',
         'fc_warranty',
+        'fc_cash_flow_date',
         'aogpc_date_signed',
         'slcc_date_signed',
         'status'

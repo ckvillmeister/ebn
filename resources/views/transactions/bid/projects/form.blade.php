@@ -187,6 +187,13 @@
                    class="form-control">
         </div>
 
+        <div class="col-md-6 mt-2">
+            <label>Project Cash Flow Date of Signing <b><em>For Financial Component</em></b></label>
+            <input type="date" name="fc_cash_flow_date"
+                   value="{{ $data->fc_cash_flow_date ?? '' }}"
+                   class="form-control">
+        </div>
+
         <div class="col-md-12 mt-2">
             <label>Product to be Supplied <b><em>For Financial Component</em></b></label>
             <textarea name="fc_product_to_be_supplied"

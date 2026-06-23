@@ -1693,7 +1693,7 @@
                         </tr>
                         <tr>
                             <td style="width:25%; border: none; padding: 0">Date:</td>
-                            <td style="border: none; padding: 0"></td>
+                            <td style="border: none; padding: 0"><b>{{ $project->fc_cash_flow_date ? date('F d, Y', strtotime($project->fc_cash_flow_date)) : '' }}</b></td>
                         </tr>
                     </table>
                     <div class="print-footer">
