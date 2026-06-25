@@ -1198,7 +1198,7 @@ class BidTransactionController extends Controller
         $project_attachments = BidTblDocumentAttachments::where('project_id', $id)->get();
         $default_attachments = BidTblDefaultUploadType::with(['defaultUploads' => function ($query) {
             $query->where('is_active', 1);
-        }])->get();
+        }])->where('status', 1)->get();
         $bill_of_materials = BidTblDetailedEstimate::where('project_id', $id)->get();
 
         $component = ($component == 'technical') ? 'Technical Components' : 'Financial Components';
