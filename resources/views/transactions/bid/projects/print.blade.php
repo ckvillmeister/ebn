@@ -285,7 +285,7 @@
                                     <img src="{{ asset($project->agency_logo_url) }}" style="height: 200px;">
                                 </div>
                                 <div class="col-md-12 mt-5 text-center">
-                                    <h4><b>Technical Documents</b></h4>
+                                    <h4><b>Technical Components</b></h4>
                                 </div>
                             </div>
                         </div>
@@ -315,7 +315,7 @@
                                     <img src="{{ asset($project->agency_logo_url) }}" style="height: 200px;">
                                 </div>
                                 <div class="col-md-12 mt-5 text-center">
-                                    <h4><b>Financial Documents</b></h4>
+                                    <h4><b>Financial Components</b></h4>
                                 </div>
                             </div>
                         </div>
@@ -991,39 +991,40 @@
                 @endforeach
             @elseif($page->page_name == "Bid Securing Declaration")
                 <div class="print-page">
-                    <div class="row text-center">
+                    <!-- <div class="row text-center">
                         <div class="col-md-12">
                             <h4><b>Bid Securing Declaration Form</b></h4>
                             [shall be submitted with the Bid if bidder opts to provide this form of bid security]
                         </div>
                     </div>
-                    <hr>
-                    REPUBLIC OF THE PHILIPPINES)<br>
-                    CITY/MUNICIPALITY OF TALIBON) S.S.<br><br>
+                    <hr> -->
+                    REPUBLIC OF THE PHILIPPINES&nbsp;)<br>
+                    Talibon, Bohol&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) S.S.<br><br>
                     <div class="row text-center">
                         <div class="col-md-12">
                         <b>BID SECURING DECLARATION</b><br>
-                        Project Identification No.: <b>{{ $project->project_identification_no ?? '' }}</b><br><br>
-                        CONTRACT NAME: <b>{{ $project->project_name ?? '' }}</b>
+                        Project Identification No.: Ref No.<b>{{ $project->project_identification_no ?? '' }}</b><br><br>
+                        <!-- CONTRACT NAME: <b>{{ $project->project_name ?? '' }}</b> -->
                         </div>
-                    </div>
-                    To: Bids and Awards Committee <b>{{ $project->agency_name ?? '' }}, {{ $project->address ?? '' }}</b><br><br>
+                    </div><br>
+                    To: <em>Bids and Awards Committee <b>{{ $project->agency_name ?? '' }}, {{ $project->address ?? '' }}</b></em><br><br>
                     I, the undersigned, declare that:<br><br>
-                    <p style="text-align: justify;">1. I understand that, according to your conditions, bids must be supported by a Bid Security, which may be in the form of a Bid Securing Declaration.</p>
-                    <p style="text-align: justify;">2. I/We accept that: (a) I/we will be automatically disqualified from bidding for any procurement
-                        contract with any procuring entity for a period of two (2) years upon receipt of your Blacklisting Order; and, (b) I/we will
-                        pay the applicable fine provided under Section 6 of the Guidelines on the Use of Bid Securing Declaration, within fifteen (15)
-                        days from receipt of the written demand by the procuring entity for the commission of acts resulting to the enforcement of the bid
-                        securing declaration under Sections 23.1(b), 34.2, 40.1 and 69.1, except 69.1(f), of the IRR of RA No. 9184; without prejudice to other
-                        legal action the government may undertake.
+                    <p style="text-align: justify;">1. I understand that, according to your conditions, bids must be supported by a Bid Security, which may be in the form of a Bid Securing Declaration.
+                        <br>
+                        <ul>
+                            <li>I understand that upon conferment of the original offeror status under Section 30.6 of the implementing Rules and Regulations (IRR) of the Republic Act (RA) No. 12009, the offeror shall submit a Bid Securing Declaration within ten (10) days from the receipt of the certificate of conferment;</li>
+                        </ul>
                     </p>
-                    <p style="text-align: justify;">3. I/We understand that this Bid Securing Declaration shall cease to be valid on the following circumstances:<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a. Upon expiration of the bid validity period, or any extension thereof pursuant to your request;<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;b. I am/we declared ineligble or post-disqualified upon receipt of your notice to such effect, and (i) I/we failed to timely file
-                    a request for reconsideration or (ii) I/we filed a waiver to avail of said right; and<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;c. I am/we are declared the bidder with the Lowest Calculated Responsive Bid, and I/we have furnished the performance security and signed the Contract.
+                    <p style="text-align: justify;">2. I accept that: (a) I will be automatically disqualified from bidding for any procurement contract with any procuring entity for a period of two (2) years upon receipt of your Blacklisting Order; and, (b) I will pay the applicable fine provided under Section 6 of the Guidelines on the Use of Bid Securing Declaration, within fifteen (15) days from receipt of the written demand by the procuring entity for the commission of acts resulting to the enforcement of the bid securing declaration under Sections 23.1(b), 34.2, 40.1 and 69.1, except 69.1(f),of the IRR of RA No. 9184; without prejudice to other legal action the government may undertake.
                     </p>
-                    IN WITNESS WHEREOF, I/We have hereunto set my/our hand/s this <b>{{ $project->bid_securing_declaration_date ? (date('jS', strtotime($project->bid_securing_declaration_date))) : date('jS') }}</b> day of <b>{{ $project->bid_securing_declaration_date ? (date('F Y', strtotime($project->bid_securing_declaration_date))) : date('F Y') }}</b> at Talibon, Bohol.
+                    <p style="text-align: justify;">3. I understand that this Bid Securing Declaration shall cease to be valid on the following circumstances:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;a. Upon expiration of the bid validity period, or any extension thereof pursuant to your request;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;b. I am/we declared ineligble or post-disqualified upon receipt of your notice to such effect, and
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(i) I/we failed to timely file a request for reconsideration or
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ii) I/we filed a waiver to avail of said right; and<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;c. I am declared the bidder with the Lowest Calculated Responsive Bid, and I furnished the performance security and signed the Contract.
+                    </p>
+                    IN WITNESS WHEREOF, I have hereunto set my/our hand/s this <b>{{ $project->bid_securing_declaration_date ? (date('jS', strtotime($project->bid_securing_declaration_date))) : date('jS') }}</b> day of <b>{{ $project->bid_securing_declaration_date ? (date('F Y', strtotime($project->bid_securing_declaration_date))) : date('F Y') }}</b> at Talibon, Bohol.
                     <br><br><br><br>
                     <div class="row d-print-flex">
                         <div class="col-6"></div>
@@ -1036,8 +1037,7 @@
                     </div>
                     <p style="text-align: justify;">
                         SUBSCRIBED AND SWORN to before me this ________ day of _____________, <b>{{ date('Y') }}</b> at ____________________________ Bohol, Philippines.
-                    </p>
-                    <br>
+                    </p><br>
                     DOC No.    _______;<br>
                     PAGE No.  _______;<br>
                     BOOK No. _______;<br>
@@ -1049,10 +1049,16 @@
                     </div>
                 </div>
             @elseif($page->page_name == "Omnibus Sworn Statement")
-                <div class="print-page">
-                    <div class="row text-center">
+                <div class="print-page" style="font-size: 10pt">
+                    <!-- <div class="row text-center">
                         <div class="col-md-12">
                             <h4><b>Omnibus Sworn Statement</b></h4>
+                        </div>
+                    </div> -->
+                    <div class="row text-center">
+                        <div class="col-md-12">
+                            <h4><b>Omnibus Sworn Statement Form</b></h4>
+                            <b><em>[Note: The duly accomplished form shall be submitted with the Bid]</em></b>
                         </div>
                     </div>
                     <hr>
@@ -1060,35 +1066,37 @@
                     CITY/MUNICIPALITY OF TALIBON) S.S.<br><br>
                     <div class="row text-center">
                         <div class="col-md-12">
-                        <h5><b>AFFIDAVIT</b></h5>
+                        <h5><b>OMNIBUS SWORN STATEMENT</b></h5>
                         </div>
                     </div><br>
-                    <p style="text-align: justify;">I, Elmer B. Nuez, of legal age, Married, Filipino, and residing at Kinan-oan, Trinidad, Bohol after having been duly sworn in accordance with law, do hereby depose and state that:</p><br>
-                    <p style="text-align: justify;">1. I am the sole proprietor or authorized representative of EBN Enterprises with office address at Poblacion, Trinidad, Bohol;</p><br>
-                    <p style="text-align: justify;">2. As the owner and sole proprietor, or authorized representative of EBN Enterprises, I have full power and authority to do, execute and perform any and all acts necessary to participate, submit the bid, and to sign and execute the ensuing contract for <b><u>{{ $project->project_name ?? '' }}</u></b>. as shown in the attached duly notarized Special Power of Attorney;</p><br>
-                    <p style="text-align: justify;">3. EBN Enterprises is not “blacklisted” or barred from bidding by the Government of the Philippines or any of its agencies, offices, corporations, or Local Government Units, foreign government/foreign or international financing institution whose blacklisting rules have been recognized by the Government Procurement Policy Board, <b><u>by itself or by relation, membership, association, affiliation, or controlling interest with another blacklisted person or entity as defined and provided for in the Uniform Guidelines on Blacklisting;</u></b></p><br>
-                    <p style="text-align: justify;">4. Each of the documents submitted in satisfaction of the bidding requirements is an authentic copy of the original, complete, and all statements and information provided therein are true and correct;</p><br>
-                    <p style="text-align: justify;">5. EBN Enterprises is authorizing the Head of the Procuring Entity or its duly authorized representative(s) to verify all the documents submitted;</p><br>
-                    <p style="text-align: justify;">6. The owner or sole proprietor is not related to the Head of the Procuring Entity, members of the Bids and Awards Committee (BAC), the Technical Working Group, and the BAC Secretariat, the head of the Project Management Office or the end-user unit, and the project consultants by consanguinity or affinity up to the third civil degree;</p><br>
-                    <p style="text-align: justify;">7. EBN Enterprises complies with existing labor laws and standards; and</p><br>
-                    <p style="text-align: justify;">8. EBN Enterprises is aware of and has undertaken the responsibilities as a Bidder in compliance with the Philippine Bidding Documents, which includes:<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;a. Carefully examining all of the Bidding Documents;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;b. Acknowledging all conditions, local or otherwise, affecting the implementation of the Contract;
+                    <p style="text-align: justify; text-indent: 30px;">I, ELMER B. NUEZ, of legal age, Married, Filipino, and with residence at Kinan-oan Trinidad Bohol, after having been duly sworn in accordance with law, do hereby depose and state that:</p><br>
+                    <p style="text-align: justify; margin-left: 30px;">1. I am the sole proprietor or authorized representative of EBN ENTERPRISES with office address at Pob. Trinidad Bohol;</p><br>
+                    <p style="text-align: justify; margin-left: 30px;">2. As the owner and sole proprietor or authorized representative of EBN ENTERPRISES, I have full power and authority to do, execute and perform any and all acts necessary to participate, submit the bid, and to sign and execute the ensuing contract for  <b><u>{{ $project->project_name ?? '' }}</u></b> of the  <b><u>{{ $project->agency_name ?? '' }}</u></b>;</p><br>
+                    <p style="text-align: justify; margin-left: 30px;">3. EBN ENTERPRISES is not “blacklisted” or barred from bidding by the Government of the Philippines or any of its agencies, offices, corporations, or Local Government Units, foreign government/foreign or international financing institution whose blacklisting rules have been recognized by the Government Procurement Policy Board; by itself or by relation, membership, association, affiliation, or controlling interest with another blacklisted person or entity;</p><br>
+                    <p style="text-align: justify; margin-left: 30px;">4. Each of the documents submitted in satisfaction of the bidding requirements is an authentic copy of the original, complete, and all statements and information provided therein are true and correct;</p><br>
+                    <p style="text-align: justify; margin-left: 30px;">5. EBN ENTERPRISES is authorizing the Head of the Procuring Entity or its duly authorized representative(s) to verify all the documents submitted;</p><br>
+                    <p style="text-align: justify; margin-left: 30px;">6. The EBN ENTERPRISES and its spouse are not related by consanguinity or affinity up to the third civil degree to the Head of the Procuring Entity, Procurement Agent (if engaged), or the End-User or Implementing Unit, project consultants, head of the Project Management Office, or the members of the Bids and Awards Committee (BAC), the Technical Working Group, and the BAC Secretariat;</p><br>
+                    <p style="text-align: justify; margin-left: 30px;">7. It is understood that failure to faithfully disclose its relationship with the Head of the Procuring Entity, members of the BAC, the TWG, and the BAC Secretariat, the head of the PMO or the end-user unit or implementing unit, and the project consultants of the Procuring Entity, or of the procurement agent by consanguinity or affinity up to the third civil degree, as well as its submission of beneficial ownership information containing false entries shall be subject to blacklisting under Section 100 of the IRR of RA No. 12009, without prejudice to criminal and civil liabilities under applicable laws, including their accessory penalties, if any.</p><br>
                     <div class="print-footer">
                         <div class="footer-line-black"></div>
                         <div class="footer-line-yellow"></div>
                         <img src="{{ asset($project->agency_logo_url) }}" class="footer-logo">
                     </div>
                 </div>
-                <div class="print-page">
-                        &nbsp;&nbsp;&nbsp;&nbsp;c. Making an estimate of the facilities available and needed for the contract to be bid, if any; and<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;d. Inquiring or securing Supplemental/Bid Bulletin(s) issued for the <b><u>{{ $project->project_name ?? '' }}</u></b>.
+                <div class="print-page" style="font-size: 10pt">
+                <p style="text-align: justify; margin-left: 30px;">8. EBN ENTERPRISES complies with existing labor laws and standards; and</p><br>
+                    <p style="text-align: justify; margin-left: 30px;">9. EBN ENTERPRISES is aware of and has undertaken the following responsibilities as a Bidder:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a) Carefully examine all of the Bidding Documents;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b) Acknowledge all conditions, local or otherwise, affecting the implementation of the Contract;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c) Made an estimate of the facilities available and needed for the contract to be bid, if any; and<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d) Inquire or secure Supplemental Bid Bulletin(s) issued for the <b><u>{{ $project->project_name ?? '' }}</u></b>.
                     </p><br>
-                    <p style="text-align: justify;">9. <em>EBN Enterprises</em> did not give or pay directly or indirectly, any commission, amount, fee, or any form of consideration, pecuniary or otherwise, to any person or official, personnel or representative of the government in relation to any procurement project or activity.</p><br>
-                    <p style="text-align: justify;">10.	<u>In case advance payment was made or given, failure to perform or deliver any of the obligations and undertakings in the contract shall be sufficient grounds to constitute criminal liability for Swindling (Estafa) or the commission of fraud with unfaithfulness or abuse of confidence through misappropriating or converting any payment received by a person or entity under an obligation involving the duty to deliver certain goods or services, to the prejudice of the public and the government of the Philippines pursuant to Article 315 of Act No. 3815 s. 1930, as amended, or the Revised Penal Code.</u></p><br>
+                    <p style="text-align: justify; margin-left: 30px;">10. <em>EBN Enterprises</em> did not give or pay directly or indirectly, any commission, amount, fee, or any form of consideration, pecuniary or otherwise, to any person or official, personnel or representative of the government in relation to any procurement project or activity.</p><br>
+                    <p style="text-align: justify; margin-left: 30px;">11.	In case advance payment was made or given to EBN ENTERPRISES, failure to perform or deliver any of the obligations and undertakings in the contract shall be sufficient grounds to constitute criminal liability under existing laws.</p><br>
 
-                    IN WITNESS WHEREOF, I/We have hereunto set my/our hand/s this <b>{{ $project->omnibus_sworn_statement_date ? (date('jS', strtotime($project->omnibus_sworn_statement_date))) : date('jS') }}</b> day of <b>{{ $project->omnibus_sworn_statement_date ? (date('F Y', strtotime($project->omnibus_sworn_statement_date))) : date('F Y') }}</b> at Talibon, Bohol.
-                    <br><br><br><br><br><br>
+                    <p style="text-align: justify; margin-left: 30px;">IN WITNESS WHEREOF, I have hereunto set my hand this <b>{{ $project->omnibus_sworn_statement_date ? (date('jS', strtotime($project->omnibus_sworn_statement_date))) : date('jS') }}</b> day of <b>{{ $project->omnibus_sworn_statement_date ? (date('F Y', strtotime($project->omnibus_sworn_statement_date))) : date('F Y') }}</b> at Talibon, Bohol, Philippines.</p>
+
+                    <br><br><br><br>
                     <div class="row d-print-flex">
                         <div class="col-6"></div>
                         <div class="col-6 text-center">
@@ -1099,8 +1107,12 @@
                         </div>
                     </div><br><br>
                     <p style="text-align: justify;">
-                        SUBSCRIBED AND SWORN to before me this ________ day of _____________, <b>{{ date('Y') }}</b> at ____________________________ Bohol, Philippines.
+                        SUBSCRIBED AND SWORN to before me this ________ day of _____________, <b>{{ date('Y') }}</b> at ____________________________ Talibon, Philippines. Affiant/s is personally known to me and was identified by me through competent evidence of identity as defined in the 2004 Rules on Notarial Practice (A.M. No. 02-8-13-SC). Affiant exhibited to me his LTO DRIVER’S LICENSE, with his photograph and signature appearing thereon, with no. G53-22-300571.
                     </p>
+                    <p style="text-align: justify;">
+                        WITNESS MY HAND AND SEAL this ________ day of _____________, <b>{{ date('Y') }}</b>.
+                    </p>
+                    <br>
                     <br>
                     DOC No. &nbsp;&nbsp;_______;<br>
                     PAGE No. &nbsp;_______;<br>
