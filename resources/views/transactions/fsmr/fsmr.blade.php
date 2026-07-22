@@ -29,7 +29,7 @@
             .print-page {
                 width: 8.5in;
                 height: 11in;
-                page-break-after: always; 
+                page-break-after: always;
             }
 
             .content {
@@ -40,12 +40,12 @@
                 overflow: visible;
             }
 
-            
+
             .content > * {
                 page-break-inside: avoid;
                 break-inside: avoid;
             }
-            
+
         }
 
         body, html {
@@ -58,7 +58,7 @@
         .cover-page {
             width: 8.5in;
             height: 11in;
-            background-size: cover;  
+            background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             font-family: "Times New Roman", Times, serif;
@@ -69,8 +69,8 @@
             width: 8.5in;
             height: 11in;
             background: url("{{ asset('images/print-bg.jpg') }}") no-repeat center center;
-            background-size: cover;   
-            /* background-position: center; 
+            background-size: cover;
+            /* background-position: center;
             background-repeat: no-repeat; */
             font-family: "Times New Roman", Times, serif;
             page-break-after: always;
@@ -100,7 +100,7 @@
             opacity: 0.2;
             z-index: 1;
         }
-        
+
         .content {
             width: 100%;
             height: 100%;
@@ -113,38 +113,38 @@
         }
 
         .circle-number {
-            width: 150px;               
+            width: 150px;
             height: 150px;
-            background-color: #FFC107; 
-            color: white;              
-            font-size: 90pt;           
+            background-color: #FFC107;
+            color: white;
+            font-size: 90pt;
             font-weight: bold;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto;           
+            margin: 0 auto;
         }
 
         .img-display{
-            max-width: 100%; 
-            max-height: 80%; 
+            max-width: 100%;
+            max-height: 80%;
             object-fit: contain
         }
 
         .img-desc-container{
-            height: 50%; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
+            height: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center
         }
 
         .img-desc-container-100{
-            height: 100%; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center
         }
 
@@ -189,14 +189,14 @@
         }
 
         .cover-header-text{
-            color: #000 !important; 
-            padding-left: 5%; 
-            padding-top: 15%; 
-            font-size: 50pt; 
-            line-height: 1; 
-            position: relative; 
+            color: #000 !important;
+            padding-left: 5%;
+            padding-top: 15%;
+            font-size: 50pt;
+            line-height: 1;
+            position: relative;
             z-index: 1;
-            text-shadow: 
+            text-shadow:
                 -2px -2px 0 #fff, /* Top-left */
                 2px -2px 0 #fff,  /* Top-right */
                 -2px 2px 0 #fff,  /* Bottom-left */
@@ -204,11 +204,11 @@
         }
 
         .cover-header-text-lower{
-            color: #000 !important; 
-            line-height: 1; 
-            position: relative; 
+            color: #000 !important;
+            line-height: 1;
+            position: relative;
             z-index: 1;
-            text-shadow: 
+            text-shadow:
                 -2px -2px 0 #fff, /* Top-left */
                 2px -2px 0 #fff,  /* Top-right */
                 -2px 2px 0 #fff,  /* Bottom-left */
@@ -222,7 +222,7 @@
             font-size: 12px;
             color: #ff0000;
             z-index: 1000;
-            text-shadow: 
+            text-shadow:
                 -2px -2px 0 #fff, /* Top-left */
                 2px -2px 0 #fff,  /* Top-right */
                 -2px 2px 0 #fff,  /* Bottom-left */
@@ -272,7 +272,7 @@
                 <div style="padding-left: 3%; font-size: 24pt; line-height: 1;">
                     <b>{{ $business->name }}</b><br>
                     {{ $business->address }}
-                </div>      
+                </div>
             </div>
         </div>
     </div>
@@ -426,7 +426,7 @@
                 <div class="content">
                     <table style="width: 100%; border-collapse: collapse; font-size: 11.5pt">
                         <tr>
-                           <td colspan="2" style="width: 50%; border-top: 1px solid black; border-left: 1px solid black"></td> 
+                           <td colspan="2" style="width: 50%; border-top: 1px solid black; border-left: 1px solid black"></td>
                            <td colspan="2" style="width: 50%; border-top: 1px solid black; border-right: 1px solid black; text-align: center">
                                 OSPF-17<br>
                                 <b>COMPLIANCE & COMMISSIONING FORM</b><br><br>
@@ -453,7 +453,7 @@
                                 NAME: <u><b>{{ $business->name }}</b></u><br>
                                 ADDRESS: <u><b>{{ $business->address }}</b></u><br>
                                 SERVICE PROVIDED: <u><b>Fire Safety</b></u>
-                           </td> 
+                           </td>
                            <td colspan="2" style="padding: 1%; width: 50%; border-top: 1px solid black; border-left: 1px solid black; border-right: 1px solid black">
                                 PROPERTY NAME:<br>
                                 NAME: <u><b>{{ $fsmr->establishment_name }}</b></u><br>
@@ -547,7 +547,7 @@
                 <div class="content">
                     <table style="width: 100%; border-collapse: collapse; font-size: 11pt">
                         <tr>
-                           <td style="width: 50%; border-top: 1px solid black; border-left: 1px solid black"></td> 
+                           <td style="width: 50%; border-top: 1px solid black; border-left: 1px solid black"></td>
                            <td style="width: 50%; border-top: 1px solid black; border-right: 1px solid black; text-align: center">
                                 OSPF-17<br>
                                 <b>FIRE RATED DOOR COMPLIANCE & COMMISSIONING</b><br>
@@ -568,7 +568,7 @@
                                 NAME: <u><b>{{ $business->name }}</b></u><br>
                                 ADDRESS: <u><b>{{ $business->address }}</b></u><br>
                                 SERVICE PROVIDED: <u><b>Fire Safety</b></u>
-                           </td> 
+                           </td>
                            <td style="padding: 1%; width: 50%; border-top: 1px solid black; border-left: 1px solid black; border-right: 1px solid black">
                                 PROPERTY NAME:<br>
                                 NAME: <u><b>{{ $fsmr->establishment_name }}</b></u><br>
@@ -582,7 +582,7 @@
                                 HARDWARE: <u><b>{{ $fsmr->eer_hardware }}</b></u>
                             </td>
                             <td style="padding: 1%; width: 50%; border-top: 1px solid black; border-right: 1px solid black; vertical-align: top; text-align: left;">
-                                
+
                             </td>
                         </tr>
                         <tr>
@@ -601,7 +601,7 @@
                             <td style="border: 1px solid black; text-align: center; width: 30%">Remarks</td>
                         </tr>
                             @foreach ($fss as $fs)
-                                
+
                                 <tr style="height: 8pt">
                                     <td style="padding-left: 1%; border: 1px solid black; font-size: 8pt">
                                         {{ $fs->description ?? '' }}
@@ -680,7 +680,7 @@
                 <div class="content">
                     <table style="width: 100%; border-collapse: collapse; font-size: 11pt">
                         <tr>
-                           <td style="width: 50%; border-top: 1px solid black; border-left: 1px solid black"></td> 
+                           <td style="width: 50%; border-top: 1px solid black; border-left: 1px solid black"></td>
                            <td style="width: 50%; border-top: 1px solid black; border-right: 1px solid black; text-align: center">
                                 OSPF-17<br>
                                 <b>FIRE DOOR MAINTENANCE & INSPECTION REPORT</b><br>
@@ -701,7 +701,7 @@
                                 NAME: <u><b>{{ $business->name }}</b></u><br>
                                 ADDRESS: <u><b>{{ $business->address }}</b></u><br>
                                 SERVICE PROVIDED: <u><b>Fire Safety</b></u>
-                           </td> 
+                           </td>
                            <td style="padding: 1%; width: 50%; border-top: 1px solid black; border-left: 1px solid black; border-right: 1px solid black">
                                 PROPERTY NAME:<br>
                                 NAME: <u><b>{{ $fsmr->establishment_name }}</b></u><br>
@@ -715,7 +715,7 @@
                                 HARDWARE: <u><b>{{ $fsmr->eer_hardware }}</b></u>
                             </td>
                             <td style="padding: 1%; width: 50%; border-top: 1px solid black; border-right: 1px solid black; vertical-align: top; text-align: left;">
-                                
+
                             </td>
                         </tr>
                         <tr>
@@ -734,7 +734,7 @@
                             <td style="border: 1px solid black; text-align: center; width: 30%">Remarks</td>
                         </tr>
                             @foreach ($eer as $er)
-                                
+
                                 <tr style="height: 8pt">
                                     <td style="padding-left: 1%; border: 1px solid black; font-size: 8pt">
                                         {{ $er->description ?? '' }}
@@ -807,7 +807,7 @@
                 </div>
             </div>
             <!-- EER End -->
-             
+
         @elseif ($content->id == 6)
             <div class="print-page">
                 <div class="top-background"></div>
@@ -824,7 +824,7 @@
                                 <p style="font-size: 8pt">
                                     {{ $business->address }}<br>
                                     Location: {{ $business->location }}<br>
-                                    Authorized Distributor: {{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}<br>
+                                    Authorized Distributor: {{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name) ?? '' }}<br>
                                     Contact No. {{ $business->number }}<br>
                                     DTI Permit No. {{ $business->dti }}<br>
                                     BIR COR No. {{ $business->bir }}<br>
@@ -915,7 +915,7 @@
                         <b>Assessment Findings</b>
                     </p>
 
-                    
+
                     @if (!blank($assessments))
 
                         @php ($findings_ctr = 0)
@@ -950,7 +950,7 @@
 
                                 @php ($fsmr_response_type = $fsmr->assessments->where('assessment_id', $assessment->id)->first()->response_type ?? '')
                                 @php ($response = $assessment->responses->where('question_id', $assessment->id)->where('response_type', $fsmr_response_type)->first()->response ?? '')
-                                
+
                                 Findings: <b>{{ $response }}</b><br>
                             </p>
 
@@ -1070,7 +1070,7 @@
                         <div class="col-sm-6">
                         Prepared:
                             <div style="margin-top: 50px;">
-                                <b>{{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) }}</b><br>
+                                <b>{{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name) }}</b><br>
                                 {{ $business->name.' Proprietor' }}<br>
                                 FSMR/FSCCR/AFSS/FDAS/KHS Contractor
                                 Fire Extinguisher Supplier
@@ -1103,7 +1103,7 @@
         @endif
 
         @if (!blank($content->subcontents))
-            @php ($img_ctr = 0) 
+            @php ($img_ctr = 0)
             @php ($page_open = false) <!-- Track if a page is open -->
 
             @foreach ($content->subcontents as $cont)
@@ -1139,7 +1139,7 @@
                             <img class="img-display" src="{{ asset('files/attachments').'/'.$att->url }}">
                             <br><h3 style="text-align: justify">Figure {{ $figure++.". ".$fsmr->establishment_name." ".$desc.$att_counter_desc }}</h3>
                         </div>
-                        
+
 
                         <!-- Close the page after 2 images -->
                         @if ($img_ctr >= 2)
@@ -1171,7 +1171,7 @@
             @endif
         @endif
 
-        
+
     @endforeach
 
 </body>
