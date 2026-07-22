@@ -610,7 +610,7 @@
                                 <b>***** Please use Government Issued ID for notarial</b><br><br>
                                 <div class="row">
                                     <div class="col-4">Submitted by:</div>
-                                    <div class="col-5 border-bottom text-center">{{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}</div>
+                                    <div class="col-5 border-bottom text-center">{{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name ?? '') }}</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-4"></div>
@@ -822,7 +822,7 @@
                                 <b>***** Please use Government Issued ID for notarial</b><br><br>
                                 <div class="row">
                                     <div class="col-4">Submitted by:</div>
-                                    <div class="col-5 border-bottom text-center">{{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}</div>
+                                    <div class="col-5 border-bottom text-center">{{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name ?? '') }}</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-4"></div>
@@ -967,7 +967,7 @@
                     <br><br><br><br><br><br>
                     <h5>Submitted by:</h5>
                     <br><br><br><br>
-                    <h5><b>{{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}</b></h5>
+                    <h5><b>{{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name ?? '') }}</b></h5>
                     <h5>Date:</h5>
                     <div class="print-footer">
                         <div class="footer-line-black"></div>
@@ -1029,7 +1029,7 @@
                     <div class="row d-print-flex">
                         <div class="col-6"></div>
                         <div class="col-6 text-center">
-                            <b>{{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}</b><br>
+                            <b>{{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name ?? '') }}</b><br>
                             EBN ENTERPRISES PROPRIETOR<br>
                             LTO DRIVERS LICENSE NO. G53-22-300571<br>
                             Affiant
@@ -1100,7 +1100,7 @@
                     <div class="row d-print-flex">
                         <div class="col-6"></div>
                         <div class="col-6 text-center">
-                            <b>{{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}</b><br>
+                            <b>{{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name ?? '') }}</b><br>
                             EBN ENTERPRISES PROPRIETOR<br>
                             LTO DRIVERS LICENSE NO. G53-22-300571<br>
                             Affiant
@@ -1137,7 +1137,7 @@
                                     <h2 style="color: red"><b>{{ strtoupper($business->name) }}</b></h2>
                                     {{ $business->address }}<br>
                                     Location: {{ $business->location }}<br>
-                                    Authorized Distributor: {{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}<br>
+                                    Authorized Distributor: {{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name ?? '') }}<br>
                                     Contact No. {{ $business->number }}<br>
                                     DTI Permit No. {{ $business->dti }}<br>
                                     BIR COR No. {{ $business->bir }}<br>
@@ -1165,7 +1165,7 @@
                     <div class="row d-print-flex">
                         <div class="col-8"></div>
                         <div class="col-4 text-center">
-                            <b>{{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}</b><br>
+                            <b>{{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name ?? '') }}</b><br>
                             EBN ENTERPRISES CEO
                         </div>
                     </div>
@@ -1228,7 +1228,7 @@
                         <table class="mt-2">
                             <tr>
                                 <td style="width:25%; border: none; padding: 0">Name:</td>
-                                <td style="border: none; padding: 0"><b>{{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}</b></td>
+                                <td style="border: none; padding: 0"><b>{{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name ?? '') }}</b></td>
                             </tr>
                             <tr>
                                 <td style="width:25%; border: none; padding: 0">Legal Capacity:</td>
@@ -1432,7 +1432,7 @@
                                     <table class="mt-2">
                                         <tr>
                                             <td style="width:25%; border: none; padding: 0">Name:</td>
-                                            <td style="border: none; padding: 0"><b>{{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}</b></td>
+                                            <td style="border: none; padding: 0"><b>{{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name ?? '') }}</b></td>
                                         </tr>
                                         <tr>
                                             <td style="width:25%; border: none; padding: 0">Legal Capacity:</td>
@@ -1488,7 +1488,7 @@
                                     <h2 style="color: red"><b>{{ strtoupper($business->name) }}</b></h2>
                                     {{ $business->address }}<br>
                                     Location: {{ $business->location }}<br>
-                                    Authorized Distributor: {{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}<br>
+                                    Authorized Distributor: {{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name ?? '') }}<br>
                                     Contact No. {{ $business->number }}<br>
                                     DTI Permit No. {{ $business->dti }}<br>
                                     BIR COR No. {{ $business->bir }}<br>
@@ -1545,7 +1545,7 @@
                         </table>
                         <br><br>
                         Approved By:<br><br><br>
-                        <b>{{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}</b><br>
+                        <b>{{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name ?? '') }}</b><br>
                         <p style="text-size: 8pt">
                         EBN Enterprises CEO/OWNER<br>
                         FIRE SAFETY EQUIPMENT SUPPLIER AND INSTALLER<br>
@@ -1654,7 +1654,7 @@
                         </p>
                         <br><br><br>
 
-                        Name: <b>{{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}</b><br>
+                        Name: <b>{{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name ?? '') }}</b><br>
                         Legal Capacity: <b>PROPRIETOR</b><br>
                         Signature: __________________________<br>
                         Duly authorized to sign the Bid for and behalf of: <b>{{ $business->name ?? '' }}</b><br>
@@ -1689,7 +1689,7 @@
                     <table>
                         <tr>
                             <td style="width:25%; border: none; padding: 0">Name:</td>
-                            <td style="border: none; padding: 0"><b>{{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}</b></td>
+                            <td style="border: none; padding: 0"><b>{{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name ?? '') }}</b></td>
                         </tr>
                         <tr>
                             <td style="width:25%; border: none; padding: 0">Legal Capacity:</td>
@@ -1727,7 +1727,7 @@
                                     <h2 style="color: red"><b>{{ strtoupper($business->name) }}</b></h2>
                                     {{ $business->address }}<br>
                                     Location: {{ $business->location }}<br>
-                                    Authorized Distributor: {{ strtoupper($signatories->where('position', 'Chief Operating Executive')->first()->name) ?? '' }}<br>
+                                    Authorized Distributor: {{ strtoupper($signatories->where('position', 'EBN ENTERPRISES CEO')->first()?->name ?? '') }}<br>
                                     Contact No. {{ $business->number }}<br>
                                     DTI Permit No. {{ $business->dti }}<br>
                                     BIR COR No. {{ $business->bir }}<br>
