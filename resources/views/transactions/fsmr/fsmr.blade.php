@@ -846,22 +846,22 @@
                             @php ($certificate_wordings = $settings->where('code', 'certification')->first()->description ?? '')
                             @php ($new_certificate_wordings = strtr($certificate_wordings, $params))
                             {!! $new_certificate_wordings !!}
-                            <div class="row" style="margin-top: 40px;">
+                            <div class="row" style="margin-top: 30px;">
                                 <div class="col-sm-6">
                                 Prepared:
-                                    <div style="margin-top: 50px;">
+                                    <div style="margin-top: 45px;">
                                         <b>{{ strtoupper($signatories->where('is_approving_officer', 1)->first()->name) }}</b><br>
                                         {{ $signatories->where('is_approving_officer', 1)->first()->position }}<br>
                                         {{ $business->name }}
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" style="margin-top: 25px;">
+                            <div class="row" style="margin-top: 15px;">
                                 <div class="col-sm-6">
                                 </div>
                                 <div class="col-sm-6">
                                 Approved by:
-                                    <div style="margin-top: 60px;">
+                                    <div style="margin-top: 45px;">
                                         <div style="border-bottom: 1px solid black; width: 250px; margin-bottom: 5px"></div>
                                         Building Administrator
                                     </div>
