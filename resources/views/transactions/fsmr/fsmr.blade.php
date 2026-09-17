@@ -1129,7 +1129,10 @@
 
                         <!-- Add the image -->
                         @php ($img_cont = 'img-desc-container')
-                        @if ($desc == 'Fire Safety Inspection Certificate')
+                        @if ($desc == 'Fire Drill Certificate')
+                            @php ($img_cont = 'img-desc-container-100')
+                            @php ($img_ctr += 2)
+                        @elseif ($desc == 'Fire Safety Inspection Certificate')
                             @php ($img_cont = 'img-desc-container-100')
                             @php ($img_ctr += 2)
                         @else
